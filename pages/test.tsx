@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import React, { useState } from 'react';
 
 const Test: NextPage = () => {
-  const [text, setText] = useState('');
+  const [text, setText] = useState(' ');
   const [result, setResult] = useState<any>();
 
   const handleSubmit = async (
@@ -31,6 +31,9 @@ const Test: NextPage = () => {
           name="bame"
           id="id"
           value={text}
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
         />
       </form>
     </div>
