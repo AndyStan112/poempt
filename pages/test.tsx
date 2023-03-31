@@ -10,16 +10,21 @@ const Test: NextPage = () => {
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
-    fetch('/api/subscribe', {
+    console.log(text);
+    fetch('/api/hello', {
       body: JSON.stringify({ text: text }),
       method: 'post',
       headers: {
         'content-type': 'application/json',
       },
-    }).then(async (result) => {
-      // 👇 modify the state to show the result
-      setResult(await result.json());
-    });
+    }).then(
+      (r) =>
+        r.json().then((result) => {
+          console.log(result);
+        }),
+
+      //setResult(await result.json());
+    );
   };
   return (
     <div>
