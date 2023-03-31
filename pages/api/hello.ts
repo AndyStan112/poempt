@@ -16,7 +16,7 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
-    const completion = await openai.createCompletion({
+    const poemCompletion = await openai.createCompletion({
       model: 'text-davinci-003',
       prompt: req.body.text,
       temperature: 0.7,
@@ -25,8 +25,16 @@ export default async function handler(
       presence_penalty: 0,
       max_tokens: 32,
     });
-    console.log(completion.data.choices[0]);
-    res.status(200).send({ name: completion.data.choices[0] });
+    const poem = poemCompletion.data.choices[0];
+    const imageCompletion = await openai.createImage({
+      prompt: 'a white siamese cat',
+      n: 1,
+      size: '256x256',
+    });
+    const image = imageCompletion.data.data[0].url;
+    console.log(image);
+    console.log(poem);
+    res.status(200).send({ name: poem, image: image });
   } catch (error) {
     console.log(error);
     res.status(500).send({ name: 'Internal server error' });
