@@ -37,6 +37,6 @@ export default async function handler(
     res.status(200).send({ name: poem, image: image });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ name: 'Internal server error' });
+    res.status(500).send({ result: 'error' });
   }
 }
