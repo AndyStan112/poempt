@@ -31,7 +31,7 @@ const Test: NextPage = () => {
       testare
       <form onSubmit={handleSubmit}>
         <input
-          className="bg-slate-300"
+          className="bg-slate-300 bg"
           type="text"
           name="bame"
           id="id"
