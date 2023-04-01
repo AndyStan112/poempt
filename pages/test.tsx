@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 // pages/subscribe.tsx
 import React, { useState } from 'react';
-
+import Image from 'next/image';
 const Test: NextPage = () => {
   const [text, setText] = useState<string>(' ');
   const [poem, setPoem] = useState<string>(' ');
@@ -60,12 +60,13 @@ const Test: NextPage = () => {
         />
       </form>
       {poem}
-      <img
+      <button
         onClick={() => {
           speechSynthesis.speak(new SpeechSynthesisUtterance(poem));
         }}
-        src={image}
-      ></img>
+      >
+        click
+      </button>
     </div>
   );
 };
