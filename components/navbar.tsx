@@ -7,14 +7,14 @@ function MainNavbar() {
   const loadingPoem = useAtomValue(loadingPoemAtom);
   return (
     <>
-      <Navbar className="sticky dark !bg-transparent !text-white drop-shadow-md">
+      <Navbar className="sticky !bg-transparent !text-white drop-shadow-md">
         <Navbar.Brand href="/" className="pr-16">
           <span className="self-center whitespace-nowrap text-xl font-semibold ">
             PoemPT
           </span>
         </Navbar.Brand>
         <div className="flex md:order-2">
-          <Button>Generate a poem</Button>
+          <Button color="green">Generate a poem</Button>
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse>
@@ -29,7 +29,7 @@ function MainNavbar() {
           </Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
-      <Waves hue="20" animate={loadingPoem} />
+      <Waves hue="280" animate={loadingPoem} />
     </>
   );
 }

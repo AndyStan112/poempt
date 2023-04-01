@@ -1,3 +1,6 @@
+import { useAtomValue } from "jotai";
+import { poemImageAtom, poemTextAtom, requestErrorAtom } from "../utils/atoms";
+
 /* eslint-disable @next/next/no-img-element */
 function PoemCard({ title, image, children }) {
   return (

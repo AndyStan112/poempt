@@ -11,6 +11,7 @@
     rgba(0, 172, 193, 1) 100%
   );
   filter: hue-rotate(var(--hue-val));
+  transition: filter 5s;
 }
 
 .waves {
