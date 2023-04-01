@@ -44,7 +44,10 @@ export default async function handler(
         ' ' +
         data.rhyme +
         ' poem' +
-        ' belonging to the ' +
+        'with ' +
+        data.verses +
+        'verses';
+      ' belonging to the ' +
         data.writingStyle +
         ' style.Make a sugestive title separated by spaces. Base you creation on the following comma-separated keywords: ' +
         keywords +
@@ -58,7 +61,7 @@ export default async function handler(
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0,
-      max_tokens: 64,
+      max_tokens: 128,
     });
     const poem = poemCompletion.data.choices[0].text;
     console.log(poem);
