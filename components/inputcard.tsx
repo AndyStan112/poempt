@@ -140,7 +140,7 @@ function InputCard() {
               className="w-full mb-2"
               value={selectedStanzaStyle}
               onChange={(e) => {
-                setSelectedStanzaStyle(e.target.value);
+                setSelectedStanzaStyle(Number(e.target.value));
               }}
             >
               {stanzaStyles.map((name, index) => (
@@ -164,7 +164,7 @@ function InputCard() {
                 className="w-full"
                 value={selectedStanzaCount}
                 onChange={(e) => {
-                  setSelectedStanzaCount(e.target.value);
+                  setSelectedStanzaCount(Number(e.target.value));
                 }}
               >
                 {stanzaCounts.map((name, index) => (
@@ -183,7 +183,7 @@ function InputCard() {
                 className="w-full"
                 value={selectedRhyme}
                 onChange={(e) => {
-                  setSelectedRhyme(e.target.value);
+                  setSelectedRhyme(Number(e.target.value));
                 }}
               >
                 {stanzaRhymes.map((name, index) => (
