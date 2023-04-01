@@ -1,6 +1,7 @@
 import { atom } from "jotai";
 
 export const loadingPoemAtom = atom(false);
+export const loadingImageAtom = atom(false);
 
 export const requestErrorAtom = atom(false);
 
