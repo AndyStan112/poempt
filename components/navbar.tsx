@@ -1,18 +1,16 @@
-import { Navbar, Button, DarkThemeToggle, Flowbite } from "flowbite-react";
+import { Navbar, Button } from "flowbite-react";
 import Link from "next/link";
 
 function MainNavbar() {
   return (
     <>
       <Navbar className="sticky !bg-transparent !text-white drop-shadow-md">
-        <Navbar.Brand className="pr-8">
-          <Link
-            href="/"
-            className="self-center whitespace-nowrap text-3xl font-semibold "
-          >
-            PoemPT
-          </Link>
-        </Navbar.Brand>
+        <Link
+          href="/"
+          className="self-center whitespace-nowrap text-3xl font-semibold "
+        >
+          PoemPT
+        </Link>
         <div className="flex md:order-2">
           <Link href="/generate">
             <Button color="green">Generate a poem</Button>
@@ -20,18 +18,18 @@ function MainNavbar() {
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse>
-          <Navbar.Link className="!text-white">
-            <Link href="/">Home</Link>
-          </Navbar.Link>
-          <Navbar.Link className="!text-white">
-            <Link href="/library">Public library</Link>
-          </Navbar.Link>
-          <Navbar.Link className="!text-white">
-            <Link href="/mylibrary">My library</Link>
-          </Navbar.Link>
-          <Navbar.Link className="!text-white">
-            <Link href="/about">About</Link>
-          </Navbar.Link>
+          <Link href="/" className="!text-white">
+            Home
+          </Link>
+          <Link href="/library" className="!text-white">
+            Public library
+          </Link>
+          <Link href="/mylibrary" className="!text-white">
+            My library
+          </Link>
+          <Link href="/about" className="!text-white">
+            About
+          </Link>
         </Navbar.Collapse>
       </Navbar>
     </>
