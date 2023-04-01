@@ -12,11 +12,10 @@ import { requestErrorAtom, poemTextAtom, poemImageAtom } from "../utils/atoms";
 
 function InputCard() {
   const [selectedWritingStyle, setSelectedWritingStyle] = useState("Modernist");
-  const [selectedStanzaStyle, setSelectedStanzaStyle] = useState("Free verse");
-  const [selectedStanzaCount, setSelectedStanzaCount] =
-    useState("Quatrain (4)");
-  const [selectedRhyme, setSelectedRhyme] = useState("Free verse");
-  const [selectedMood, setSelectedMood] = useState(5);
+  const [selectedStanzaStyle, setSelectedStanzaStyle] = useState(0);
+  const [selectedStanzaCount, setSelectedStanzaCount] = useState(3);
+  const [selectedRhyme, setSelectedRhyme] = useState(0);
+  const [selectedMood, setSelectedMood] = useState(3);
 
   const [text, setText] = useState<string>(" ");
 
@@ -78,9 +77,10 @@ function InputCard() {
       body: JSON.stringify({
         type: "guided",
         writingStyle: selectedWritingStyle,
-        stanzaStyle: selectedStanzaStyle,
-        rhyme: selectedRhyme,
-        stanzas: selectedStanzaCount,
+        stanzaStyle: stanzaStyles[selectedStanzaStyle],
+        rhyme: stanzaRhymes[selectedRhyme],
+        stanzas: stanzaCounts[selectedStanzaCount],
+        mood: moods[selectedMood],
       }),
       method: "post",
       headers: {
@@ -143,8 +143,12 @@ function InputCard() {
                 setSelectedStanzaStyle(e.target.value);
               }}
             >
-              {stanzaStyles.map((name) => (
-                <option key={name} value={name}>
+              {stanzaStyles.map((name, index) => (
+                <option
+                  key={index}
+                  value={index}
+                  selected={selectedStanzaStyle == index}
+                >
                   {name}
                 </option>
               ))}
@@ -165,9 +169,9 @@ function InputCard() {
               >
                 {stanzaCounts.map((name, index) => (
                   <option
-                    key={name}
-                    value={name}
-                    selected={selectedRhyme == name}
+                    key={index}
+                    value={index}
+                    selected={selectedStanzaCount == index}
                   >
                     {name} ({index + 1})
                   </option>
@@ -179,14 +183,14 @@ function InputCard() {
                 className="w-full"
                 value={selectedRhyme}
                 onChange={(e) => {
-                  setSelectedStanzaCount(e.target.value);
+                  setSelectedRhyme(e.target.value);
                 }}
               >
-                {stanzaRhymes.map((name) => (
+                {stanzaRhymes.map((name, index) => (
                   <option
-                    key={name}
-                    value={name}
-                    selected={selectedRhyme == name}
+                    key={index}
+                    value={index}
+                    selected={selectedRhyme == index}
                   >
                     {name}
                   </option>
