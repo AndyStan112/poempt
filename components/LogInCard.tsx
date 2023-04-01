@@ -31,9 +31,8 @@ const LogInCard = () => {
         className="w-80 h-[27rem]  flex flex-col bg-slate-200 rounded-xl shadow-md justify-center gap-2 items-center"
       >
         <button
+          type="reset"
           onClick={() => {
-            console.log(session);
-            signOut({ redirect: false, callbackUrl: redirectUrl });
             console.log(session);
           }}
           className=" p-1 absolute self-end w-8 bg-white rounded-full -translate-y-48 mr-2 hover:bg-slate-200 focus:bg-slate-300 focus:border"
