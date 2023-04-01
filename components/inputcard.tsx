@@ -8,7 +8,12 @@ import {
   moods,
 } from "../utils/constants";
 import { useSetAtom } from "jotai";
-import { requestErrorAtom, poemTextAtom, poemImageAtom } from "../utils/atoms";
+import {
+  requestErrorAtom,
+  poemTextAtom,
+  poemImageAtom,
+  loadingPoemAtom,
+} from "../utils/atoms";
 import TagInput from "./taginput";
 
 function InputCard() {
@@ -23,6 +28,7 @@ function InputCard() {
   const setRequestError = useSetAtom(requestErrorAtom);
   const setPoemText = useSetAtom(poemTextAtom);
   const setPoemImage = useSetAtom(poemImageAtom);
+  const setLoadingPoem = useSetAtom(loadingPoemAtom);
 
   const handlePromptSubmit = async (
     e: React.FormEvent<HTMLFormElement>
@@ -30,6 +36,7 @@ function InputCard() {
     e.preventDefault();
     // console.log(text);
 
+    setLoadingPoem(true);
     setPoemImage("loader.gif");
     setPoemText("Generating...");
 
@@ -59,6 +66,7 @@ function InputCard() {
           r.json().then((data) => {
             // console.log(data.image);
             setPoemImage(data.image);
+            setLoadingPoem(false);
           })
         );
       })
@@ -114,9 +122,31 @@ function InputCard() {
   };
 
   return (
-    <div className="flex p-2 mb-4 rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto sm:w-full md:w-2/3 lg:w-1/2">
+    <div className="flex flex-col p-2 mb-4 rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto sm:w-full md:w-2/3 lg:w-1/2">
+      <h1 className="text-center text-2xl mt-2">Write me a poem about:</h1>
       <Tabs.Group style="underline" className="w-full justify-center">
-        <Tabs.Item active={true} title="Guided Input">
+        <Tabs.Item active={true} title="Simple">
+          <form onSubmit={handlePromptSubmit}>
+            <TextInput
+              id="plainPrompt"
+              type="text"
+              placeholder="e.g: a sunny day"
+              className="flex-1 mb-2"
+              required={true}
+              value={promptText}
+              onChange={(e) => {
+                setPromptText(e.target.value);
+              }}
+            />
+            <Button
+              type="submit"
+              className="mt-4 bg-green-400 hover:bg-green-300 text-black w-full"
+            >
+              Make my poem
+            </Button>
+          </form>
+        </Tabs.Item>
+        <Tabs.Item title="Advanced">
           <form onSubmit={handleGuidedSubmit}>
             <h1 className="text-center text-xl mb-2">Select a writing style</h1>
             <div className="grid grid-cols-3 gap-2 mb-4">
@@ -219,37 +249,13 @@ function InputCard() {
             />
 
             <h1 className="text-center text-xl mt-4 mb-2">
-              Enter some keywords
+              Write me a poem about:
             </h1>
             <TagInput />
 
             <Button
               type="submit"
-              className="bg-green-400 hover:bg-green-300 text-black w-full"
-            >
-              Make my poem
-            </Button>
-          </form>
-        </Tabs.Item>
-        <Tabs.Item title="Custom Prompt">
-          <h1 className="text-center text-xl mb-2">
-            Write any poem suggestion
-          </h1>
-          <form onSubmit={handlePromptSubmit}>
-            <TextInput
-              id="plainPrompt"
-              type="text"
-              placeholder="Plain Prompt"
-              className="flex-1 mb-2"
-              required={true}
-              value={promptText}
-              onChange={(e) => {
-                setPromptText(e.target.value);
-              }}
-            />
-            <Button
-              type="submit"
-              className="bg-green-400 hover:bg-green-300 text-black w-full"
+              className="mt-4 bg-green-400 hover:bg-green-300 text-black w-full"
             >
               Make my poem
             </Button>
