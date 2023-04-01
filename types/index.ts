@@ -1,10 +1,10 @@
 export interface UserInput {
   type: 'guided' | 'prompt';
-  text?: string;
+  mood?: string;
   theme?: string;
   stanzaStyle?: string;
   writingStyle?: string;
   rhyme?: string;
-  stanzas?: number;
+  stanzaCount?: string;
   keywords?: [string];
 }
