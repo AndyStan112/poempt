@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { NextPage } from "next";
 import React, { useState } from "react";
 const Test: NextPage = () => {
@@ -63,6 +64,7 @@ const Test: NextPage = () => {
           speechSynthesis.speak(new SpeechSynthesisUtterance(poem));
         }}
         src={image}
+        alt="TTS"
       ></img>
     </div>
   );
