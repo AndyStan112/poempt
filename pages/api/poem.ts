@@ -18,6 +18,7 @@ export default async function handler(
   try {
     let prompt = 'make a poem';
     const data = req.body;
+    console.log(data);
     if (data.type == 'prompt') {
       if (data.text.length > 64) throw new Error('Prompt exceeds maximum size');
       const keywords = keyword_extractor
@@ -34,17 +35,18 @@ export default async function handler(
         keywords +
         '.';
     } else if (data.type == 'guided') {
-      const keywords = data.keywords.join(',');
+      const keywords = 'Bacovia,buna,cascaval'; //data.keywords.join(',');
       prompt =
         'Write a ' +
         data.mood +
         ' ' +
         data.stanzaStyle +
-        'poem with' +
+        ' ' +
         data.rhyme +
-        'belonging to the ' +
+        ' poem' +
+        ' belonging to the ' +
         data.writingStyle +
-        'style.Make a sugestive title separated by spaces. Base you creation on the following comma-separated keywords: ' +
+        ' style.Make a sugestive title separated by spaces. Base you creation on the following comma-separated keywords: ' +
         keywords +
         '.';
     }
