@@ -1,6 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import Image from "next/image";
-
 function PoemCard({ title, image, children }) {
   return (
     <div className="flex h-full p-4 mb-4 flex-col gap-3 md:flex-row rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto sm:w-full md:w-2/3 lg:w-1/2">
@@ -12,7 +10,7 @@ function PoemCard({ title, image, children }) {
           {children}
         </p>
       </div>
-      <div className="flex flex-1 flex-row justify-center items-center">
+      <div className="flex flex-1 flex-row justify-center md:justify-end items-center md:items-end">
         <img src={image} alt={title} className="rounded-md shadow-md" />
       </div>
     </div>

@@ -1,11 +1,19 @@
 import { Tabs, TextInput, Button, Select } from "flowbite-react";
 import { useState } from "react";
-import { writingStyle, stanzaStyles } from "../utils/constants";
+import {
+  writingStyle,
+  stanzaStyles,
+  stanzaCounts,
+  stanzaRhymes,
+} from "../utils/constants";
 import { useSetAtom } from "jotai";
 import { requestErrorAtom, poemTextAtom, poemImageAtom } from "../utils/atoms";
 
 function InputCard() {
   const [selectedWritingStyle, setSelectedWritingStyle] = useState("Modernist");
+  const [selectedStanzaStyle, setSelectedStanzaStyle] = useState("Free verse");
+  const [selectedStanzaCount, setSelectedStanzaCount] = useState(4);
+  const [selectedRhyme, setSelectedRhyme] = useState("Free verse");
 
   const [text, setText] = useState<string>(" ");
 
@@ -17,7 +25,10 @@ function InputCard() {
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
-    console.log(text);
+    // console.log(text);
+
+    setPoemImage("loader.gif");
+    setPoemText("Generating...");
 
     fetch("/api/poem", {
       body: JSON.stringify({ type: "prompt", text: text }),
@@ -25,31 +36,76 @@ function InputCard() {
       headers: {
         "content-type": "application/json",
       },
-    }).then(
-      (r) =>
-        r.json().then((data) => {
-          if (data.error) {
-            console.log(data.error);
-            setRequestError(true);
-            return;
-          }
-          console.log(data.poem);
-          setPoemText(data.poem.trim());
-          fetch("/api/image", {
-            body: JSON.stringify({ poem: data.poem }),
-            method: "post",
-            headers: {
-              "content-type": "application/json",
-            },
-          }).then((r) =>
-            r.json().then((data) => {
-              console.log(data.image);
-              setPoemImage(data.image);
-            })
-          );
-        })
+    }).then((r) =>
+      r.json().then((data) => {
+        if (data.error) {
+          // console.log(data.error);
+          setRequestError(true);
+          return;
+        }
+        // console.log(data.poem);
+        setPoemText(data.poem.trim());
 
-      //setResult(await result.json());
+        fetch("/api/image", {
+          body: JSON.stringify({ poem: data.poem }),
+          method: "post",
+          headers: {
+            "content-type": "application/json",
+          },
+        }).then((r) =>
+          r.json().then((data) => {
+            // console.log(data.image);
+            setPoemImage(data.image);
+          })
+        );
+      })
+    );
+  };
+
+  const handleGuidedSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    e.preventDefault();
+    // console.log(text);
+
+    setPoemImage("loader.gif");
+    setPoemText("Generating...");
+
+    fetch("/api/poem", {
+      body: JSON.stringify({
+        type: "guided",
+        writingStyle: selectedWritingStyle,
+        stanzaStyle: selectedStanzaStyle,
+        rhyme: selectedRhyme,
+        stanzas: selectedStanzaCount,
+      }),
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((r) =>
+      r.json().then((data) => {
+        if (data.error) {
+          // console.log(data.error);
+          setRequestError(true);
+          return;
+        }
+        // console.log(data.poem);
+        setPoemText(data.poem.trim());
+
+        fetch("/api/image", {
+          body: JSON.stringify({ poem: data.poem }),
+          method: "post",
+          headers: {
+            "content-type": "application/json",
+          },
+        }).then((r) =>
+          r.json().then((data) => {
+            // console.log(data.image);
+            setPoemImage(data.image);
+          })
+        );
+      })
     );
   };
 
@@ -57,8 +113,8 @@ function InputCard() {
     <div className="flex p-2 mb-4 rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto sm:w-full md:w-2/3 lg:w-1/2">
       <Tabs.Group style="underline" className="w-full justify-center">
         <Tabs.Item active={true} title="Guided Input">
-          <form>
-            <h1 className="text-center text-xl mb-2">Pick a theme</h1>
+          <form onSubmit={handleGuidedSubmit}>
+            <h1 className="text-center text-xl mb-2">Select a writing style</h1>
             <div className="grid grid-cols-3 gap-2 mb-4">
               {writingStyle.map((name) => (
                 <Button
@@ -73,14 +129,62 @@ function InputCard() {
                 </Button>
               ))}
             </div>
+
             <h1 className="text-center text-xl mb-2">Pick a stanza style</h1>
-            <Select id="stanzaStyle" name="stanzaStyle" className="w-full mb-2">
+            <Select
+              id="stanzaStyle"
+              name="stanzaStyle"
+              className="w-full mb-2"
+              value={selectedStanzaStyle}
+              onChange={(e) => {
+                setSelectedStanzaStyle(e.target.value);
+              }}
+            >
               {stanzaStyles.map((name) => (
                 <option key={name} value={name}>
                   {name}
                 </option>
               ))}
             </Select>
+
+            <h1 className="text-center text-xl mt-4 mb-2">
+              Stanza structure and rhyme
+            </h1>
+            <div className="flex gap-2 mb-2">
+              <Select
+                id="stanzaCount"
+                name="stanzaCount"
+                className="w-full"
+                value={selectedStanzaCount}
+                onChange={(e) => {
+                  setSelectedStanzaCount(Number(e.target.value));
+                }}
+              >
+                {stanzaCounts.map((name, index) => (
+                  <option key={index} value={index + 1}>
+                    {name}
+                  </option>
+                ))}
+              </Select>
+              <Select
+                id="rhyme"
+                name="rhyme"
+                className="w-full"
+                value={selectedRhyme}
+                onChange={(e) => {
+                  setSelectedStanzaCount(Number(e.target.value));
+                }}
+              >
+                {stanzaRhymes.map((name) => (
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
+                ))}
+              </Select>
+            </div>
+
+            <h1 className="text-center text-xl mb-2">Choose a mood</h1>
+
             <Button
               type="submit"
               className="bg-green-400 hover:bg-green-300 text-black w-full"
