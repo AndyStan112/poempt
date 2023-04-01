@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Configuration, OpenAIApi } from 'openai';
-
+import axios from 'axios';
 const configuration = new Configuration({
   apiKey: process.env.GPT,
 });
@@ -17,7 +17,10 @@ export default async function handler(
       n: 1,
       size: '256x256',
     });
-    const image = imageCompletion.data.data[0].url;
+    const image = imageCompletion.data.data[0].url || '';
+    const response = await axios.get(image, { responseType: 'arraybuffer' });
+    const buffer = Buffer.from(response.data, 'utf-8');
+    console.log(buffer);
     console.log(image);
     res.status(200).send({ image: image });
   } catch (error) {
