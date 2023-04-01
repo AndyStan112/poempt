@@ -1,5 +1,6 @@
 export interface UserInput {
-  type: 'guided' | 'prompt';
+  type: "guided" | "prompt";
+  text: string;
   theme: string;
   stanzaStyle: string;
   writingStyle: string;

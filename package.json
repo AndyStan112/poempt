@@ -9,9 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google-cloud/text-to-speech": "^4.2.1",
     "flowbite": "^1.6.4",
     "flowbite-react": "^0.4.2",
-    "@google-cloud/text-to-speech": "^4.2.1",
+    "jotai": "^2.0.3",
     "next": "13.2.4",
     "openai": "^3.2.1",
     "react": "18.2.0",
