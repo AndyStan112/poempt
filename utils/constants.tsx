@@ -25,8 +25,6 @@ export const stanzaCounts = [
   "Quatrain",
   "Quintain",
   "Sestet",
-  "Septet",
-  "Octave",
 ];
 
 export const stanzaRhymes = [
