@@ -6,7 +6,7 @@ import {
   stanzaCounts,
   stanzaRhymes,
   moods,
-} from "../utils/constants";
+} from "../lib/constants";
 import { useSetAtom, useAtom } from "jotai";
 import {
   requestErrorAtom,
@@ -14,7 +14,7 @@ import {
   poemImageAtom,
   loadingPoemAtom,
   poemShowAtom,
-} from "../utils/atoms";
+} from "../lib/atoms";
 
 function InputCard() {
   const [selectedWritingStyle, setSelectedWritingStyle] = useState("Modernist");
