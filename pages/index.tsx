@@ -12,7 +12,7 @@ import {
   poemImageAtom,
   poemTextAtom,
   requestErrorAtom,
-} from "../utils/atoms";
+} from "../lib/atoms";
 import HeroBanner from "../components/herobanner";
 import MainFooter from "../components/footer";
 
@@ -54,9 +54,12 @@ const Home: NextPage = () => {
                 : "transition duration-700"
             }
           >
-            <PoemCard title="My poem" image={poemImage} showOptions={true}>
-              {poemText}
-            </PoemCard>
+            <PoemCard
+              title="My poem"
+              image={poemImage}
+              showOptions={true}
+              text={poemText}
+            />
             <div className="flex flex-row gap-2 justify-center">
               <Button color="gray" size="xs" onClick={() => setPoemShow(false)}>
                 Generate another poem
