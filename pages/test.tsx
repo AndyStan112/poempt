@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { NextPage } from "next";
 import React, { useState } from "react";
+import LogInCard from "../components/LogInCard";
 const Test: NextPage = () => {
   const [text, setText] = useState<string>(" ");
   const [poem, setPoem] = useState<string>(" ");
@@ -46,6 +47,7 @@ const Test: NextPage = () => {
   return (
     <div>
       testare
+      <LogInCard></LogInCard>
       <form onSubmit={handleSubmit}>
         <input
           className="bg-slate-300 bg"
