@@ -4,8 +4,10 @@ import MainNavbar from "../components/navbar";
 import MainPage from "../components/page";
 import InputCard from "../components/inputcard";
 import PoemCard from "../components/poemcard";
+import Waves from "../components/waves";
 import { useAtomValue, useAtom } from "jotai";
 import {
+  loadingPoemAtom,
   poemShowAtom,
   poemImageAtom,
   poemTextAtom,
@@ -19,12 +21,22 @@ const Home: NextPage = () => {
   const [poemShow, setPoemShow] = useAtom(poemShowAtom);
   const poemText = useAtomValue(poemTextAtom);
   const poemImage = useAtomValue(poemImageAtom);
+  const loadingPoem = useAtomValue(loadingPoemAtom);
 
   return (
     <>
+      <Waves hue={280} height="500px" animate={loadingPoem} />
       <MainNavbar />
       <MainPage>
-        <HeroBanner />
+        <HeroBanner>
+          <h1 className="text-white text-center text-4xl mb-4 drop-shadow-lg">
+            AI Based Poem Generator
+          </h1>
+          <p className="text-white text-center drop-shadow-lg">
+            Unleash the power of words with AI: <br />
+            Let our poetry generator paint your world with verse.
+          </p>
+        </HeroBanner>
         <InputCard />
         {requestError && (
           <Alert color="failure" className="mb-4 mx-auto shadow-md">
@@ -42,7 +54,7 @@ const Home: NextPage = () => {
                 : "transition duration-700"
             }
           >
-            <PoemCard title="My poem" image={poemImage}>
+            <PoemCard title="My poem" image={poemImage} showOptions={true}>
               {poemText}
             </PoemCard>
             <div className="flex flex-row gap-2 justify-center">

@@ -3,14 +3,14 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 500px;
+  height: var(--waves-height);
   z-index: -999;
   background: linear-gradient(
     60deg,
     rgba(84, 58, 183, 1) 0%,
     rgba(0, 172, 193, 1) 100%
   );
-  filter: hue-rotate(var(--hue-val));
+  filter: hue-rotate(var(--waves-hue-val));
   transition: filter 5s;
 }
 
@@ -30,7 +30,7 @@
   --anim-factor: 1;
   transition: animation-duration 5s;
   animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
-  animation-play-state: var(--anim-state);
+  animation-play-state: var(--waves-anim-state);
 }
 .parallax > use:nth-child(1) {
   animation-delay: -2s;
