@@ -64,7 +64,9 @@ const Test: NextPage = () => {
         onClick={() => {
           speechSynthesis.speak(new SpeechSynthesisUtterance(poem));
         }}
-      ></button>
+      >
+        click
+      </button>
     </div>
   );
 };
