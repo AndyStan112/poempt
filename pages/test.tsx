@@ -60,7 +60,12 @@ const Test: NextPage = () => {
         />
       </form>
       {poem}
-      <img src={image}></img>
+      <img
+        onClick={() => {
+          speechSynthesis.speak(new SpeechSynthesisUtterance(poem));
+        }}
+        src={image}
+      ></img>
     </div>
   );
 };
