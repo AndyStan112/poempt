@@ -65,9 +65,7 @@ const Test: NextPage = () => {
           speechSynthesis.speak(new SpeechSynthesisUtterance(poem));
         }}
         src={image}
-      >
-        click
-      </img>
+      ></img>
     </div>
   );
 };
