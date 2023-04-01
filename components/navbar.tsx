@@ -1,10 +1,9 @@
 import { Navbar, Button, DarkThemeToggle, Flowbite } from 'flowbite-react';
 import Waves from './waves';
 import { useAtomValue } from 'jotai';
-import { loadingPoemAtom } from '../lib/atoms';
+import { loadingPoemAtom } from '../utils/atoms';
 
 function MainNavbar() {
-  const loadingPoem = useAtomValue(loadingPoemAtom);
   return (
     <>
       <Navbar className="sticky !bg-transparent !text-white drop-shadow-md">
@@ -29,7 +28,6 @@ function MainNavbar() {
           </Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
-      <Waves hue="280" animate={loadingPoem} />
     </>
   );
 }

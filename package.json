@@ -25,7 +25,8 @@
     "react-social-login-buttons": "^3.6.1"
   },
   "devDependencies": {
-    "@types/node": "^18.15.11",
+    "@iconify/react": "^4.1.0",
+    "@types/node": "18.15.11",
     "@types/react": "18.0.31",
     "@types/react-dom": "18.0.11",
     "autoprefixer": "^10.4.14",

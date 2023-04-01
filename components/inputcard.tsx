@@ -82,7 +82,7 @@ function InputCard() {
   };
 
   const style1 =
-    'transition duration-700 ease-in-out flex flex-col p-5 mb-4 rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto sm:w-full md:w-2/3 lg:w-1/2';
+    'transition duration-700 ease-in-out flex flex-col p-5 mb-4 rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto sm:w-full md:w-2/3 lg:w-1/2';
 
   return (
     <div
