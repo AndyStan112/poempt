@@ -6,6 +6,7 @@ import InputCard from "../components/inputcard";
 import PoemCard from "../components/poemcard";
 import { useAtomValue } from "jotai";
 import { poemImageAtom, poemTextAtom, requestErrorAtom } from "../utils/atoms";
+import HeroBanner from "../components/herobanner";
 
 const Home: NextPage = () => {
   const requestError = useAtomValue(requestErrorAtom);
@@ -16,6 +17,7 @@ const Home: NextPage = () => {
     <>
       <MainNavbar />
       <MainPage>
+        <HeroBanner />
         <InputCard />
         {requestError && (
           <Alert color="failure" className="mb-4 mx-auto shadow-md">
