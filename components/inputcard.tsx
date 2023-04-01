@@ -17,7 +17,7 @@ function InputCard() {
   const [selectedRhyme, setSelectedRhyme] = useState(0);
   const [selectedMood, setSelectedMood] = useState(3);
 
-  const [text, setText] = useState<string>(" ");
+  const [promptText, setPromptText] = useState<string>(" ");
 
   const setRequestError = useSetAtom(requestErrorAtom);
   const setPoemText = useSetAtom(poemTextAtom);
@@ -33,7 +33,7 @@ function InputCard() {
     setPoemText("Generating...");
 
     fetch("/api/poem", {
-      body: JSON.stringify({ type: "prompt", text: text }),
+      body: JSON.stringify({ type: "prompt", text: promptText }),
       method: "post",
       headers: {
         "content-type": "application/json",
@@ -79,7 +79,7 @@ function InputCard() {
         writingStyle: selectedWritingStyle,
         stanzaStyle: stanzaStyles[selectedStanzaStyle],
         rhyme: stanzaRhymes[selectedRhyme],
-        stanzas: stanzaCounts[selectedStanzaCount],
+        stanzas: selectedStanzaCount,
         mood: moods[selectedMood],
       }),
       method: "post",
@@ -217,6 +217,21 @@ function InputCard() {
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mb-2"
             />
 
+            <h1 className="text-center text-xl mt-4 mb-2">
+              Enter some keywords
+            </h1>
+            <TextInput
+              id="plainPrompt"
+              type="text"
+              placeholder="Add a keyword"
+              className="flex-1 mb-2"
+              required={true}
+              value={promptText}
+              onChange={(e) => {
+                setPromptText(e.target.value);
+              }}
+            />
+
             <Button
               type="submit"
               className="bg-green-400 hover:bg-green-300 text-black w-full"
@@ -236,9 +251,9 @@ function InputCard() {
               placeholder="Plain Prompt"
               className="flex-1 mb-2"
               required={true}
-              value={text}
+              value={promptText}
               onChange={(e) => {
-                setText(e.target.value);
+                setPromptText(e.target.value);
               }}
             />
             <Button
