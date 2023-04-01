@@ -9,11 +9,12 @@ import {
 } from "../utils/constants";
 import { useSetAtom } from "jotai";
 import { requestErrorAtom, poemTextAtom, poemImageAtom } from "../utils/atoms";
+import TagInput from "./taginput";
 
 function InputCard() {
   const [selectedWritingStyle, setSelectedWritingStyle] = useState("Modernist");
   const [selectedStanzaStyle, setSelectedStanzaStyle] = useState(0);
-  const [selectedStanzaCount, setSelectedStanzaCount] = useState(3);
+  const [selectedVerseCount, setSelectedVerseCount] = useState(3);
   const [selectedRhyme, setSelectedRhyme] = useState(0);
   const [selectedMood, setSelectedMood] = useState(3);
 
@@ -79,7 +80,7 @@ function InputCard() {
         writingStyle: selectedWritingStyle,
         stanzaStyle: stanzaStyles[selectedStanzaStyle],
         rhyme: stanzaRhymes[selectedRhyme],
-        stanzas: selectedStanzaCount,
+        verses: selectedVerseCount.toString(),
         mood: moods[selectedMood],
       }),
       method: "post",
@@ -162,16 +163,16 @@ function InputCard() {
                 id="stanzaCount"
                 name="stanzaCount"
                 className="w-full"
-                value={selectedStanzaCount}
+                value={selectedVerseCount}
                 onChange={(e) => {
-                  setSelectedStanzaCount(Number(e.target.value));
+                  setSelectedVerseCount(Number(e.target.value));
                 }}
               >
                 {stanzaCounts.map((name, index) => (
                   <option
                     key={index}
                     value={index}
-                    selected={selectedStanzaCount == index}
+                    selected={selectedVerseCount == index}
                   >
                     {name} ({index + 1})
                   </option>
@@ -220,17 +221,7 @@ function InputCard() {
             <h1 className="text-center text-xl mt-4 mb-2">
               Enter some keywords
             </h1>
-            <TextInput
-              id="plainPrompt"
-              type="text"
-              placeholder="Add a keyword"
-              className="flex-1 mb-2"
-              required={true}
-              value={promptText}
-              onChange={(e) => {
-                setPromptText(e.target.value);
-              }}
-            />
+            <TagInput />
 
             <Button
               type="submit"
