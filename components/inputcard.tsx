@@ -7,7 +7,7 @@ import {
   stanzaRhymes,
   moods,
 } from "../utils/constants";
-import { useSetAtom } from "jotai";
+import { useSetAtom, useAtom } from "jotai";
 import {
   requestErrorAtom,
   poemTextAtom,
@@ -15,11 +15,8 @@ import {
   loadingPoemAtom,
   poemShowAtom,
 } from "../utils/atoms";
-import TagInput from "./taginput";
 
 function InputCard() {
-  const [showAdvanced, setShowAdvanced] = useState(false);
-
   const [selectedWritingStyle, setSelectedWritingStyle] = useState("Modernist");
   const [selectedStanzaStyle, setSelectedStanzaStyle] = useState(0);
   const [selectedVerseCount, setSelectedVerseCount] = useState(3);
@@ -28,7 +25,7 @@ function InputCard() {
 
   const [promptText, setPromptText] = useState<string>(" ");
 
-  const setPoemShow = useSetAtom(poemShowAtom);
+  const [poemShow, setPoemShow] = useAtom(poemShowAtom);
   const setRequestError = useSetAtom(requestErrorAtom);
   const setPoemText = useSetAtom(poemTextAtom);
   const setPoemImage = useSetAtom(poemImageAtom);
@@ -84,8 +81,15 @@ function InputCard() {
     );
   };
 
+  const style1 =
+    "transition duration-700 ease-in-out flex flex-col p-5 mb-4 rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto sm:w-full md:w-2/3 lg:w-1/2";
+
   return (
-    <div className="flex flex-col p-5 mb-4 rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto sm:w-full md:w-2/3 lg:w-1/2">
+    <div
+      className={
+        poemShow ? style1 + " scale-y-0 opacity-0 -translate-y-1/2 h-0" : style1
+      }
+    >
       <form onSubmit={handleSubmit}>
         <h1 className="text-center text-2xl mb-2">Write me a poem about:</h1>
         <TextInput
@@ -141,7 +145,7 @@ function InputCard() {
           <Accordion.Panel>
             <Accordion.Title>Structure and rhyme</Accordion.Title>
             <Accordion.Content>
-              <div className="flex gap-2 mb-2 flex-col md:flex-row">
+              <div className="flex gap-4 mb-2 flex-col md:flex-row">
                 <div className="flex-1 flex flex-col gap-1">
                   <label>Verse count</label>
                   <Select
@@ -209,7 +213,7 @@ function InputCard() {
           type="submit"
           className="mt-4 bg-green-500 hover:bg-green-600 text-black w-full"
         >
-          Make my poem
+          Make me a poem
         </Button>
       </form>
     </div>

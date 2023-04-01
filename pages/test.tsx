@@ -1,22 +1,20 @@
-import { NextPage } from 'next';
-// pages/subscribe.tsx
-import React, { useState } from 'react';
-import Image from 'next/image';
+import { NextPage } from "next";
+import React, { useState } from "react";
 const Test: NextPage = () => {
-  const [text, setText] = useState<string>(' ');
-  const [poem, setPoem] = useState<string>(' ');
-  const [image, setImage] = useState<string>(' ');
+  const [text, setText] = useState<string>(" ");
+  const [poem, setPoem] = useState<string>(" ");
+  const [image, setImage] = useState<string>(" ");
 
   const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>,
+    e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
     console.log(text);
-    fetch('/api/poem', {
+    fetch("/api/poem", {
       body: JSON.stringify({ text: text }),
-      method: 'post',
+      method: "post",
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
       },
     }).then(
       (r) =>
@@ -27,19 +25,19 @@ const Test: NextPage = () => {
           }
           console.log(data.poem);
           setPoem(data.poem);
-          fetch('/api/image', {
+          fetch("/api/image", {
             body: JSON.stringify({ poem: data.poem }),
-            method: 'post',
+            method: "post",
             headers: {
-              'content-type': 'application/json',
+              "content-type": "application/json",
             },
           }).then((r) =>
             r.json().then((data) => {
               console.log(data.image);
               setImage(data.image);
-            }),
+            })
           );
-        }),
+        })
 
       //setResult(await result.json());
     );

@@ -19,22 +19,6 @@ export default async function handler(
     let prompt = "make a poem";
     const data = req.body;
     console.log(data);
-    // if (data.type == "prompt") {
-    //   if (data.text.length > 64) throw new Error("Prompt exceeds maximum size");
-    //   const keywords = keyword_extractor
-    //     .extract(data.text, {
-    //       language: "english",
-    //       remove_digits: true,
-    //       return_changed_case: false,
-    //       remove_duplicates: true,
-    //     })
-    //     .join(",");
-    //   console.log(keywords, "\n\n\n");
-    //   prompt =
-    //     "Write a poem and a sugestive title separated by spaces based on the following comma-separated keywords: " +
-    //     keywords +
-    //     ".";
-    // } else if (data.type == "guided") {
     const keywords = keyword_extractor
       .extract(data.subject, {
         language: "english",
@@ -61,7 +45,6 @@ export default async function handler(
       " style. Make a sugestive title separated by spaces. Base your creation on the following comma-separated keywords: " +
       keywords +
       ".";
-    // }
 
     console.log(prompt);
     const poemCompletion = await openai.createCompletion({
