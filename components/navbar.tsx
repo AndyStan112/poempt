@@ -1,7 +1,4 @@
-import { Navbar, Button, DarkThemeToggle, Flowbite } from 'flowbite-react';
-import Waves from './waves';
-import { useAtomValue } from 'jotai';
-import { loadingPoemAtom } from '../utils/atoms';
+import { Navbar, Button, DarkThemeToggle, Flowbite } from "flowbite-react";
 
 function MainNavbar() {
   return (
