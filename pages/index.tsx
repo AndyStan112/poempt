@@ -4,6 +4,7 @@ import MainNavbar from "../components/navbar";
 import MainPage from "../components/page";
 import InputCard from "../components/inputcard";
 import PoemCard from "../components/poemcard";
+import LogInCard from "../components/LogInCard";
 import Waves from "../components/waves";
 import { useAtomValue, useAtom } from "jotai";
 import {
@@ -25,6 +26,7 @@ const Home: NextPage = () => {
 
   return (
     <>
+      <LogInCard></LogInCard>
       <Waves hue={280} height="500px" animate={loadingPoem} />
       <MainNavbar />
       <MainPage>
