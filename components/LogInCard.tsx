@@ -4,7 +4,8 @@ import {
   GithubLoginButton,
 } from 'react-social-login-buttons';
 import { useForm } from 'react-hook-form';
-import { signIn, signOut } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
+
 const style = {
   height: '10%',
   margin: 'inherit',
@@ -18,6 +19,8 @@ const logIn = (provider, email = undefined) => {
     : signIn(provider, { callbackUrl: redirectUrl });
 };
 const LogInCard = () => {
+  const { data: session, status } = useSession();
+
   const { register, handleSubmit } = useForm();
   return (
     <div className="h-screen w-screen fixed flex justify-center items-center bg-gray-400/90 z-20 ">
@@ -29,7 +32,9 @@ const LogInCard = () => {
       >
         <button
           onClick={() => {
-            signOut();
+            console.log(session);
+            signOut({ redirect: false, callbackUrl: redirectUrl });
+            console.log(session);
           }}
           className=" p-1 absolute self-end w-8 bg-white rounded-full -translate-y-48 mr-2 hover:bg-slate-200 focus:bg-slate-300 focus:border"
         >
