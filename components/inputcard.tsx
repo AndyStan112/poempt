@@ -13,6 +13,7 @@ import {
   poemTextAtom,
   poemImageAtom,
   loadingPoemAtom,
+  loadingImageAtom,
   poemShowAtom,
 } from "../lib/atoms";
 
@@ -30,6 +31,7 @@ function InputCard() {
   const setPoemText = useSetAtom(poemTextAtom);
   const setPoemImage = useSetAtom(poemImageAtom);
   const setLoadingPoem = useSetAtom(loadingPoemAtom);
+  const setLoadingImage = useSetAtom(loadingImageAtom);
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
@@ -63,6 +65,7 @@ function InputCard() {
         }
         // console.log(data.poem);
         setPoemText(data.poem.trim());
+        setLoadingImage(true);
 
         fetch("/api/image", {
           body: JSON.stringify({ poem: data.poem }),
@@ -74,6 +77,7 @@ function InputCard() {
           r.json().then((data) => {
             // console.log(data.image);
             setPoemImage(data.image);
+            setLoadingImage(false);
             setLoadingPoem(false);
           })
         );
