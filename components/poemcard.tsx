@@ -10,8 +10,13 @@ function PoemCard({ title, image, children }) {
           {children}
         </p>
       </div>
-      <div className="flex flex-1 flex-row justify-center md:justify-end items-center md:items-end">
-        <img src={image} alt={title} className="rounded-md shadow-md" />
+      <div className="flex flex-1 flex-col justify-center md:justify-start items-center md:items-end">
+        <div className="flex-1">
+          <img src={image} alt={title} className="rounded-md shadow-md" />
+        </div>
+        <p className="text-gray-300 text-sm">
+          Made with <span className="text-lg text-gray-400">PoemPT</span>
+        </p>
       </div>
     </div>
   );
