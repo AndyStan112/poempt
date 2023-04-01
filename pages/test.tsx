@@ -3,15 +3,16 @@ import { NextPage } from 'next';
 import React, { useState } from 'react';
 
 const Test: NextPage = () => {
-  const [text, setText] = useState(' ');
-  const [result, setResult] = useState<any>();
+  const [text, setText] = useState<string>(' ');
+  const [poem, setPoem] = useState<string>(' ');
+  const [image, setImage] = useState<string>(' ');
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
     console.log(text);
-    fetch('/api/hello', {
+    fetch('/api/poem', {
       body: JSON.stringify({ text: text }),
       method: 'post',
       headers: {
@@ -19,8 +20,25 @@ const Test: NextPage = () => {
       },
     }).then(
       (r) =>
-        r.json().then((result) => {
-          console.log(result);
+        r.json().then((data) => {
+          if (data.error) {
+            console.log(data.error);
+            return;
+          }
+          console.log(data.poem);
+          setPoem(data.poem);
+          fetch('/api/image', {
+            body: JSON.stringify({ poem: data.poem }),
+            method: 'post',
+            headers: {
+              'content-type': 'application/json',
+            },
+          }).then((r) =>
+            r.json().then((data) => {
+              console.log(data.image);
+              setImage(data.image);
+            }),
+          );
         }),
 
       //setResult(await result.json());
@@ -41,6 +59,13 @@ const Test: NextPage = () => {
           }}
         />
       </form>
+      {poem}
+      <img
+        onClick={() => {
+          speechSynthesis.speak(new SpeechSynthesisUtterance(poem));
+        }}
+        src={image}
+      ></img>
     </div>
   );
 };
