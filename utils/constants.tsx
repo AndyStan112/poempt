@@ -19,14 +19,14 @@ export const stanzaStyles = [
 ];
 
 export const stanzaCounts = [
-  "Monostitch (1)",
-  "Couplet (2)",
-  "Tercet (3)",
-  "Quatrain (4)",
-  "Quintain (5)",
-  "Sestet (6)",
-  "Septet (7)",
-  "Octave (8)",
+  "Monostitch",
+  "Couplet",
+  "Tercet",
+  "Quatrain",
+  "Quintain",
+  "Sestet",
+  "Septet",
+  "Octave",
 ];
 
 export const stanzaRhymes = [
@@ -37,4 +37,12 @@ export const stanzaRhymes = [
   "Triplet rhyme",
 ];
 
-export const themes = ["Uplifting", "Surprising", "Moody"];
+export const moods = [
+  "Depressing",
+  "Melancolic",
+  "Sad",
+  "Neutral",
+  "Happy",
+  "Joyful",
+  "Exhilarating",
+];

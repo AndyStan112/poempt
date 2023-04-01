@@ -5,6 +5,7 @@ import {
   stanzaStyles,
   stanzaCounts,
   stanzaRhymes,
+  moods,
 } from "../utils/constants";
 import { useSetAtom } from "jotai";
 import { requestErrorAtom, poemTextAtom, poemImageAtom } from "../utils/atoms";
@@ -12,8 +13,10 @@ import { requestErrorAtom, poemTextAtom, poemImageAtom } from "../utils/atoms";
 function InputCard() {
   const [selectedWritingStyle, setSelectedWritingStyle] = useState("Modernist");
   const [selectedStanzaStyle, setSelectedStanzaStyle] = useState("Free verse");
-  const [selectedStanzaCount, setSelectedStanzaCount] = useState(4);
+  const [selectedStanzaCount, setSelectedStanzaCount] =
+    useState("Quatrain (4)");
   const [selectedRhyme, setSelectedRhyme] = useState("Free verse");
+  const [selectedMood, setSelectedMood] = useState(5);
 
   const [text, setText] = useState<string>(" ");
 
@@ -150,19 +153,23 @@ function InputCard() {
             <h1 className="text-center text-xl mt-4 mb-2">
               Stanza structure and rhyme
             </h1>
-            <div className="flex gap-2 mb-2">
+            <div className="flex gap-2 mb-2 flex-col md:flex-row">
               <Select
                 id="stanzaCount"
                 name="stanzaCount"
                 className="w-full"
                 value={selectedStanzaCount}
                 onChange={(e) => {
-                  setSelectedStanzaCount(Number(e.target.value));
+                  setSelectedStanzaCount(e.target.value);
                 }}
               >
                 {stanzaCounts.map((name, index) => (
-                  <option key={index} value={index + 1}>
-                    {name}
+                  <option
+                    key={name}
+                    value={name}
+                    selected={selectedRhyme == name}
+                  >
+                    {name} ({index + 1})
                   </option>
                 ))}
               </Select>
@@ -172,18 +179,39 @@ function InputCard() {
                 className="w-full"
                 value={selectedRhyme}
                 onChange={(e) => {
-                  setSelectedStanzaCount(Number(e.target.value));
+                  setSelectedStanzaCount(e.target.value);
                 }}
               >
                 {stanzaRhymes.map((name) => (
-                  <option key={name} value={name}>
+                  <option
+                    key={name}
+                    value={name}
+                    selected={selectedRhyme == name}
+                  >
                     {name}
                   </option>
                 ))}
               </Select>
             </div>
 
-            <h1 className="text-center text-xl mb-2">Choose a mood</h1>
+            <h1 className="text-center text-xl mt-4 mb-2">Choose a mood</h1>
+            <label
+              htmlFor="minmax-range"
+              className="text-center block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              {moods[selectedMood]}
+            </label>
+            <input
+              id="minmax-range"
+              type="range"
+              min="0"
+              max="6"
+              value={selectedMood}
+              onChange={(e) => {
+                setSelectedMood(Number(e.target.value));
+              }}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mb-2"
+            />
 
             <Button
               type="submit"
