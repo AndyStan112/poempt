@@ -8,6 +8,9 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    minHeight: {
+      fullpage: "calc(100vh - 210px)",
+    },
   },
   darkMode: "class",
   plugins: [],
