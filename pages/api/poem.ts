@@ -45,15 +45,29 @@ export default async function handler(
     const poemCompletion = await openai.createCompletion({
       model: 'text-davinci-003',
       prompt: prompt,
-      temperature: 0.7,
+      temperature: 0.5,
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0,
       max_tokens: 128,
     });
-    const poem = poemCompletion.data.choices[0].text;
-    console.log(poem);
-    res.status(200).send({ poem: poem });
+    const response = poemCompletion.data.choices[0].text || '';
+    const title = response
+      .trim()
+      .split('\n')[0]
+      .replace('title', '')
+      .replace('Title', '')
+      .replace(':', '')
+      .replace('"', '');
+    const verseArray = response
+      .trim()
+      .split('\n')
+      .filter((e) => !e.toLowerCase().startsWith('verse'));
+    verseArray.splice(0, 1);
+    const poem = verseArray.join('\n');
+
+    console.log(title, poem);
+    res.status(200).send({ title: title, poem: poem });
   } catch (error) {
     console.log(error);
     res.status(500).send({ result: 'error' });
