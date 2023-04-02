@@ -32,10 +32,16 @@ const Generate: NextPage = () => {
   const loadingPoem = useAtomValue(loadingPoemAtom);
   const loadingImage = useAtomValue(loadingImageAtom);
 
-  const ttsVoices = speechSynthesis.getVoices();
   const [selectedVoice, setSelectedVoice] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
+
+  let ttsVoices: any[] = [];
+
+  function getTtsVoices() {
+    ttsVoices = speechSynthesis.getVoices();
+    return true;
+  }
 
   function speak() {
     if (isSpeaking) {
@@ -159,7 +165,7 @@ const Generate: NextPage = () => {
                 disabled={isSpeaking}
                 onChange={(e) => setSelectedVoice(Number(e.target.value))}
               >
-                {ttsVoices
+                {getTtsVoices() && ttsVoices.length
                   ? ttsVoices.map((voice, index) => (
                       <option key={index} value={index}>
                         {voice.name}
