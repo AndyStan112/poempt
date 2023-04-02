@@ -107,7 +107,7 @@ function InputCard() {
             setPromptText(e.target.value);
           }}
         />
-        <Accordion flush={true} collapseAll={true}>
+        <Accordion flush={true}>
           <Accordion.Panel>
             <Accordion.Title>Writing style</Accordion.Title>
             <Accordion.Content>
