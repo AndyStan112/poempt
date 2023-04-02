@@ -61,7 +61,7 @@ function MainNavbar() {
           <Link href="/" className="!text-white">
             Home
           </Link>
-          <Link href="/library" className="!text-white">
+          <Link href="/publicLibrary" className="!text-white">
             Public library
           </Link>
           <Link href="/mylibrary" className="!text-white">
