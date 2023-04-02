@@ -70,9 +70,6 @@ function MainNavbar() {
           <Link href="/bookmarks" className="!text-white">
             Bookmarks
           </Link>
-          <Link href="/about" className="!text-white">
-            About
-          </Link>
         </Navbar.Collapse>
       </Navbar>
       <LoginModal />
