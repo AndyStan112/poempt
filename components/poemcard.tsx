@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/alt-text */
 
-import { Button, Select } from "flowbite-react";
-import { Icon } from "@iconify/react";
-import { useState } from "react";
+import { Button, Select } from 'flowbite-react';
+import { Icon } from '@iconify/react';
+import { useState } from 'react';
 
 /* eslint-disable @next/next/no-img-element */
 function PoemCard(props: {
@@ -26,7 +26,7 @@ function PoemCard(props: {
         <div className="flex flex-1 flex-col justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
           <div className="flex-1">
             <img
-              src={props.image}
+              src={props.image ? props.image : ''}
               alt={props.title}
               className="rounded-md shadow-md"
             />
@@ -39,7 +39,7 @@ function PoemCard(props: {
               </div>
               <img
                 className="w-10 h-10 rounded-full border-gray-100 border-2"
-                src={props.userImage ? props.userImage : "generic_user.png"}
+                src={props.userImage ? props.userImage : 'generic_user.png'}
               />
             </p>
           )}

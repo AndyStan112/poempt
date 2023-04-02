@@ -38,23 +38,33 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?    @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  poems         Poem[]
+  createdPoems  Poem[]
+  Bookmark      Bookmark[]
 }
 
 model Poem {
-  id     String @id @default(cuid())
-  title  String
-  text   String
-  image  Bytes
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String     @id @default(cuid())
+  title     String
+  poem      String
+  image     String
+  creatorId String
+  creator   User       @relation(fields: [creatorId], references: [id])
+  Bookmark  Bookmark[]
+}
+
+model Bookmark {
+  id      String @id @default(cuid())
+  poem    Poem   @relation(fields: [poemId], references: [id])
+  saver   User   @relation(fields: [saverId], references: [id])
+  poemId  String
+  saverId String
 }
 
 model VerificationToken {
