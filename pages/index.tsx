@@ -36,7 +36,7 @@ const Home: NextPage = () => {
               </p>
               <div className="flex flex-row justify-center md:justify-start">
                 <Link href="/generate">
-                  <Button color="green" size="lg">
+                  <Button color="gray" size="lg">
                     Generate a poem now
                   </Button>
                 </Link>
