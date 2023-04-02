@@ -1,177 +1,76 @@
-import type { NextPage } from 'next';
-import { Alert, Button, Select } from 'flowbite-react';
-import MainNavbar from '../components/navbar';
-import MainPage from '../components/page';
-import InputCard from '../components/inputcard';
-import PoemCard from '../components/poemcard';
-import Waves from '../components/waves';
-import { useAtomValue, useAtom } from 'jotai';
-import {
-  loadingPoemAtom,
-  loadingImageAtom,
-  poemShowAtom,
-  poemImageAtom,
-  poemTextAtom,
-  requestErrorAtom,
-} from '../lib/atoms';
-import HeroBanner from '../components/herobanner';
-import MainFooter from '../components/footer';
-import { useState } from 'react';
+/* eslint-disable jsx-a11y/alt-text */
+
+import { Button, Select } from 'flowbite-react';
 import { Icon } from '@iconify/react';
-
-const Generate: NextPage = () => {
-  const requestError = useAtomValue(requestErrorAtom);
-  const [poemShow, setPoemShow] = useAtom(poemShowAtom);
-  const poemText = useAtomValue(poemTextAtom);
-  const poemImage = useAtomValue(poemImageAtom);
-  const loadingPoem = useAtomValue(loadingPoemAtom);
-  const loadingImage = useAtomValue(loadingImageAtom);
-
-  const ttsVoices = speechSynthesis.getVoices();
-  const [selectedVoice, setSelectedVoice] = useState(0);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-
-  function speak() {
-    if (isSpeaking) {
-      speechSynthesis.cancel();
-    } else {
-      const utt = new SpeechSynthesisUtterance(poemText);
-      utt.voice = ttsVoices[selectedVoice];
-      speechSynthesis.speak(utt);
-    }
-    setIsSpeaking(speechSynthesis.speaking);
-  }
-
-  function bookmark() {}
-
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+/* eslint-disable @next/next/no-img-element */
+function LibraryCard(props: {
+  title: string;
+  text: string;
+  public: boolean;
+  userName?: string;
+  userImage?: string;
+}) {
+  const [poemImage, setPoemImage] = useState('');
+  const { data: session, status } = useSession();
+  useEffect(() => {
+    fetch('/api/image', {
+      body: JSON.stringify({ poem: props.text }),
+      method: 'post',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then((r) =>
+        r.json().then((data) => {
+          // console.log(data.image);
+          setPoemImage(data.image);
+        }),
+      )
+      .catch((e) => console.log(e));
+  }, []);
+  console.log(props.text);
   return (
     <>
-      <Waves hue={280} height="500px" animate={loadingPoem} />
-      <MainNavbar />
-      <MainPage>
-        {!poemShow && (
-          <>
-            <HeroBanner>
-              <h1 className="text-white text-center text-4xl mb-4 drop-shadow-lg">
-                AI Based Poem Generator
-              </h1>
-              <p className="text-white text-center drop-shadow-lg">
-                Discover a new way to see the world: <br />
-                Let our AI poem generator bring your words to life with stunning
-                visuals.
-              </p>
-            </HeroBanner>
-            <InputCard />
-          </>
-        )}
-        {requestError && (
-          <Alert color="failure" className="mb-4 mx-auto shadow-md">
-            <span>
-              <span className="font-medium">Info alert!</span> Change a few
-              things up and try submitting again.
-            </span>
-          </Alert>
-        )}
-        {poemShow &&
-          (loadingPoem ? (
-            loadingImage ? (
-              <HeroBanner>
-                <h1 className="text-white text-center text-4xl mb-4 drop-shadow-lg">
-                  Almost there, we&apos;re making the finishing touches...
-                </h1>
-                <p className="text-white text-center drop-shadow-lg">
-                  See your poetry come to life: <br /> Watch as our AI artist
-                  paints a picture worth a thousand words.
-                </p>
-              </HeroBanner>
-            ) : (
-              <HeroBanner>
-                <h1 className="text-white text-center text-4xl mb-4 drop-shadow-lg">
-                  Hang on, we&apos;re generating a poem...
-                </h1>
-                <p className="text-white text-center drop-shadow-lg">
-                  Unleashing the power of AI to create a masterpiece for you.
-                  <br />
-                  Sit tight and watch the magic unfold.
-                </p>
-              </HeroBanner>
-            )
-          ) : (
-            <HeroBanner>
-              <h1 className="text-white text-center text-4xl mb-4 drop-shadow-lg">
-                Your generated poem is here!
-              </h1>
-              <p className="text-white text-center drop-shadow-lg">
-                Words that stir the soul, crafted by AI: <br />
-                Enjoy the fruits of technology&apos;s poetic algorithms.
-              </p>
-            </HeroBanner>
-          ))}
-        {!requestError && poemShow && poemText && (
-          <div
-            className={
-              !poemShow
-                ? 'transition duration-700 scale-y-0 opacity-0 -translate-y-1/2 h-0'
-                : 'transition duration-700'
-            }
-          >
-            <PoemCard
-              title="My poem"
-              image={poemImage}
-              text={poemText}
-              userName="Anonymous"
+      <div className="flex h-full p-4 mb-4 flex-col gap-8 md:flex-row rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-fit">
+        <div className="flex-2 text-center md:text-left">
+          <h5 className="text-2xl font-bold tracking-tight text-gray-900 mb-3">
+            {props.title}
+          </h5>
+          <p className="font-normal text-gray-700 whitespace-pre-wrap">
+            {props.text}
+          </p>
+        </div>
+        <div className="flex flex-1 flex-col gap-2 justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
+          <div className="flex-1">
+            <img
+              src={poemImage ? poemImage : 'loader.gif'}
+              alt={props.title}
+              className="rounded-md shadow-md"
             />
-            <div className="flex h-full p-2 mb-4 flex-row gap-2 rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-fit">
-              <Select
-                value={selectedVoice}
-                disabled={isSpeaking}
-                onChange={(e) => setSelectedVoice(Number(e.target.value))}
-              >
-                {ttsVoices
-                  ? ttsVoices.map((voice, index) => (
-                      <option key={index} value={index}>
-                        {voice.name}
-                      </option>
-                    ))
-                  : ''}
-              </Select>
-              <Button size="sm" color="light" onClick={speak}>
-                {isSpeaking ? (
-                  <Icon icon="fluent:stop-20-regular" fontSize="22px" />
-                ) : (
-                  <Icon
-                    icon="fluent:immersive-reader-20-regular"
-                    fontSize="22px"
-                  />
-                )}
-              </Button>
-              <Button
-                size="sm"
-                color="success"
-                onClick={() => setPoemShow(false)}
-              >
-                <Icon
-                  icon="fluent:code-text-edit-20-regular"
-                  fontSize="22px"
-                  className="mr-1"
-                />
-                Generate another poem
-              </Button>
-              <Button size="sm" color="light" onClick={bookmark}>
-                <Icon
-                  icon="fluent:bookmark-add-20-regular"
-                  fontSize="22px"
-                  className="mr-1"
-                />
-                Bookmark
-              </Button>
-            </div>
           </div>
-        )}
-      </MainPage>
-      <MainFooter />
+          <div>
+            {props.userName && (
+              <p className="flex flex-row gap-2">
+                <div className="text-right">
+                  <div className="text-sm text-gray-300">Generated by</div>
+                  <div className="text-md text-gray-400">{props.userName}</div>
+                </div>
+                <img
+                  className="w-10 h-10 rounded-full border-gray-100 border-2"
+                  src={props.userImage ? props.userImage : 'generic_user.png'}
+                />
+              </p>
+            )}
+            <p>
+              Made with <span className="text-lg text-gray-400">PoemPT</span>
+            </p>
+          </div>
+        </div>
+      </div>
     </>
   );
-};
+}
 
-export default Generate;
+export default LibraryCard;

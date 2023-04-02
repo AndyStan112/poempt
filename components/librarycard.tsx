@@ -45,7 +45,7 @@ function LibraryCard(props: {
         <div className="flex flex-1 flex-col gap-2 justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
           <div className="flex-1">
             <img
-              src={poemImage ? poemImage : ''}
+              src={poemImage ? poemImage : 'loader.gif'}
               alt={props.title}
               className="rounded-md shadow-md"
             />
