@@ -23,6 +23,7 @@ import {
   loadingImageAtom,
   poemShowAtom,
   poemTitleAtom,
+  poemIdAtom,
 } from "../lib/atoms";
 import { useSession } from "next-auth/react";
 
@@ -38,6 +39,7 @@ function InputCard() {
 
   const [poemShow, setPoemShow] = useAtom(poemShowAtom);
   const setRequestError = useSetAtom(requestErrorAtom);
+  const setPoemId = useSetAtom(poemIdAtom);
   const setPoemTitle = useSetAtom(poemTitleAtom);
   const setPoemText = useSetAtom(poemTextAtom);
   const setPoemImage = useSetAtom(poemImageAtom);
@@ -83,7 +85,28 @@ function InputCard() {
         setLoadingImage(true);
 
         if (status === "authenticated") {
-          fetch("/api/poems/post/" + session.user?.id, {});
+          console.log(session.id);
+          fetch("/api/poems/post/" + session.id, {
+            body: JSON.stringify({
+              title: data.title,
+              poem: data.poem,
+              userId: session.id,
+            }),
+            method: "post",
+            headers: {
+              "content-type": "application/json",
+            },
+          }).then((r) =>
+            r.json().then((data) => {
+              if (data.error) {
+                // console.log(data.error);
+                setRequestError(true);
+                return;
+              }
+              console.log(data.poemId);
+              setPoemId(data.poemId);
+            })
+          );
         }
 
         fetch("/api/image", {
