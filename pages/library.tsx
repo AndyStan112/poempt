@@ -1,11 +1,12 @@
-import type { NextPage } from 'next';
-import { Alert, Button, Select } from 'flowbite-react';
-import MainNavbar from '../components/navbar';
-import MainPage from '../components/page';
-import InputCard from '../components/inputcard';
-import PoemCard from '../components/poemcard';
-import Waves from '../components/waves';
-import { useAtomValue, useAtom } from 'jotai';
+/* eslint-disable react/jsx-key */
+import type { NextPage } from "next";
+import { Alert, Button, Select } from "flowbite-react";
+import MainNavbar from "../components/navbar";
+import MainPage from "../components/page";
+import InputCard from "../components/inputcard";
+import PoemCard from "../components/poemcard";
+import Waves from "../components/waves";
+import { useAtomValue, useAtom } from "jotai";
 import {
   loadingPoemAtom,
   loadingImageAtom,
@@ -13,13 +14,13 @@ import {
   poemImageAtom,
   poemTextAtom,
   requestErrorAtom,
-} from '../lib/atoms';
-import HeroBanner from '../components/herobanner';
-import MainFooter from '../components/footer';
-import { useState } from 'react';
-import { Icon } from '@iconify/react';
-import { useEffect } from 'react';
-import LibraryCard from '../components/librarycard';
+} from "../lib/atoms";
+import HeroBanner from "../components/herobanner";
+import MainFooter from "../components/footer";
+import { useState } from "react";
+import { Icon } from "@iconify/react";
+import { useEffect } from "react";
+import LibraryCard from "../components/librarycard";
 
 const Library: NextPage = () => {
   const requestError = useAtomValue(requestErrorAtom);
@@ -27,18 +28,18 @@ const Library: NextPage = () => {
   const loadingPoem = useAtomValue(loadingPoemAtom);
   const loadingImage = useAtomValue(loadingImageAtom);
   useEffect(() => {
-    fetch('/api/poems/get/all', {
+    fetch("/api/poems/get/all", {
       body: JSON.stringify({}),
-      method: 'post',
+      method: "post",
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
       },
     })
       .then((r) =>
         r.json().then((data) => {
           console.log(data.poems);
           setPoems(data.poems);
-        }),
+        })
       )
       .catch((e) => console.log(e));
   }, []);
