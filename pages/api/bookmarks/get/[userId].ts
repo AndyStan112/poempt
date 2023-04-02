@@ -13,6 +13,7 @@ export default async function handler(
       where: { saverId: userId },
       include: { poem: true },
     });
+    console.log;
     res.status(200).send({ bookmarks: bookmarks });
   } catch (error) {
     console.log(error);
