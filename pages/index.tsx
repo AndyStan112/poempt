@@ -7,8 +7,12 @@ import Waves from "../components/waves";
 import HeroBanner from "../components/herobanner";
 import MainFooter from "../components/footer";
 import Link from "next/link";
+import { useSetAtom } from "jotai";
+import { poemShowAtom } from "../lib/atoms";
 
 const Home: NextPage = () => {
+  const setPoemShow = useSetAtom(poemShowAtom);
+
   return (
     <>
       <Waves hue={280} height="700px" />
@@ -36,7 +40,11 @@ const Home: NextPage = () => {
               </p>
               <div className="flex flex-row justify-center md:justify-start">
                 <Link href="/generate">
-                  <Button color="gray" size="lg">
+                  <Button
+                    color="gray"
+                    size="lg"
+                    onClick={() => setPoemShow(false)}
+                  >
                     Generate a poem now
                   </Button>
                 </Link>
