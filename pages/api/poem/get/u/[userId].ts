@@ -8,10 +8,8 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
-    if (req.method != 'POST')
-      res.status(500).send({ message: 'Wrong request' });
     const userId = req.query.userId as string;
-    const poems = await prisma.poem.findMany({});
+    const poems = await prisma.poem.findMany({ where: { creatorId: userId } });
     res.status(200).send({ poems: poems });
   } catch (error) {
     console.log(error);
