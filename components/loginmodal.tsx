@@ -4,20 +4,25 @@ import {
   GithubLoginButton,
 } from "react-social-login-buttons";
 import { useForm } from "react-hook-form";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { Button, Modal } from "flowbite-react";
+import { signIn, useSession } from "next-auth/react";
+import { Button, Modal, TextInput } from "flowbite-react";
 import React from "react";
 import { useAtom } from "jotai";
 import { showLoginModalAtom } from "../lib/atoms";
 
 const redirectUrl = "http://localhost:3000/";
-const logIn = (provider, email = undefined) => {
+const logIn = (provider: string, email = undefined) => {
   email
     ? signIn(provider, { callbackUrl: redirectUrl }, email)
     : signIn(provider, { callbackUrl: redirectUrl });
 };
 
-const style = { width: "100%" };
+const style = {
+  width: "100%",
+  margin: "0",
+  borderRadius: "0.5rem",
+  boxShadow: "0 0 1px rgba(0,0,0,0.5)",
+};
 
 function LoginModal() {
   const { data: session, status } = useSession();
@@ -31,65 +36,58 @@ function LoginModal() {
   }
 
   return (
-    <Modal show={showLoginModal} onClose={onClose}>
+    <Modal show={showLoginModal} size="sm" onClose={onClose}>
       <Modal.Header>Sign in</Modal.Header>
-      <Modal.Body>
+      <Modal.Body className="flex flex-col gap-4 rounded">
         <form
           onSubmit={handleSubmit(({ email }) => {
             signIn("email", { email, callbackUrl: redirectUrl });
           })}
+          className="flex flex-col gap-2"
         >
-          <button
-            type="reset"
-            onClick={() => {
-              console.log(session);
-            }}
-            className=" p-1 absolute self-end w-8 bg-white rounded-full -translate-y-48 mr-2 hover:bg-slate-200 focus:bg-slate-300 focus:border"
-          >
-            Close
-          </button>
-          <h1>Sign in</h1>
-          <input
-            className="w-3/4 h-[8%] rounded-md pl-1.5 shadow-md"
+          <p className="text-center">using email address</p>
+          <TextInput
             type="email"
+            placeholder="E-mail address"
             {...register("email")}
-            placeholder="email"
           />
-          <input
-            className="w-1/4 h-[7%] rounded-xl bg-white shadow-md hover:bg-slate-200 focus:bg-slate-300 focus:border "
-            type="submit"
-            value="Log in"
-          />
+          <Button color="success" type="submit" size="sm">
+            Sign in
+          </Button>
         </form>
 
-        {/* @ts-ignore */}
-        <FacebookLoginButton
-          style={style}
-          onClick={() => {
-            logIn("facebook");
-          }}
-        >
-          <span>Sign in with Facebook</span>
-        </FacebookLoginButton>
+        <div className="flex flex-col gap-2">
+          <p className="text-center">or with these services</p>
+          {/* @ts-ignore */}
+          <FacebookLoginButton
+            style={style}
+            onClick={() => {
+              logIn("facebook");
+            }}
+          >
+            <span>Sign in with Facebook</span>
+          </FacebookLoginButton>
 
-        {/* @ts-ignore */}
-        <GoogleLoginButton
-          style={style}
-          onClick={() => {
-            logIn("google");
-          }}
-        >
-          <span>Sign in with Google</span>
-        </GoogleLoginButton>
-        {/* @ts-ignore */}
-        <GithubLoginButton
-          style={style}
-          onClick={() => {
-            logIn("github");
-          }}
-        >
-          <span>Sign in with Github</span>
-        </GithubLoginButton>
+          {/* @ts-ignore */}
+          <GoogleLoginButton
+            style={style}
+            onClick={() => {
+              logIn("google");
+            }}
+          >
+            <span>Sign in with Google</span>
+          </GoogleLoginButton>
+
+          {/* @ts-ignore */}
+          <GithubLoginButton
+            style={style}
+            onClick={() => {
+              logIn("github");
+            }}
+          >
+            <span>Sign in with Github</span>
+          </GithubLoginButton>
+        </div>
       </Modal.Body>
     </Modal>
   );
