@@ -13,15 +13,18 @@ import {
   poemImageAtom,
   poemTextAtom,
   requestErrorAtom,
+  poemTitleAtom,
 } from "../lib/atoms";
 import HeroBanner from "../components/herobanner";
 import MainFooter from "../components/footer";
 import { useState } from "react";
 import { Icon } from "@iconify/react";
+import { useSession } from "next-auth/react";
 
 const Generate: NextPage = () => {
   const requestError = useAtomValue(requestErrorAtom);
   const [poemShow, setPoemShow] = useAtom(poemShowAtom);
+  const poemTitle = useAtomValue(poemTitleAtom);
   const poemText = useAtomValue(poemTextAtom);
   const poemImage = useAtomValue(poemImageAtom);
   const loadingPoem = useAtomValue(loadingPoemAtom);
@@ -43,6 +46,8 @@ const Generate: NextPage = () => {
   }
 
   function bookmark() {}
+
+  const { data: session, status } = useSession();
 
   return (
     <>
@@ -107,7 +112,7 @@ const Generate: NextPage = () => {
               </p>
             </HeroBanner>
           ))}
-        {!requestError && poemShow && poemText && (
+        {!requestError && poemShow && (
           <div
             className={
               !poemShow
@@ -116,10 +121,19 @@ const Generate: NextPage = () => {
             }
           >
             <PoemCard
-              title="My poem"
+              title={poemTitle}
               image={poemImage}
               text={poemText}
-              userName="Anonymous"
+              userName={
+                status === "authenticated" && session.user?.name
+                  ? session.user?.name
+                  : "Anonymous"
+              }
+              userImage={
+                status === "authenticated" && session.user?.image
+                  ? session.user?.image
+                  : ""
+              }
             />
             <div className="flex h-full p-2 mb-4 flex-row gap-2 rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-fit">
               <Select
