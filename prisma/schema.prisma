@@ -53,7 +53,6 @@ model Poem {
   id        String     @id @default(cuid())
   title     String
   poem      String
-  image     String
   creatorId String
   creator   User       @relation(fields: [creatorId], references: [id])
   Bookmark  Bookmark[]
