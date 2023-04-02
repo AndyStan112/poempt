@@ -13,15 +13,20 @@ import {
   poemImageAtom,
   poemTextAtom,
   requestErrorAtom,
+  poemTitleAtom,
+  poemIdAtom,
 } from "../lib/atoms";
 import HeroBanner from "../components/herobanner";
 import MainFooter from "../components/footer";
 import { useState } from "react";
 import { Icon } from "@iconify/react";
+import { useSession } from "next-auth/react";
 
 const Generate: NextPage = () => {
   const requestError = useAtomValue(requestErrorAtom);
   const [poemShow, setPoemShow] = useAtom(poemShowAtom);
+  const poemId = useAtomValue(poemIdAtom);
+  const poemTitle = useAtomValue(poemTitleAtom);
   const poemText = useAtomValue(poemTextAtom);
   const poemImage = useAtomValue(poemImageAtom);
   const loadingPoem = useAtomValue(loadingPoemAtom);
@@ -30,6 +35,7 @@ const Generate: NextPage = () => {
   const ttsVoices = speechSynthesis.getVoices();
   const [selectedVoice, setSelectedVoice] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
 
   function speak() {
     if (isSpeaking) {
@@ -42,7 +48,24 @@ const Generate: NextPage = () => {
     setIsSpeaking(speechSynthesis.speaking);
   }
 
-  function bookmark() {}
+  const { data: session, status } = useSession();
+
+  function bookmark() {
+    if (status === "authenticated" && poemId) {
+      console.log("bookmark poemId: " + poemId);
+      console.log(session.id);
+      fetch("/api/bookmarks/post/" + session.id, {
+        body: JSON.stringify({
+          userId: session.id,
+          poemId: poemId,
+        }),
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+      }).then(() => setBookmarked(true));
+    }
+  }
 
   return (
     <>
@@ -107,7 +130,7 @@ const Generate: NextPage = () => {
               </p>
             </HeroBanner>
           ))}
-        {!requestError && poemShow && poemText && (
+        {!requestError && poemShow && (
           <div
             className={
               !poemShow
@@ -116,10 +139,19 @@ const Generate: NextPage = () => {
             }
           >
             <PoemCard
-              title="My poem"
+              title={poemTitle}
               image={poemImage}
               text={poemText}
-              userName="Anonymous"
+              userName={
+                status === "authenticated" && session.user?.name
+                  ? session.user?.name
+                  : "Anonymous"
+              }
+              userImage={
+                status === "authenticated" && session.user?.image
+                  ? session.user?.image
+                  : ""
+              }
             />
             <div className="flex h-full p-2 mb-4 flex-row gap-2 rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-fit">
               <Select
@@ -157,13 +189,18 @@ const Generate: NextPage = () => {
                 />
                 Generate another poem
               </Button>
-              <Button size="sm" color="light" onClick={bookmark}>
+              <Button
+                size="sm"
+                color="light"
+                onClick={bookmark}
+                disabled={bookmarked}
+              >
                 <Icon
                   icon="fluent:bookmark-add-20-regular"
                   fontSize="22px"
                   className="mr-1"
                 />
-                Bookmark
+                {bookmarked ? "Bookmarked" : "Bookmark"}
               </Button>
             </div>
           </div>

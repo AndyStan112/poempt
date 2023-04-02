@@ -64,6 +64,7 @@ model Bookmark {
   saver   User   @relation(fields: [saverId], references: [id])
   poemId  String
   saverId String
+  @@unique ([poemId, saverId])
 }
 
 model VerificationToken {

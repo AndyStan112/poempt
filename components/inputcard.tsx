@@ -1,4 +1,11 @@
-import { Tabs, TextInput, Button, Select, Accordion } from "flowbite-react";
+import {
+  Tabs,
+  TextInput,
+  Button,
+  Select,
+  Accordion,
+  Textarea,
+} from "flowbite-react";
 import { useState } from "react";
 import {
   writingStyle,
@@ -15,7 +22,10 @@ import {
   loadingPoemAtom,
   loadingImageAtom,
   poemShowAtom,
+  poemTitleAtom,
+  poemIdAtom,
 } from "../lib/atoms";
+import { useSession } from "next-auth/react";
 
 function InputCard() {
   const [selectedWritingStyle, setSelectedWritingStyle] = useState("Modernist");
@@ -24,16 +34,21 @@ function InputCard() {
   const [selectedRhyme, setSelectedRhyme] = useState(0);
   const [selectedMood, setSelectedMood] = useState(3);
 
-  const [promptText, setPromptText] = useState<string>(" ");
+  const [promptText, setPromptText] = useState<string>("");
+  const [poemPromptText, setPoemPromptText] = useState<string>("");
 
   const [poemShow, setPoemShow] = useAtom(poemShowAtom);
   const setRequestError = useSetAtom(requestErrorAtom);
+  const setPoemId = useSetAtom(poemIdAtom);
+  const setPoemTitle = useSetAtom(poemTitleAtom);
   const setPoemText = useSetAtom(poemTextAtom);
   const setPoemImage = useSetAtom(poemImageAtom);
   const setLoadingPoem = useSetAtom(loadingPoemAtom);
   const setLoadingImage = useSetAtom(loadingImageAtom);
 
-  const handleSubmit = async (
+  const { data: session, status } = useSession();
+
+  const handleSubmit1 = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
@@ -41,7 +56,8 @@ function InputCard() {
     setPoemShow(true);
     setLoadingPoem(true);
     setPoemImage("loader.gif");
-    setPoemText("Generating...");
+    setPoemTitle("");
+    setPoemText("");
 
     fetch("/api/poem", {
       body: JSON.stringify({
@@ -49,7 +65,7 @@ function InputCard() {
         writingStyle: selectedWritingStyle,
         stanzaStyle: stanzaStyles[selectedStanzaStyle],
         rhyme: stanzaRhymes[selectedRhyme],
-        verses: selectedVerseCount.toString(),
+        verses: (selectedVerseCount + 1).toString(),
         mood: moods[selectedMood],
       }),
       method: "post",
@@ -64,6 +80,81 @@ function InputCard() {
           return;
         }
         // console.log(data.poem);
+        setPoemTitle(data.title);
+        setPoemText(data.poem.trim());
+        setLoadingImage(true);
+
+        if (status === "authenticated") {
+          console.log(session.id);
+          fetch("/api/poems/post/" + session.id, {
+            body: JSON.stringify({
+              title: data.title,
+              poem: data.poem,
+              userId: session.id,
+            }),
+            method: "post",
+            headers: {
+              "content-type": "application/json",
+            },
+          }).then((r) =>
+            r.json().then((data) => {
+              if (data.error) {
+                // console.log(data.error);
+                setRequestError(true);
+                return;
+              }
+              console.log(data.poemId);
+              setPoemId(data.poemId);
+            })
+          );
+        }
+
+        fetch("/api/image", {
+          body: JSON.stringify({ poem: data.poem }),
+          method: "post",
+          headers: {
+            "content-type": "application/json",
+          },
+        }).then((r) =>
+          r.json().then((data) => {
+            // console.log(data.image);
+            setPoemImage(data.image);
+            setLoadingImage(false);
+            setLoadingPoem(false);
+          })
+        );
+      })
+    );
+  };
+
+  const handleSubmit2 = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    e.preventDefault();
+
+    setPoemShow(true);
+    setLoadingPoem(true);
+    setPoemImage("loader.gif");
+    setPoemTitle("");
+    setPoemText("");
+
+    fetch("/api/continuation", {
+      body: JSON.stringify({
+        poem: poemPromptText,
+      }),
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((r) =>
+      r.json().then((data) => {
+        if (data.error) {
+          // console.log(data.error);
+          setRequestError(true);
+          return;
+        }
+        // console.log(data.poem);
+        setPoemTitle(data.title);
         setPoemText(data.poem.trim());
         setLoadingImage(true);
 
@@ -94,132 +185,159 @@ function InputCard() {
         poemShow ? style1 + " scale-y-0 opacity-0 -translate-y-1/2 h-0" : style1
       }
     >
-      <form onSubmit={handleSubmit}>
-        <h1 className="text-center text-2xl mb-2">Write me a poem about:</h1>
-        <TextInput
-          id="plainPrompt"
-          type="text"
-          placeholder="e.g: a sunny day"
-          className="flex-1 mb-2"
-          required={true}
-          value={promptText}
-          onChange={(e) => {
-            setPromptText(e.target.value);
-          }}
-        />
-        <Accordion flush={true}>
-          <Accordion.Panel>
-            <Accordion.Title>Writing style</Accordion.Title>
-            <Accordion.Content>
-              <div className="grid grid-cols-3 gap-2 mb-4">
-                {writingStyle.map((name) => (
-                  <Button
-                    color={selectedWritingStyle == name ? "success" : "light"}
-                    className="w-full"
-                    key={name}
-                    onClick={() => {
-                      setSelectedWritingStyle(name);
-                    }}
-                  >
-                    {name}
-                  </Button>
-                ))}
-              </div>
-              <div className="flex flex-col gap-1">
-                <label>Poem style</label>
-                <Select
-                  id="stanzaStyle"
-                  name="stanzaStyle"
-                  className="w-full mb-2"
-                  value={selectedStanzaStyle}
-                  onChange={(e) => {
-                    setSelectedStanzaStyle(Number(e.target.value));
-                  }}
-                >
-                  {stanzaStyles.map((name, index) => (
-                    <option key={index} value={index}>
-                      {name}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-            </Accordion.Content>
-          </Accordion.Panel>
-
-          <Accordion.Panel>
-            <Accordion.Title>Structure and rhyme</Accordion.Title>
-            <Accordion.Content>
-              <div className="flex gap-4 mb-2 flex-col md:flex-row">
-                <div className="flex-1 flex flex-col gap-1">
-                  <label>Verse count</label>
-                  <Select
-                    id="stanzaCount"
-                    name="stanzaCount"
-                    className="w-full"
-                    value={selectedVerseCount}
-                    onChange={(e) => {
-                      setSelectedVerseCount(Number(e.target.value));
-                    }}
-                  >
-                    {stanzaCounts.map((name, index) => (
-                      <option key={index} value={index}>
-                        {name} ({index + 1})
-                      </option>
-                    ))}
-                  </Select>
-                </div>
-                <div className="flex-1 flex flex-col gap-1">
-                  <label>Rhyme type</label>
-                  <Select
-                    id="rhyme"
-                    name="rhyme"
-                    className="w-full"
-                    value={selectedRhyme}
-                    onChange={(e) => {
-                      setSelectedRhyme(Number(e.target.value));
-                    }}
-                  >
-                    {stanzaRhymes.map((name, index) => (
-                      <option key={index} value={index}>
+      <h1 className="text-center text-2xl mb-2">Write me a poem based on:</h1>
+      <Tabs.Group className="justify-center">
+        <Tabs.Item title="A short description">
+          <form onSubmit={handleSubmit1}>
+            <TextInput
+              id="plainPrompt"
+              type="text"
+              placeholder="e.g: a sunny day"
+              className="flex-1 mb-2"
+              required={true}
+              value={promptText}
+              onChange={(e) => {
+                setPromptText(e.target.value);
+              }}
+            />
+            <Accordion flush={true}>
+              <Accordion.Panel>
+                <Accordion.Title>Writing style</Accordion.Title>
+                <Accordion.Content>
+                  <div className="grid grid-cols-3 gap-2 mb-4">
+                    {writingStyle.map((name) => (
+                      <Button
+                        color={
+                          selectedWritingStyle == name ? "success" : "light"
+                        }
+                        className="w-full"
+                        key={name}
+                        onClick={() => {
+                          setSelectedWritingStyle(name);
+                        }}
+                      >
                         {name}
-                      </option>
+                      </Button>
                     ))}
-                  </Select>
-                </div>
-              </div>
-            </Accordion.Content>
-          </Accordion.Panel>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label>Poem style</label>
+                    <Select
+                      id="stanzaStyle"
+                      name="stanzaStyle"
+                      className="w-full mb-2"
+                      value={selectedStanzaStyle}
+                      onChange={(e) => {
+                        setSelectedStanzaStyle(Number(e.target.value));
+                      }}
+                    >
+                      {stanzaStyles.map((name, index) => (
+                        <option key={index} value={index}>
+                          {name}
+                        </option>
+                      ))}
+                    </Select>
+                  </div>
+                </Accordion.Content>
+              </Accordion.Panel>
 
-          <Accordion.Panel>
-            <Accordion.Title>Mood</Accordion.Title>
-            <Accordion.Content>
-              <label
-                htmlFor="minmax-range"
-                className="text-center block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                {moods[selectedMood]}
-              </label>
-              <input
-                id="minmax-range"
-                type="range"
-                min="0"
-                max="6"
-                value={selectedMood}
-                onChange={(e) => {
-                  setSelectedMood(Number(e.target.value));
-                }}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mb-2"
-              />
-            </Accordion.Content>
-          </Accordion.Panel>
-        </Accordion>
-        <Button
-          type="submit"
-          className="mt-4 bg-green-500 hover:bg-green-600 text-black w-full"
-        >
-          Make me a poem
-        </Button>
-      </form>
+              <Accordion.Panel>
+                <Accordion.Title>Structure and rhyme</Accordion.Title>
+                <Accordion.Content>
+                  <div className="flex gap-4 mb-2 flex-col md:flex-row">
+                    <div className="flex-1 flex flex-col gap-1">
+                      <label>Verse count</label>
+                      <Select
+                        id="stanzaCount"
+                        name="stanzaCount"
+                        className="w-full"
+                        value={selectedVerseCount}
+                        onChange={(e) => {
+                          setSelectedVerseCount(Number(e.target.value));
+                        }}
+                      >
+                        {stanzaCounts.map((name, index) => (
+                          <option key={index} value={index}>
+                            {name} ({index + 1})
+                          </option>
+                        ))}
+                      </Select>
+                    </div>
+                    <div className="flex-1 flex flex-col gap-1">
+                      <label>Rhyme type</label>
+                      <Select
+                        id="rhyme"
+                        name="rhyme"
+                        className="w-full"
+                        value={selectedRhyme}
+                        onChange={(e) => {
+                          setSelectedRhyme(Number(e.target.value));
+                        }}
+                      >
+                        {stanzaRhymes.map((name, index) => (
+                          <option key={index} value={index}>
+                            {name}
+                          </option>
+                        ))}
+                      </Select>
+                    </div>
+                  </div>
+                </Accordion.Content>
+              </Accordion.Panel>
+
+              <Accordion.Panel>
+                <Accordion.Title>Mood</Accordion.Title>
+                <Accordion.Content>
+                  <label
+                    htmlFor="minmax-range"
+                    className="text-center block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    {moods[selectedMood]}
+                  </label>
+                  <input
+                    id="minmax-range"
+                    type="range"
+                    min="0"
+                    max="6"
+                    value={selectedMood}
+                    onChange={(e) => {
+                      setSelectedMood(Number(e.target.value));
+                    }}
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mb-2"
+                  />
+                </Accordion.Content>
+              </Accordion.Panel>
+            </Accordion>
+            <Button
+              type="submit"
+              className="mt-4 bg-green-500 hover:bg-green-600 text-black w-full"
+            >
+              Write me a poem
+            </Button>
+          </form>
+        </Tabs.Item>
+        <Tabs.Item title="Another poem">
+          <form onSubmit={handleSubmit2}>
+            <Textarea
+              id="plainPrompt"
+              rows={8}
+              placeholder="e.g: A brand new day..."
+              className="flex-1 mb-2 p-2 text-sm"
+              required={true}
+              value={poemPromptText}
+              onChange={(e) => {
+                setPoemPromptText(e.target.value);
+              }}
+            />
+            <Button
+              type="submit"
+              className="mt-4 bg-green-500 hover:bg-green-600 text-black w-full"
+            >
+              Write me a poem
+            </Button>
+          </form>
+        </Tabs.Item>
+      </Tabs.Group>
     </div>
   );
 }
