@@ -58,13 +58,14 @@ const PublicLibrary: NextPage = () => {
           </p>
         </HeroBanner>
         <div>
-          {poems.map((poem) => {
+          {poems.map((poem, i) => {
             console.log(poem);
             return (
               <LibraryCard
                 title={poem.title}
                 text={poem.poem}
                 public={true}
+                key={i}
               ></LibraryCard>
             );
           })}
