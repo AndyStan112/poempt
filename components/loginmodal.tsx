@@ -2,15 +2,15 @@ import {
   FacebookLoginButton,
   GoogleLoginButton,
   GithubLoginButton,
-} from "react-social-login-buttons";
-import { useForm } from "react-hook-form";
-import { signIn, useSession } from "next-auth/react";
-import { Button, Modal, TextInput } from "flowbite-react";
-import React from "react";
-import { useAtom } from "jotai";
-import { showLoginModalAtom } from "../lib/atoms";
+} from 'react-social-login-buttons';
+import { useForm } from 'react-hook-form';
+import { signIn, useSession } from 'next-auth/react';
+import { Button, Modal, TextInput } from 'flowbite-react';
+import React from 'react';
+import { useAtom } from 'jotai';
+import { showLoginModalAtom } from '../lib/atoms';
 
-const redirectUrl = "http://localhost:3000/";
+const redirectUrl = process.env.NEXTAUTH_URL;
 const logIn = (provider: string, email = undefined) => {
   email
     ? signIn(provider, { callbackUrl: redirectUrl }, email)
@@ -18,10 +18,10 @@ const logIn = (provider: string, email = undefined) => {
 };
 
 const style = {
-  width: "100%",
-  margin: "0",
-  borderRadius: "0.5rem",
-  boxShadow: "0 0 1px rgba(0,0,0,0.5)",
+  width: '100%',
+  margin: '0',
+  borderRadius: '0.5rem',
+  boxShadow: '0 0 1px rgba(0,0,0,0.5)',
 };
 
 function LoginModal() {
@@ -41,7 +41,7 @@ function LoginModal() {
       <Modal.Body className="flex flex-col gap-4 rounded">
         <form
           onSubmit={handleSubmit(({ email }) => {
-            signIn("email", { email, callbackUrl: redirectUrl });
+            signIn('email', { email, callbackUrl: redirectUrl });
           })}
           className="flex flex-col gap-2"
         >
@@ -49,7 +49,7 @@ function LoginModal() {
           <TextInput
             type="email"
             placeholder="E-mail address"
-            {...register("email")}
+            {...register('email')}
           />
           <Button color="success" type="submit" size="sm">
             Sign in
@@ -62,7 +62,7 @@ function LoginModal() {
           <FacebookLoginButton
             style={style}
             onClick={() => {
-              logIn("facebook");
+              logIn('facebook');
             }}
           >
             <span>Sign in with Facebook</span>
@@ -72,7 +72,7 @@ function LoginModal() {
           <GoogleLoginButton
             style={style}
             onClick={() => {
-              logIn("google");
+              logIn('google');
             }}
           >
             <span>Sign in with Google</span>
@@ -82,7 +82,7 @@ function LoginModal() {
           <GithubLoginButton
             style={style}
             onClick={() => {
-              logIn("github");
+              logIn('github');
             }}
           >
             <span>Sign in with Github</span>
