@@ -1,11 +1,11 @@
-import type { NextPage } from "next";
-import { Alert, Button, Select } from "flowbite-react";
-import MainNavbar from "../components/navbar";
-import MainPage from "../components/page";
-import InputCard from "../components/inputcard";
-import PoemCard from "../components/poemcard";
-import Waves from "../components/waves";
-import { useAtomValue, useAtom } from "jotai";
+import type { NextPage } from 'next';
+import { Alert, Button, Select } from 'flowbite-react';
+import MainNavbar from '../components/navbar';
+import MainPage from '../components/page';
+import InputCard from '../components/inputcard';
+import PoemCard from '../components/poemcard';
+import Waves from '../components/waves';
+import { useAtomValue, useAtom } from 'jotai';
 import {
   loadingPoemAtom,
   loadingImageAtom,
@@ -15,12 +15,12 @@ import {
   requestErrorAtom,
   poemTitleAtom,
   poemIdAtom,
-} from "../lib/atoms";
-import HeroBanner from "../components/herobanner";
-import MainFooter from "../components/footer";
-import { useState } from "react";
-import { Icon } from "@iconify/react";
-import { useSession } from "next-auth/react";
+} from '../lib/atoms';
+import HeroBanner from '../components/herobanner';
+import MainFooter from '../components/footer';
+import { useState } from 'react';
+import { Icon } from '@iconify/react';
+import { useSession } from 'next-auth/react';
 
 const Generate: NextPage = () => {
   const requestError = useAtomValue(requestErrorAtom);
@@ -32,7 +32,7 @@ const Generate: NextPage = () => {
   const loadingPoem = useAtomValue(loadingPoemAtom);
   const loadingImage = useAtomValue(loadingImageAtom);
 
-  const ttsVoices = speechSynthesis.getVoices();
+  const ttsVoices = window.speechSynthesis.getVoices();
   const [selectedVoice, setSelectedVoice] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
@@ -51,17 +51,17 @@ const Generate: NextPage = () => {
   const { data: session, status } = useSession();
 
   function bookmark() {
-    if (status === "authenticated" && poemId) {
-      console.log("bookmark poemId: " + poemId);
+    if (status === 'authenticated' && poemId) {
+      console.log('bookmark poemId: ' + poemId);
       console.log(session.id);
-      fetch("/api/bookmarks/post/" + session.id, {
+      fetch('/api/bookmarks/post/' + session.id, {
         body: JSON.stringify({
           userId: session.id,
           poemId: poemId,
         }),
-        method: "post",
+        method: 'post',
         headers: {
-          "content-type": "application/json",
+          'content-type': 'application/json',
         },
       }).then(() => setBookmarked(true));
     }
@@ -134,8 +134,8 @@ const Generate: NextPage = () => {
           <div
             className={
               !poemShow
-                ? "transition duration-700 scale-y-0 opacity-0 -translate-y-1/2 h-0"
-                : "transition duration-700"
+                ? 'transition duration-700 scale-y-0 opacity-0 -translate-y-1/2 h-0'
+                : 'transition duration-700'
             }
           >
             <PoemCard
@@ -143,14 +143,14 @@ const Generate: NextPage = () => {
               image={poemImage}
               text={poemText}
               userName={
-                status === "authenticated" && session.user?.name
+                status === 'authenticated' && session.user?.name
                   ? session.user?.name
-                  : "Anonymous"
+                  : 'Anonymous'
               }
               userImage={
-                status === "authenticated" && session.user?.image
+                status === 'authenticated' && session.user?.image
                   ? session.user?.image
-                  : ""
+                  : ''
               }
             />
             <div className="flex h-full p-2 mb-4 flex-row gap-2 rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-fit">
@@ -165,7 +165,7 @@ const Generate: NextPage = () => {
                         {voice.name}
                       </option>
                     ))
-                  : ""}
+                  : ''}
               </Select>
               <Button size="sm" color="light" onClick={speak}>
                 {isSpeaking ? (
@@ -200,7 +200,7 @@ const Generate: NextPage = () => {
                   fontSize="22px"
                   className="mr-1"
                 />
-                {bookmarked ? "Bookmarked" : "Bookmark"}
+                {bookmarked ? 'Bookmarked' : 'Bookmark'}
               </Button>
             </div>
           </div>

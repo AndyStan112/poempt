@@ -5,6 +5,7 @@ import FacebookProvider from 'next-auth/providers/facebook';
 import EmailProvider from 'next-auth/providers/email';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '../../../lib/prismadb';
+
 const handleLink = async (user, profile, prop) => {
   console.log(prop);
   console.log(profile[prop]);
@@ -15,6 +16,7 @@ const handleLink = async (user, profile, prop) => {
     });
   }
 };
+
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   callbacks: {
@@ -25,8 +27,8 @@ export default NextAuth({
   },
   events: {
     async linkAccount({ user, profile }) {
-      handleLink(user, profile, 'image');
-      handleLink(user, profile, 'name');
+      await handleLink(user, profile, 'image');
+      await handleLink(user, profile, 'name');
     },
   },
   providers: [
@@ -35,16 +37,16 @@ export default NextAuth({
       from: process.env.EMAIL_FROM,
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
     FacebookProvider({
-      clientId: process.env.FACEBOOK_CLIENT_ID,
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+      clientId: process.env.FACEBOOK_CLIENT_ID!,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
     }),
     GithubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
     }),
   ],
 });
