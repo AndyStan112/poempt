@@ -1,61 +1,61 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next";
-import { Configuration, OpenAIApi } from "openai";
-import keyword_extractor from "keyword-extractor";
-import { stanzaStyles } from "../../lib/constants";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { Configuration, OpenAIApi } from 'openai';
+import keyword_extractor from 'keyword-extractor';
+import { stanzaStyles } from '../../lib/constants';
 const configuration = new Configuration({
   apiKey: process.env.GPT,
 });
 const openai = new OpenAIApi(configuration);
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   try {
-    let prompt = "make a poem";
+    let prompt = 'make a poem';
     const data = req.body;
     console.log(data);
-    // const keywords = keyword_extractor
-    //   .extract(data.subject, {
-    //     language: "english",
-    //     remove_digits: true,
-    //     return_changed_case: false,
-    //     remove_duplicates: true,
-    //   })
-    //   .join(",");
+    const keywords = keyword_extractor
+      .extract(data.subject, {
+        language: 'english',
+        remove_digits: true,
+        return_changed_case: false,
+        remove_duplicates: true,
+      })
+      .join(',');
 
     if (data.stanzaStyle == stanzaStyles[0]) {
       prompt =
-        "Write a title and verses for a " +
+        'Write a title and verses for a ' +
         data.mood +
-        " " +
+        ' ' +
         data.stanzaStyle +
-        " poem in the " +
+        ' poem in the ' +
         data.writingStyle +
-        " style, with a " +
+        ' style, with a ' +
         data.rhyme +
-        " and " +
+        ' and ' +
         data.verses +
-        " lines per stanza, based on the following subject: " +
-        data.subject +
-        ".";
+        ' lines per stanza, based on the following keywords: ' +
+        keywords +
+        ' .';
     } else {
       prompt =
-        "Write a title and verses for a " +
+        'Write a title and verses for a ' +
         data.mood +
-        " " +
+        ' ' +
         data.stanzaStyle +
-        " poem in the " +
+        ' poem in the ' +
         data.writingStyle +
-        " style, based on the following subject: " +
+        ' style, based on the following subject: ' +
         data.subject +
-        ".";
+        '.';
     }
 
     console.log('Prompt: "' + prompt + '"');
 
     const poemCompletion = await openai.createCompletion({
-      model: "text-davinci-003",
+      model: 'text-davinci-003',
       prompt: prompt,
       temperature: 0.5,
       top_p: 1,
@@ -63,28 +63,26 @@ export default async function handler(
       presence_penalty: 0,
       max_tokens: 256,
     });
-    const response = poemCompletion.data.choices[0].text || "";
+    const response = poemCompletion.data.choices[0].text || '';
 
     console.log('Response: "' + response + '"');
 
     const title = response
+      .replace(/(\btitle\b|\btitlu\b|:|")/gi, '')
       .trim()
-      .split("\n")[0]
-      .replace("title", "")
-      .replace("Title", "")
-      .replace(":", "")
-      .replace('"', "");
+      .split('\n')[0];
+
     const verseArray = response
       .trim()
-      .split("\n")
-      .filter((e) => !e.toLowerCase().startsWith("verse"));
+      .split('\n')
+      .filter((e) => !e.toLowerCase().startsWith('verse'));
     verseArray.splice(0, 1);
-    const poem = verseArray.join("\n");
+    const poem = verseArray.join('\n');
 
     console.log(title, poem);
     res.status(200).send({ title: title, poem: poem });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ result: "error" });
+    res.status(500).send({ result: 'error' });
   }
 }
