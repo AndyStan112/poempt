@@ -14,18 +14,26 @@ import {
 } from '../lib/atoms';
 import HeroBanner from '../components/herobanner';
 import MainFooter from '../components/footer';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useEffect } from 'react';
 import LibraryCard from '../components/librarycard';
+import { useRouter } from 'next/router';
 
 const PublicLibrary: NextPage = () => {
   const requestError = useAtomValue(requestErrorAtom);
   const [poems, setPoems] = useState([]);
   const loadingPoem = useAtomValue(loadingPoemAtom);
   const loadingImage = useAtomValue(loadingImageAtom);
+  const router = useRouter();
+
+  const skip = useMemo(() => router.query.skip || 0, [router.query]);
+
   useEffect(() => {
-    fetch('/api/poems/get/all', {
+    // if the function runs on the server, the router will be undefined
+    if (skip == undefined) return;
+
+    fetch(`/api/poems/get/all?skip=${skip}`, {
       headers: {
         'content-type': 'application/json',
       },
@@ -36,7 +44,8 @@ const PublicLibrary: NextPage = () => {
         setPoems(data.poems);
       })
       .catch((e) => console.log(e));
-  }, []);
+  }, [skip]);
+
   return (
     <>
       <Waves hue={280} height="500px" animate={loadingPoem} />

@@ -14,15 +14,18 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import LibraryCard from '../components/librarycard';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 const PublicLibrary: NextPage = () => {
   const requestError = useAtomValue(requestErrorAtom);
   const [poems, setPoems] = useState([]);
   const loadingPoem = useAtomValue(loadingPoemAtom);
   const loadingImage = useAtomValue(loadingImageAtom);
   const router = useRouter();
+  const { data: session, status } = useSession();
   console.log(router);
   useEffect(() => {
-    fetch('/api/poems/get/all', {
+    if (status !== 'authenticated') return;
+    fetch('/api/poems/get/u/' + session.id, {
       headers: {
         'content-type': 'application/json',
       },
@@ -33,7 +36,7 @@ const PublicLibrary: NextPage = () => {
         setPoems(data.poems);
       })
       .catch((e) => console.log(e));
-  }, []);
+  }, [status]);
   return (
     <>
       <Waves hue={280} height="500px" animate={loadingPoem} />
@@ -56,7 +59,7 @@ const PublicLibrary: NextPage = () => {
               <LibraryCard
                 title={poem.title}
                 text={poem.poem}
-                public={true}
+                public={false}
                 key={poem.id}
                 userName={poem.creator.name}
                 userImage={poem.creator.image}

@@ -11,6 +11,7 @@ export default async function handler(
     const userId = req.query.userId as string;
     const poems = await prisma.poem.findMany({
       where: { creatorId: userId },
+      include: { creator: true },
       take: 2,
     });
     res.status(200).send({ poems: poems });
