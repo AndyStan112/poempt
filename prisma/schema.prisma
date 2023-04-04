@@ -54,7 +54,7 @@ model Poem {
   title     String
   poem      String
   creatorId String
-  creator   User       @relation(fields: [creatorId], references: [id])
+  creator   User       @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   Bookmark  Bookmark[]
 }
 
@@ -64,7 +64,8 @@ model Bookmark {
   saver   User   @relation(fields: [saverId], references: [id])
   poemId  String
   saverId String
-  @@unique ([poemId, saverId])
+
+  @@unique([poemId, saverId])
 }
 
 model VerificationToken {

@@ -1,45 +1,39 @@
-/* eslint-disable react/jsx-key */
-import type { NextPage } from "next";
-import { Alert, Button, Select } from "flowbite-react";
-import MainNavbar from "../components/navbar";
-import MainPage from "../components/page";
-import InputCard from "../components/inputcard";
-import PoemCard from "../components/poemcard";
-import Waves from "../components/waves";
-import { useAtomValue, useAtom } from "jotai";
+import type { NextPage } from 'next';
+import MainNavbar from '../components/navbar';
+import MainPage from '../components/page';
+import Waves from '../components/waves';
+import { useAtomValue, useAtom } from 'jotai';
 import {
   loadingPoemAtom,
   loadingImageAtom,
-  poemShowAtom,
-  poemImageAtom,
-  poemTextAtom,
   requestErrorAtom,
-} from "../lib/atoms";
-import HeroBanner from "../components/herobanner";
-import MainFooter from "../components/footer";
-import { useState } from "react";
-import { Icon } from "@iconify/react";
-import { useEffect } from "react";
-import LibraryCard from "../components/librarycard";
-
-const Library: NextPage = () => {
+} from '../lib/atoms';
+import HeroBanner from '../components/herobanner';
+import MainFooter from '../components/footer';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import LibraryCard from '../components/librarycard';
+import { useRouter } from 'next/router';
+const PublicLibrary: NextPage = () => {
   const requestError = useAtomValue(requestErrorAtom);
   const [poems, setPoems] = useState([]);
   const loadingPoem = useAtomValue(loadingPoemAtom);
   const loadingImage = useAtomValue(loadingImageAtom);
+  const router = useRouter();
+  console.log(router);
   useEffect(() => {
-    fetch("/api/poems/get/all", {
+    fetch('/api/poems/get/all', {
       body: JSON.stringify({}),
-      method: "post",
+      method: 'post',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
       },
     })
       .then((r) =>
         r.json().then((data) => {
-          console.log(data.poems);
+          //console.log(data.poems);
           setPoems(data.poems);
-        })
+        }),
       )
       .catch((e) => console.log(e));
   }, []);
@@ -59,13 +53,16 @@ const Library: NextPage = () => {
           </p>
         </HeroBanner>
         <div>
-          {poems.map((poem) => {
+          {poems.map((poem, i) => {
             console.log(poem);
             return (
               <LibraryCard
                 title={poem.title}
                 text={poem.poem}
                 public={true}
+                key={poem.id}
+                userName={poem.creator.name}
+                userImage={poem.creator.image}
               ></LibraryCard>
             );
           })}
@@ -76,4 +73,4 @@ const Library: NextPage = () => {
   );
 };
 
-export default Library;
+export default PublicLibrary;

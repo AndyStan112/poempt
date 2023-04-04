@@ -28,6 +28,8 @@ function LoginModal() {
   const { data: session, status } = useSession();
 
   const { register, handleSubmit } = useForm();
+  //react-query
+  //const { data } = useQuery(['poem-image' + props.text]);
 
   const [showLoginModal, setShowLoginModal] = useAtom(showLoginModalAtom);
 

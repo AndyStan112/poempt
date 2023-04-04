@@ -2,8 +2,6 @@ import type { NextPage } from 'next';
 import { Alert, Button, Select } from 'flowbite-react';
 import MainNavbar from '../components/navbar';
 import MainPage from '../components/page';
-import InputCard from '../components/inputcard';
-import PoemCard from '../components/poemcard';
 import Waves from '../components/waves';
 import { useAtomValue, useAtom } from 'jotai';
 import {
@@ -65,7 +63,9 @@ const PublicLibrary: NextPage = () => {
                 title={poem.title}
                 text={poem.poem}
                 public={true}
-                key={i}
+                key={poem.id}
+                userName={poem.creator.name}
+                userImage={poem.creator.image}
               ></LibraryCard>
             );
           })}

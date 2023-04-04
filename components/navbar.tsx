@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import { Navbar, Button } from "flowbite-react";
-import Link from "next/link";
-import LoginModal from "./loginmodal";
-import { useSetAtom } from "jotai";
-import { poemShowAtom, showLoginModalAtom } from "../lib/atoms";
-import { useSession, signOut } from "next-auth/react";
+import { Navbar, Button } from 'flowbite-react';
+import Link from 'next/link';
+import LoginModal from './loginmodal';
+import { useSetAtom } from 'jotai';
+import { poemShowAtom, showLoginModalAtom } from '../lib/atoms';
+import { useSession, signOut } from 'next-auth/react';
 
 function MainNavbar() {
   const setShowLoginModal = useSetAtom(showLoginModalAtom);
@@ -22,7 +22,7 @@ function MainNavbar() {
           PoemPT
         </Link>
         <div className="flex md:order-2 gap-2">
-          {status === "authenticated" ? (
+          {status === 'authenticated' ? (
             <>
               <div className="flex flex-row gap-2">
                 <span className="pt-2 pr-2">{session.user?.name}</span>
@@ -31,7 +31,7 @@ function MainNavbar() {
                   src={
                     session.user?.image
                       ? session.user?.image
-                      : "generic_user.png"
+                      : 'generic_user.png'
                   }
                   alt="PFP"
                 />
@@ -64,7 +64,7 @@ function MainNavbar() {
           <Link href="/publicLibrary" className="!text-white">
             Public library
           </Link>
-          <Link href="/mylibrary" className="!text-white">
+          <Link href="/library" className="!text-white">
             My library
           </Link>
           <Link href="/bookmarks" className="!text-white">

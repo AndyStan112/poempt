@@ -9,7 +9,11 @@ export default async function handler(
 ) {
   try {
     const userId = req.query.userId as string;
-    const poems = await prisma.poem.findMany({ include: { creator: true } });
+    //CHAGE HARDCODED LIMIT IN PRODUCTION
+    const poems = await prisma.poem.findMany({
+      include: { creator: true },
+      take: 2,
+    });
     res.status(200).send({ poems: poems });
   } catch (error) {
     console.log(error);
