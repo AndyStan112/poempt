@@ -11,9 +11,9 @@ export default async function handler(
     const userId = req.query.userId as string;
     const bookmarks = await prisma.bookmark.findMany({
       where: { saverId: userId },
-      include: { poem: true },
+      include: { poem: { include: { creator: true } } },
     });
-    console.log;
+    console.log(bookmarks);
     res.status(200).send({ bookmarks: bookmarks });
   } catch (error) {
     console.log(error);

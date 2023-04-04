@@ -57,7 +57,7 @@ const Generate: NextPage = () => {
   const { data: session, status } = useSession();
 
   function bookmark() {
-    if (status === 'authenticated' && poemId) {
+    if (status === 'authenticated' && poemId && !bookmarked) {
       console.log('bookmark poemId: ' + poemId);
       console.log(session.id);
       fetch('/api/bookmarks/post/' + session.id, {
