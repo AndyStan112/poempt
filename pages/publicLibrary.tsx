@@ -26,18 +26,15 @@ const PublicLibrary: NextPage = () => {
   const loadingImage = useAtomValue(loadingImageAtom);
   useEffect(() => {
     fetch('/api/poems/get/all', {
-      body: JSON.stringify({}),
-      method: 'post',
       headers: {
         'content-type': 'application/json',
       },
     })
-      .then((r) =>
-        r.json().then((data) => {
-          console.log(data.poems);
-          setPoems(data.poems);
-        }),
-      )
+      .then((r) => r.json())
+      .then((data) => {
+        //console.log(data.poems);
+        setPoems(data.poems);
+      })
       .catch((e) => console.log(e));
   }, []);
   return (

@@ -14,29 +14,28 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import LibraryCard from '../components/librarycard';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 const Bookmarks: NextPage = () => {
   const requestError = useAtomValue(requestErrorAtom);
   const [bookmarks, setBookmarks] = useState([]);
   const loadingPoem = useAtomValue(loadingPoemAtom);
   const loadingImage = useAtomValue(loadingImageAtom);
   const router = useRouter();
-  //console.log(router);
+  const { data: session, status } = useSession();
   useEffect(() => {
-    fetch('/api/bookmarks/get/clfy6ub0a0000u4s0h8g91jb5', {
-      body: JSON.stringify({}),
-      method: 'post',
+    if (status !== 'authenticated') return () => {};
+    fetch('/api/bookmarks/get/' + session.id, {
       headers: {
         'content-type': 'application/json',
       },
     })
-      .then((r) =>
-        r.json().then((data) => {
-          //console.log(data.poems);
-          setBookmarks(data.bookmarks);
-        }),
-      )
+      .then((r) => r.json())
+      .then((data) => {
+        //console.log(data.poems);
+        setBookmarks(data.bookmarks);
+      })
       .catch((e) => console.log(e));
-  }, []);
+  }, [status]);
   return (
     <>
       <Waves hue={280} height="500px" animate={loadingPoem} />
