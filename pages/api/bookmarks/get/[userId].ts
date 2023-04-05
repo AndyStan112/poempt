@@ -17,7 +17,7 @@ export default async function handler(
       prisma.bookmark.findMany({
         where: { saverId: userId },
         include: { poem: { include: { creator: true } } },
-        take: 2,
+        take: 10,
         skip,
       }),
     ]);

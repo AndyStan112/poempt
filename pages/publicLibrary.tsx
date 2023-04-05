@@ -73,7 +73,7 @@ const PublicLibrary: NextPage = () => {
             })}
         </div>
         <Pagination
-          take={2}
+          take={10}
           skip={skip}
           total={total}
           router={router}

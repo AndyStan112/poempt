@@ -12,7 +12,7 @@ export default async function handler(
     const poems = await prisma.poem.findMany({
       where: { creatorId: userId },
       include: { creator: true },
-      take: 2,
+      take: 10,
     });
     res.status(200).send({ poems: poems });
   } catch (error) {

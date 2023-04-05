@@ -81,7 +81,7 @@ const Bookmarks = () => {
           })}
         </div>
         <Pagination
-          take={2}
+          take={5}
           skip={skip}
           total={total}
           router={router}

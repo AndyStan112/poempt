@@ -15,7 +15,7 @@ export default async function handler(
       prisma.poem.count({}),
       prisma.poem.findMany({
         include: { creator: true },
-        take: 2,
+        take: 10,
         skip,
       }),
     ]);
