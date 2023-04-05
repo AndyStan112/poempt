@@ -15,14 +15,14 @@ export default async function handler(
     const str = req.body.poem;
     const poem = str.normalize('NFKD').replace(/[^\w]/g, '');
 
-    // const imageCompletion = await openai.createImage({
-    //   prompt: poem,
-    //   n: 1,
-    //   size: '256x256',
-    // });
-    // const image = imageCompletion.data.data[0].url || '';
+    const imageCompletion = await openai.createImage({
+      prompt: poem,
+      n: 1,
+      size: '256x256',
+    });
+    const image = imageCompletion.data.data[0].url || '';
 
-    res.status(200).send({ image: 'generic_user.png' });
+    res.status(200).send({ image: image || 'generic_user.png' });
   } catch (error) {
     console.log(error);
     res.status(500).send({ result: 'error' });
