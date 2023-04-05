@@ -8,3 +8,5 @@ export interface UserInput {
   stanzaCount?: string;
   keywords?: [string];
 }
+
+export type status = 'loading' | 'authenticated' | 'unauthenticated';

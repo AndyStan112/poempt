@@ -2,11 +2,12 @@ import type { NextPage } from 'next';
 import MainNavbar from '../components/navbar';
 import MainPage from '../components/page';
 import Waves from '../components/waves';
-import { useAtomValue, useAtom } from 'jotai';
+import { useAtomValue, useAtom, useSetAtom } from 'jotai';
 import {
   loadingPoemAtom,
   loadingImageAtom,
   requestErrorAtom,
+  showLoginModalAtom,
 } from '../lib/atoms';
 import HeroBanner from '../components/herobanner';
 import MainFooter from '../components/footer';
@@ -15,6 +16,7 @@ import { useEffect } from 'react';
 import LibraryCard from '../components/librarycard';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+
 const PublicLibrary: NextPage = () => {
   const requestError = useAtomValue(requestErrorAtom);
   const [poems, setPoems] = useState([]);
@@ -22,6 +24,7 @@ const PublicLibrary: NextPage = () => {
   const loadingImage = useAtomValue(loadingImageAtom);
   const router = useRouter();
   const { data: session, status } = useSession();
+  const openLoginModal = useSetAtom(showLoginModalAtom);
   console.log(router);
   useEffect(() => {
     if (status !== 'authenticated') return;
@@ -37,6 +40,11 @@ const PublicLibrary: NextPage = () => {
       })
       .catch((e) => console.log(e));
   }, [status]);
+
+  useEffect(() => {
+    if (session === null) openLoginModal(true);
+  });
+
   return (
     <>
       <Waves hue={280} height="500px" animate={loadingPoem} />
@@ -59,7 +67,7 @@ const PublicLibrary: NextPage = () => {
               <LibraryCard
                 title={poem.title}
                 text={poem.poem}
-                public={false}
+                bookmark={false}
                 key={poem.id}
                 userName={poem.creator.name}
                 userImage={poem.creator.image}

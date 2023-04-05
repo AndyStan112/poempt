@@ -2,29 +2,36 @@ import type { NextPage } from 'next';
 import MainNavbar from '../components/navbar';
 import MainPage from '../components/page';
 import Waves from '../components/waves';
-import { useAtomValue, useAtom } from 'jotai';
+import { useAtomValue, useAtom, useSetAtom } from 'jotai';
 import {
   loadingPoemAtom,
   loadingImageAtom,
   requestErrorAtom,
+  showLoginModalAtom,
 } from '../lib/atoms';
 import HeroBanner from '../components/herobanner';
 import MainFooter from '../components/footer';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import LibraryCard from '../components/librarycard';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-const Bookmarks: NextPage = () => {
+import Pagination from '../components/pagination';
+import LoginModal from '../components/loginmodal';
+const Bookmarks = () => {
   const requestError = useAtomValue(requestErrorAtom);
   const [bookmarks, setBookmarks] = useState([]);
+  const [total, setTotal] = useState(2);
   const loadingPoem = useAtomValue(loadingPoemAtom);
   const loadingImage = useAtomValue(loadingImageAtom);
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const skip = useMemo(() => Number(router.query.skip) || 0, [router.query]);
+  const { data: session } = useSession();
+  const openLoginModal = useSetAtom(showLoginModalAtom);
+
   useEffect(() => {
-    if (status !== 'authenticated') return () => {};
-    fetch('/api/bookmarks/get/' + session.id, {
+    if (!session) return;
+    console.log(`/api/bookmarks/get/` + session.id + `?skip=${skip}`);
+    fetch(`/api/bookmarks/get/` + session.id + `?skip=${skip}`, {
       headers: {
         'content-type': 'application/json',
       },
@@ -33,9 +40,15 @@ const Bookmarks: NextPage = () => {
       .then((data) => {
         //console.log(data.poems);
         setBookmarks(data.bookmarks);
+        setTotal(data.total);
       })
       .catch((e) => console.log(e));
-  }, [status]);
+  }, [session, skip]);
+
+  useEffect(() => {
+    if (session === null) openLoginModal(true);
+  });
+
   return (
     <>
       <Waves hue={280} height="500px" animate={loadingPoem} />
@@ -58,7 +71,7 @@ const Bookmarks: NextPage = () => {
               <LibraryCard
                 title={poem.title}
                 text={poem.poem}
-                public={true}
+                bookmark={true}
                 key={poem.id}
                 userName={poem.creator.name}
                 userImage={poem.creator.image}
@@ -66,6 +79,12 @@ const Bookmarks: NextPage = () => {
             );
           })}
         </div>
+        <Pagination
+          take={2}
+          skip={skip}
+          total={total}
+          router={router}
+        ></Pagination>
       </MainPage>
       <MainFooter />
     </>

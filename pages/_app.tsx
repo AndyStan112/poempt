@@ -3,6 +3,7 @@ import '../styles/waves.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
+import LoginModal from '../components/loginmodal';
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <>
@@ -13,6 +14,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       </Head>
       <SessionProvider session={session}>
         <Component {...pageProps} />
+        <LoginModal></LoginModal>
       </SessionProvider>
     </>
   );

@@ -1,23 +1,23 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   try {
-    if (req.method != "POST")
-      res.status(500).send({ message: "Wrong request" });
+    if (req.method != 'POST')
+      res.status(500).send({ message: 'Wrong request' });
     const userId = req.query.userId as string;
     const { poemId } = req.body;
     await prisma.bookmark.create({
       data: { saverId: userId, poemId: poemId },
     });
-    res.status(200).send({ result: "successful" });
+    res.status(200).send({ result: 'successful' });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ result: "error" });
+    res.status(500).send({ result: 'error' });
   }
 }

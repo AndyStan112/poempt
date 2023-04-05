@@ -10,11 +10,8 @@ import React from 'react';
 import { useAtom } from 'jotai';
 import { showLoginModalAtom } from '../lib/atoms';
 
-const redirectUrl = process.env.NEXTAUTH_URL;
 const logIn = (provider: string, email = undefined) => {
-  email
-    ? signIn(provider, { callbackUrl: redirectUrl }, email)
-    : signIn(provider, { callbackUrl: redirectUrl });
+  email ? signIn(provider, {}, email) : signIn(provider, {});
 };
 
 const style = {
@@ -43,7 +40,7 @@ function LoginModal() {
       <Modal.Body className="flex flex-col gap-4 rounded">
         <form
           onSubmit={handleSubmit(({ email }) => {
-            signIn('email', { email, callbackUrl: redirectUrl });
+            signIn('email', { email });
           })}
           className="flex flex-col gap-2"
         >

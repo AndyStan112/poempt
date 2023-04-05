@@ -21,6 +21,7 @@ import MainFooter from '../components/footer';
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useSession } from 'next-auth/react';
+import BookmarkButton from '../components/bookmarkbutton';
 
 const Generate: NextPage = () => {
   const requestError = useAtomValue(requestErrorAtom);
@@ -195,19 +196,13 @@ const Generate: NextPage = () => {
                 />
                 Generate another poem
               </Button>
-              <Button
-                size="sm"
-                color="light"
-                onClick={bookmark}
-                disabled={bookmarked}
-              >
-                <Icon
-                  icon="fluent:bookmark-add-20-regular"
-                  fontSize="22px"
-                  className="mr-1"
-                />
-                {bookmarked ? 'Bookmarked' : 'Bookmark'}
-              </Button>
+              <BookmarkButton
+                sessionId={session ? session.id : undefined}
+                status={status}
+                bookmarked={bookmarked}
+                setBookmarked={setBookmarked}
+                poemId={poemId}
+              ></BookmarkButton>
             </div>
           </div>
         )}

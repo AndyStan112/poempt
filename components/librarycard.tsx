@@ -5,15 +5,20 @@ import { Icon } from '@iconify/react';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 /* eslint-disable @next/next/no-img-element */
+import BookmarkButton from './bookmarkbutton';
 function LibraryCard(props: {
   title: string;
   text: string;
-  public: boolean;
+  bookmark: boolean;
   userName?: string;
   userImage?: string;
+  poemId?: string;
+  sessionId?: string;
+  status?: string;
 }) {
   const [poemImage, setPoemImage] = useState('');
-  const { data: session, status } = useSession();
+  const [bookmarked, setBookmarked] = useState(false);
+  console.log(props.sessionId);
   useEffect(() => {
     fetch('/api/image', {
       body: JSON.stringify({ poem: props.text }),
@@ -49,6 +54,17 @@ function LibraryCard(props: {
               alt={props.title}
               className="rounded-md shadow-md"
             />
+            {!props.bookmark && (
+              <div className="flex justify-end mt-2">
+                <BookmarkButton
+                  poemId={props.poemId}
+                  bookmarked={bookmarked}
+                  setBookmarked={setBookmarked}
+                  status={props.status}
+                  sessionId={props.sessionId}
+                ></BookmarkButton>
+              </div>
+            )}
           </div>
           <div>
             {props.userName && (

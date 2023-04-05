@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Navbar, Button } from 'flowbite-react';
 import Link from 'next/link';
-import LoginModal from './loginmodal';
 import { useSetAtom } from 'jotai';
 import { poemShowAtom, showLoginModalAtom } from '../lib/atoms';
 import { useSession, signOut } from 'next-auth/react';
@@ -72,7 +71,6 @@ function MainNavbar() {
           </Link>
         </Navbar.Collapse>
       </Navbar>
-      <LoginModal />
     </>
   );
 }

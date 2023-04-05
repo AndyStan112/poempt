@@ -24,6 +24,9 @@ export default NextAuth({
       session.id = user.id;
       return session;
     },
+    redirect({ url }) {
+      return url;
+    },
   },
   events: {
     async linkAccount({ user, profile }) {

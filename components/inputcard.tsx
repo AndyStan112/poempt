@@ -5,16 +5,16 @@ import {
   Select,
   Accordion,
   Textarea,
-} from "flowbite-react";
-import { useState } from "react";
+} from 'flowbite-react';
+import { useState } from 'react';
 import {
   writingStyle,
   stanzaStyles,
   stanzaCounts,
   stanzaRhymes,
   moods,
-} from "../lib/constants";
-import { useSetAtom, useAtom } from "jotai";
+} from '../lib/constants';
+import { useSetAtom, useAtom } from 'jotai';
 import {
   requestErrorAtom,
   poemTextAtom,
@@ -24,18 +24,18 @@ import {
   poemShowAtom,
   poemTitleAtom,
   poemIdAtom,
-} from "../lib/atoms";
-import { useSession } from "next-auth/react";
+} from '../lib/atoms';
+import { useSession } from 'next-auth/react';
 
 function InputCard() {
-  const [selectedWritingStyle, setSelectedWritingStyle] = useState("Modernist");
+  const [selectedWritingStyle, setSelectedWritingStyle] = useState('Modernist');
   const [selectedStanzaStyle, setSelectedStanzaStyle] = useState(0);
   const [selectedVerseCount, setSelectedVerseCount] = useState(3);
   const [selectedRhyme, setSelectedRhyme] = useState(0);
   const [selectedMood, setSelectedMood] = useState(3);
 
-  const [promptText, setPromptText] = useState<string>("");
-  const [poemPromptText, setPoemPromptText] = useState<string>("");
+  const [promptText, setPromptText] = useState<string>('');
+  const [poemPromptText, setPoemPromptText] = useState<string>('');
 
   const [poemShow, setPoemShow] = useAtom(poemShowAtom);
   const setRequestError = useSetAtom(requestErrorAtom);
@@ -49,17 +49,17 @@ function InputCard() {
   const { data: session, status } = useSession();
 
   const handleSubmit1 = async (
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
 
     setPoemShow(true);
     setLoadingPoem(true);
-    setPoemImage("loader.gif");
-    setPoemTitle("");
-    setPoemText("");
+    setPoemImage('loader.gif');
+    setPoemTitle('');
+    setPoemText('');
 
-    fetch("/api/poem", {
+    fetch('/api/poem', {
       body: JSON.stringify({
         subject: promptText,
         writingStyle: selectedWritingStyle,
@@ -68,9 +68,9 @@ function InputCard() {
         verses: (selectedVerseCount + 1).toString(),
         mood: moods[selectedMood],
       }),
-      method: "post",
+      method: 'post',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
       },
     }).then((r) =>
       r.json().then((data) => {
@@ -84,17 +84,17 @@ function InputCard() {
         setPoemText(data.poem.trim());
         setLoadingImage(true);
 
-        if (status === "authenticated") {
-          console.log(session.id);
-          fetch("/api/poems/post/" + session.id, {
+        if (status === 'authenticated') {
+          //console.log(session.id);
+          fetch('/api/poems/post/' + session.id, {
             body: JSON.stringify({
               title: data.title,
               poem: data.poem,
               userId: session.id,
             }),
-            method: "post",
+            method: 'post',
             headers: {
-              "content-type": "application/json",
+              'content-type': 'application/json',
             },
           }).then((r) =>
             r.json().then((data) => {
@@ -103,17 +103,17 @@ function InputCard() {
                 setRequestError(true);
                 return;
               }
-              console.log(data.poemId);
+              //console.log(data.poemId);
               setPoemId(data.poemId);
-            })
+            }),
           );
         }
 
-        fetch("/api/image", {
+        fetch('/api/image', {
           body: JSON.stringify({ poem: data.poem }),
-          method: "post",
+          method: 'post',
           headers: {
-            "content-type": "application/json",
+            'content-type': 'application/json',
           },
         }).then((r) =>
           r.json().then((data) => {
@@ -121,30 +121,30 @@ function InputCard() {
             setPoemImage(data.image);
             setLoadingImage(false);
             setLoadingPoem(false);
-          })
+          }),
         );
-      })
+      }),
     );
   };
 
   const handleSubmit2 = async (
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
 
     setPoemShow(true);
     setLoadingPoem(true);
-    setPoemImage("loader.gif");
-    setPoemTitle("");
-    setPoemText("");
+    setPoemImage('loader.gif');
+    setPoemTitle('');
+    setPoemText('');
 
-    fetch("/api/continuation", {
+    fetch('/api/continuation', {
       body: JSON.stringify({
         poem: poemPromptText,
       }),
-      method: "post",
+      method: 'post',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
       },
     }).then((r) =>
       r.json().then((data) => {
@@ -158,11 +158,11 @@ function InputCard() {
         setPoemText(data.poem.trim());
         setLoadingImage(true);
 
-        fetch("/api/image", {
+        fetch('/api/image', {
           body: JSON.stringify({ poem: data.poem }),
-          method: "post",
+          method: 'post',
           headers: {
-            "content-type": "application/json",
+            'content-type': 'application/json',
           },
         }).then((r) =>
           r.json().then((data) => {
@@ -170,19 +170,19 @@ function InputCard() {
             setPoemImage(data.image);
             setLoadingImage(false);
             setLoadingPoem(false);
-          })
+          }),
         );
-      })
+      }),
     );
   };
 
   const style1 =
-    "transition duration-700 ease-in-out flex flex-col p-5 mb-4 rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto sm:w-full md:w-2/3 lg:w-1/2";
+    'transition duration-700 ease-in-out flex flex-col p-5 mb-4 rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto sm:w-full md:w-2/3 lg:w-1/2';
 
   return (
     <div
       className={
-        poemShow ? style1 + " scale-y-0 opacity-0 -translate-y-1/2 h-0" : style1
+        poemShow ? style1 + ' scale-y-0 opacity-0 -translate-y-1/2 h-0' : style1
       }
     >
       <h1 className="text-center text-2xl mb-2">Write me a poem based on:</h1>
@@ -208,7 +208,7 @@ function InputCard() {
                     {writingStyle.map((name) => (
                       <Button
                         color={
-                          selectedWritingStyle == name ? "success" : "light"
+                          selectedWritingStyle == name ? 'success' : 'light'
                         }
                         className="w-full"
                         key={name}

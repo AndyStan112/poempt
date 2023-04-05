@@ -11,12 +11,17 @@ import { useMemo, useState, useEffect } from 'react';
 import LibraryCard from '../components/librarycard';
 import { useRouter } from 'next/router';
 import Pagination from '../components/pagination';
+import { Session } from 'inspector';
+import { useSession } from 'next-auth/react';
 const PublicLibrary: NextPage = () => {
   const [poems, setPoems] = useState([]);
   const loadingPoem = useAtomValue(loadingPoemAtom);
+  const [total, setTotal] = useState(2);
+  const { data: session } = useSession();
+
   const router = useRouter();
   const skip = useMemo(() => Number(router.query.skip) || 0, [router.query]);
-  const [total, setTotal] = useState(0);
+
   useEffect(() => {
     // if the function runs on the server, the router will be undefined
     if (skip == undefined) return;
@@ -53,15 +58,17 @@ const PublicLibrary: NextPage = () => {
         <div>
           {poems &&
             poems.map((poem, i) => {
-              //console.log(poem);
               return (
                 <LibraryCard
                   title={poem.title}
                   text={poem.poem}
-                  public={true}
+                  bookmark={false}
                   key={poem.id}
+                  poemId={poem.id}
                   userName={poem.creator.name}
                   userImage={poem.creator.image}
+                  sessionId={session ? session.id : undefined}
+                  status={status}
                 ></LibraryCard>
               );
             })}
