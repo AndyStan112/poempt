@@ -54,6 +54,7 @@ model Poem {
   title     String
   poem      String
   creatorId String
+  image     String     @default("generic_user.png")
   creator   User       @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   Bookmark  Bookmark[]
 }

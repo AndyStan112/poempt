@@ -25,11 +25,13 @@ function PoemCard(props: {
         </div>
         <div className="flex flex-1 flex-col gap-2 justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
           <div className="flex-1">
-            <img
-              src={props.image ? props.image : ''}
-              alt={props.title}
-              className="rounded-md shadow-md"
-            />
+            <a href={props.image} download>
+              <img
+                src={props.image ? props.image : ''}
+                alt={props.title}
+                className="rounded-md shadow-md"
+              />
+            </a>
           </div>
           <div>
             {props.userName && (

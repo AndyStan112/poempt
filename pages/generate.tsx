@@ -198,7 +198,6 @@ const Generate: NextPage = () => {
               </Button>
               <BookmarkButton
                 sessionId={session ? session.id : undefined}
-                status={status}
                 bookmarked={bookmarked}
                 setBookmarked={setBookmarked}
                 poemId={poemId}

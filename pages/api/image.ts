@@ -6,7 +6,14 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 const prisma = new PrismaClient();
-
+async function toDataURL(url: any) {
+  const buffer = await fetch(url).then((res) => {
+    console.log(typeof res.blob);
+    return res.arrayBuffer();
+  });
+  console.log(typeof buffer, buffer);
+  return Buffer.from(buffer).toString('base64');
+}
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -21,8 +28,22 @@ export default async function handler(
       size: '256x256',
     });
     const image = imageCompletion.data.data[0].url || '';
-
-    res.status(200).send({ image: image || 'generic_user.png' });
+    const base64Data = await toDataURL(image);
+    const test = 'data:image/png;base64, ' + base64Data;
+    try {
+      await prisma.poem.create({
+        data: {
+          title: 'test',
+          poem: 'testare mare',
+          image: test,
+          creatorId: 'clfy6ub0a0000u4s0h8g91jb5',
+        },
+      });
+    } catch (e) {
+      console.log(e, 's');
+    }
+    console.log(typeof test);
+    res.status(200).send({ image: test || 'generic_user.png' });
   } catch (error) {
     console.log(error);
     res.status(500).send({ result: 'error' });

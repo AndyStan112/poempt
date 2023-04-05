@@ -52,12 +52,12 @@ const PublicLibrary: NextPage = () => {
       <MainPage>
         <HeroBanner>
           <h1 className="text-white text-center text-4xl mb-4 drop-shadow-lg">
-            AI Based Poem Generator
+            Your Library
           </h1>
           <p className="text-white text-center drop-shadow-lg">
-            Discover a new way to see the world: <br />
-            Let our AI poem generator bring your words to life with stunning
-            visuals.
+            Here are your last 5 generated poems: <br />
+            Make sure to bookmark the ones you like! <br />
+            Otherwise they will be lost forever
           </p>
         </HeroBanner>
         <div>
@@ -71,6 +71,7 @@ const PublicLibrary: NextPage = () => {
                 key={poem.id}
                 userName={poem.creator.name}
                 userImage={poem.creator.image}
+                poemImage={poem.image}
               ></LibraryCard>
             );
           })}

@@ -75,6 +75,7 @@ const Bookmarks = () => {
                 key={poem.id}
                 userName={poem.creator.name}
                 userImage={poem.creator.image}
+                poemImage={poem.image}
               ></LibraryCard>
             );
           })}

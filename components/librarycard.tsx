@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 /* eslint-disable @next/next/no-img-element */
 import BookmarkButton from './bookmarkbutton';
+
 function LibraryCard(props: {
   title: string;
   text: string;
@@ -15,26 +16,27 @@ function LibraryCard(props: {
   poemId?: string;
   sessionId?: string;
   status?: string;
+  poemImage: string;
 }) {
-  const [poemImage, setPoemImage] = useState('');
+  // const [poemImage, setPoemImage] = useState('');
   const [bookmarked, setBookmarked] = useState(false);
   console.log(props.sessionId);
-  useEffect(() => {
-    fetch('/api/image', {
-      body: JSON.stringify({ poem: props.text }),
-      method: 'post',
-      headers: {
-        'content-type': 'application/json',
-      },
-    })
-      .then((r) =>
-        r.json().then((data) => {
-          // console.log(data.image);
-          setPoemImage(data.image);
-        }),
-      )
-      .catch((e) => console.log(e));
-  }, []);
+  // useEffect(() => {
+  //   fetch('/api/image', {
+  //     body: JSON.stringify({ poem: props.text }),
+  //     method: 'post',
+  //     headers: {
+  //       'content-type': 'application/json',
+  //     },
+  //   })
+  //     .then((r) =>
+  //       r.json().then((data) => {
+  //         // console.log(data.image);
+  //         setPoemImage(data.image);
+  //       }),
+  //     )
+  //     .catch((e) => console.log(e));
+  // }, []);
 
   return (
     <>
@@ -49,12 +51,15 @@ function LibraryCard(props: {
         </div>
         <div className="flex flex-1 flex-col gap-2 justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
           <div className="flex-1">
-            <img
-              src={poemImage ? poemImage : 'loader.gif'}
-              alt={props.title}
-              className="rounded-md shadow-md"
-            />
-            {!props.bookmark && (
+            <a href={props.poemImage} download="test">
+              <img
+                src={props.poemImage ? props.poemImage : 'loader.gif'}
+                alt={props.title}
+                className="rounded-md shadow-md"
+              />
+            </a>
+
+            {!props.bookmark ? (
               <div className="flex justify-end mt-2">
                 <BookmarkButton
                   poemId={props.poemId}
@@ -63,6 +68,12 @@ function LibraryCard(props: {
                   status={props.status}
                   sessionId={props.sessionId}
                 ></BookmarkButton>
+              </div>
+            ) : (
+              <div className="flex justify-end mt-3 rounded-3xl">
+                <Button color="failure" pill={true} size="sm">
+                  X
+                </Button>
               </div>
             )}
           </div>

@@ -58,7 +58,19 @@ function InputCard() {
     setPoemImage('loader.gif');
     setPoemTitle('');
     setPoemText('');
+    // clean code  and see paralelism :
+    // (async () => {
+    //   const urls = [
+    //     'https://example.com/posts/1/',
+    //     'https://example.com/posts/1/tags/',
+    //   ];
 
+    //   const promises = urls.map((url) =>
+    //     fetch(url).then((response) => response.json()),
+    //   );
+    //   const data = await Promise.all(promises);
+    //   console.log(data);
+    // })();
     fetch('/api/poem', {
       body: JSON.stringify({
         subject: promptText,
@@ -79,35 +91,11 @@ function InputCard() {
           setRequestError(true);
           return;
         }
+        const { title, poem } = data;
         // console.log(data.poem);
         setPoemTitle(data.title);
         setPoemText(data.poem.trim());
         setLoadingImage(true);
-
-        if (status === 'authenticated') {
-          //console.log(session.id);
-          fetch('/api/poems/post/' + session.id, {
-            body: JSON.stringify({
-              title: data.title,
-              poem: data.poem,
-              userId: session.id,
-            }),
-            method: 'post',
-            headers: {
-              'content-type': 'application/json',
-            },
-          }).then((r) =>
-            r.json().then((data) => {
-              if (data.error) {
-                // console.log(data.error);
-                setRequestError(true);
-                return;
-              }
-              //console.log(data.poemId);
-              setPoemId(data.poemId);
-            }),
-          );
-        }
 
         fetch('/api/image', {
           body: JSON.stringify({ poem: data.poem }),
@@ -117,10 +105,35 @@ function InputCard() {
           },
         }).then((r) =>
           r.json().then((data) => {
-            // console.log(data.image);
+            console.log(title);
             setPoemImage(data.image);
             setLoadingImage(false);
             setLoadingPoem(false);
+            if (status === 'authenticated') {
+              //console.log(session.id);
+              fetch('/api/poems/post/' + session.id, {
+                body: JSON.stringify({
+                  title: title,
+                  poem: poem,
+                  userId: session.id,
+                  image: data.image,
+                }),
+                method: 'post',
+                headers: {
+                  'content-type': 'application/json',
+                },
+              }).then((r) =>
+                r.json().then((data) => {
+                  if (data.error) {
+                    // console.log(data.error);
+                    setRequestError(true);
+                    return;
+                  }
+                  //console.log(data.poemId);
+                  setPoemId(data.poemId);
+                }),
+              );
+            }
           }),
         );
       }),
