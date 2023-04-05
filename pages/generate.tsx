@@ -4,7 +4,7 @@ import MainNavbar from '../components/navbar';
 import MainPage from '../components/page';
 import InputCard from '../components/inputcard';
 import PoemCard from '../components/poemcard';
-import Waves from '../components/waves';
+import Waves from '../waves';
 import { useAtomValue, useAtom } from 'jotai';
 import {
   loadingPoemAtom,

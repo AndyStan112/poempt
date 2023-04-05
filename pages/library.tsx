@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import MainNavbar from '../components/navbar';
 import MainPage from '../components/page';
-import Waves from '../components/waves';
+import Waves from '../waves';
 import { useAtomValue, useAtom, useSetAtom } from 'jotai';
 import {
   loadingPoemAtom,

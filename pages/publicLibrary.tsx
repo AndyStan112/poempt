@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import { Alert, Button, Select } from 'flowbite-react';
 import MainNavbar from '../components/navbar';
 import MainPage from '../components/page';
-import Waves from '../components/waves';
+import Waves from '../waves';
 import { useAtomValue } from 'jotai';
 import { loadingPoemAtom } from '../lib/atoms';
 import HeroBanner from '../components/herobanner';
