@@ -54,6 +54,12 @@ const PublicLibrary: NextPage = () => {
             Save them while you still can !
           </p>
         </HeroBanner>
+        <Pagination
+          take={10}
+          skip={skip}
+          total={total}
+          router={router}
+        ></Pagination>
         <div>
           {poems &&
             poems.map((poem, i) => {

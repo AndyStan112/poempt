@@ -26,6 +26,17 @@ import {
   poemIdAtom,
 } from '../lib/atoms';
 import { useSession } from 'next-auth/react';
+import { UserInput } from '../types';
+
+const getImage = async (poem: string) => {
+  return fetch('/api/image', {
+    body: JSON.stringify({ poem: poem }),
+    method: 'post',
+    headers: {
+      'content-type': 'application/json',
+    },
+  });
+};
 
 function InputCard() {
   const [selectedWritingStyle, setSelectedWritingStyle] = useState('Modernist');
@@ -47,93 +58,74 @@ function InputCard() {
   const setLoadingImage = useSetAtom(loadingImageAtom);
 
   const { data: session, status } = useSession();
+  const setGenerating = () => {
+    setPoemShow(true);
+    setLoadingPoem(true);
+    setPoemImage('loader.gif');
+    setPoemTitle('');
+    setPoemText('');
+  };
+  const getPoem = async (userInput: UserInput) => {
+    return fetch('/api/poem', {
+      body: JSON.stringify(userInput),
+      method: 'post',
+      headers: {
+        'content-type': 'application/json',
+      },
+    });
+  };
 
   const handleSubmit1 = async (
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
 
-    setPoemShow(true);
-    setLoadingPoem(true);
-    setPoemImage('loader.gif');
-    setPoemTitle('');
-    setPoemText('');
-    // clean code  and see paralelism :
-    // (async () => {
-    //   const urls = [
-    //     'https://example.com/posts/1/',
-    //     'https://example.com/posts/1/tags/',
-    //   ];
+    setGenerating();
 
-    //   const promises = urls.map((url) =>
-    //     fetch(url).then((response) => response.json()),
-    //   );
-    //   const data = await Promise.all(promises);
-    //   console.log(data);
-    // })();
-    fetch('/api/poem', {
-      body: JSON.stringify({
-        subject: promptText,
-        writingStyle: selectedWritingStyle,
-        stanzaStyle: stanzaStyles[selectedStanzaStyle],
-        rhyme: stanzaRhymes[selectedRhyme],
-        verses: (selectedVerseCount + 1).toString(),
-        mood: moods[selectedMood],
-      }),
-      method: 'post',
-      headers: {
-        'content-type': 'application/json',
-      },
-    }).then((r) =>
+    const userInput: UserInput = {
+      subject: promptText,
+      writingStyle: selectedWritingStyle,
+      stanzaStyle: stanzaStyles[selectedStanzaStyle],
+      rhyme: stanzaRhymes[selectedRhyme],
+      verses: (selectedVerseCount + 1).toString(),
+      mood: moods[selectedMood],
+    };
+
+    getPoem(userInput).then((r) =>
       r.json().then((data) => {
         if (data.error) {
-          // console.log(data.error);
           setRequestError(true);
           return;
         }
         const { title, poem } = data;
-        // console.log(data.poem);
-        setPoemTitle(data.title);
-        setPoemText(data.poem.trim());
+
+        setPoemTitle(title);
+        setPoemText(poem.trim());
         setLoadingImage(true);
 
-        fetch('/api/image', {
-          body: JSON.stringify({ poem: data.poem }),
-          method: 'post',
-          headers: {
-            'content-type': 'application/json',
-          },
-        }).then((r) =>
+        getImage(data.poem).then((r) =>
           r.json().then((data) => {
-            console.log(title);
             setPoemImage(data.image);
             setLoadingImage(false);
             setLoadingPoem(false);
-            if (status === 'authenticated') {
-              //console.log(session.id);
-              fetch('/api/poems/post/' + session.id, {
-                body: JSON.stringify({
-                  title: title,
-                  poem: poem,
-                  userId: session.id,
-                  image: data.image,
-                }),
-                method: 'post',
-                headers: {
-                  'content-type': 'application/json',
-                },
-              }).then((r) =>
-                r.json().then((data) => {
-                  if (data.error) {
-                    // console.log(data.error);
-                    setRequestError(true);
-                    return;
-                  }
-                  //console.log(data.poemId);
-                  setPoemId(data.poemId);
-                }),
-              );
-            }
+            const postData = { title, poem, image: data.image };
+            fetch('/api/poems/post/' + session.id, {
+              body: JSON.stringify(postData),
+              method: 'post',
+              headers: {
+                'content-type': 'application/json',
+              },
+            }).then((r) =>
+              r.json().then((data) => {
+                if (data.error) {
+                  // console.log(data.error);
+                  setRequestError(true);
+                  return;
+                }
+                //console.log(data.poemId);
+                setPoemId(data.poemId);
+              }),
+            );
           }),
         );
       }),

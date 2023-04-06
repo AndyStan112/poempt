@@ -87,6 +87,7 @@ export const trainingMessages: ChatCompletionRequestMessage[] = [
       'Make me a poem based on the following parameters: literary movement : modernism ; Stanza style: Ballad;Stanza structure: Couplet;Rhyme: Coupled Rhyme;Keywords: king,eat,dog ',
   },
 ];
+export const GLOBAL_TAKE = 5;
 /* 
 const LanguageDetect = require('languagedetect');
 const lngDetector = new LanguageDetect();

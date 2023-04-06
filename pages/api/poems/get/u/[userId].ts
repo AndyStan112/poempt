@@ -14,6 +14,7 @@ export default async function handler(
       include: { creator: true },
       take: 10,
     });
+
     res.status(200).send({ poems: poems });
   } catch (error) {
     console.log(error);

@@ -54,6 +54,12 @@ const Bookmarks = () => {
       <Waves hue={280} height="500px" animate={loadingPoem} />
       <MainNavbar />
       <MainPage>
+        <Pagination
+          take={5}
+          skip={skip}
+          total={total}
+          router={router}
+        ></Pagination>
         <HeroBanner>
           <h1 className="text-white text-center text-4xl mb-4 drop-shadow-lg">
             AI Based Poem Generator
