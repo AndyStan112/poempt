@@ -104,30 +104,35 @@ function InputCard() {
         setLoadingImage(true);
 
         getImage(data.poem).then((r) =>
-          r.json().then((data) => {
-            setPoemImage(data.image);
-            setLoadingImage(false);
-            setLoadingPoem(false);
-            const postData = { title, poem, image: data.image };
-            if (!session) throw new Error('Session not found');
-            fetch('/api/poems/post/' + session.id, {
-              body: JSON.stringify(postData),
-              method: 'post',
-              headers: {
-                'content-type': 'application/json',
-              },
-            }).then((r) =>
-              r.json().then((data) => {
-                if (data.error) {
-                  // console.log(data.error);
-                  setRequestError(true);
-                  return;
-                }
-                //console.log(data.poemId);
-                setPoemId(data.poemId);
-              }),
-            );
-          }),
+          r
+            .json()
+            .then((data) => {
+              setPoemImage(data.image);
+              setLoadingImage(false);
+              setLoadingPoem(false);
+              const postData = { title, poem, image: data.image };
+              if (!session) throw new Error('Session not found');
+              fetch('/api/poems/post/' + session.id, {
+                body: JSON.stringify(postData),
+                method: 'post',
+                headers: {
+                  'content-type': 'application/json',
+                },
+              }).then((r) =>
+                r.json().then((data) => {
+                  if (data.error) {
+                    // console.log(data.error);
+                    setRequestError(true);
+                    return;
+                  }
+                  //console.log(data.poemId);
+                  setPoemId(data.poemId);
+                }),
+              );
+            })
+            .catch((e) => {
+              console.log(e);
+            }),
         );
       }),
     );

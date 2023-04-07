@@ -23,6 +23,7 @@ const BookmarkButton: FC<{
   const bookmark = async () => {
     if (!(sessionId && poemId && !bookmarked)) return;
     setBookmarked(true);
+    console.log(sessionId, 'ksdfhksdalj;kak');
     await fetch('/api/bookmarks/post/' + sessionId, {
       body: JSON.stringify({
         poemId: poemId,

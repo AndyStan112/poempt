@@ -56,7 +56,6 @@ const Generate: NextPage = () => {
   }
 
   const { data: session, status } = useSession();
-
   return (
     <>
       <Waves hue={280} height="500px" animate={loadingPoem} />
@@ -180,7 +179,7 @@ const Generate: NextPage = () => {
                 Generate another poem
               </Button>
               <BookmarkButton
-                sessionId={session}
+                sessionId={session ? session.id : ''}
                 bookmarked={bookmarked}
                 setBookmarked={setBookmarked}
                 poemId={poemId}
