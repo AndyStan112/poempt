@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { NextPage } from 'next';
 import React, { useState } from 'react';
+import { Icon } from '@iconify/react';
+import autorenewIcon from '@iconify-icons/mdi/autorenew';
 const Test: NextPage = () => {
   return (
     <div>
@@ -13,5 +15,5 @@ const Test: NextPage = () => {
     </div>
   );
 };
-
+//{autorenewIcon} className="w-5 h-5"
 export default Test;
