@@ -111,7 +111,10 @@ function InputCard() {
               setLoadingImage(false);
               setLoadingPoem(false);
               const postData = { title, poem, image: data.image };
-              if (!session) throw new Error('Session not found');
+              if (!session) {
+                console.log('this is the actual issue');
+                throw new Error('Session not found');
+              }
               fetch('/api/poems/post/' + session.id, {
                 body: JSON.stringify(postData),
                 method: 'post',
