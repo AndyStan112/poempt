@@ -36,7 +36,7 @@ function Pagination(props: {
         </Button>
       </div>
       <p className="text-center">
-        Showing {skip + 1}-{Math.min(skip + take, total)} of {total}
+        Showing {skip || -1 + 1}-{Math.min(skip + take, total)} of {total}
       </p>
 
       <div>

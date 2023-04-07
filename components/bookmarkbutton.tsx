@@ -1,36 +1,48 @@
 import { Button } from 'flowbite-react';
 import { Icon } from '@iconify/react';
-import { SetStateAction, FC, Dispatch, useCallback } from 'react';
+import { SetStateAction, FC, Dispatch, useCallback, useEffect } from 'react';
+import { json } from 'stream/consumers';
 
 const BookmarkButton: FC<{
   setBookmarked: Dispatch<SetStateAction<boolean>>;
   sessionId: string;
   poemId: string;
-  bookmarked: boolean;
+  bookmarked: boolean | undefined;
 }> = ({ setBookmarked, sessionId, poemId, bookmarked }) => {
-  const bookmark = () => {
-    if (!sessionId) {
-      // save current poem to local storage
-      // redirect to login
-      // if the user is logged in check the local storage for any poems generated, and bookmarked while unauthenticated, add them to the library and clear the local storage
-    }
-
-    if (sessionId && poemId && !bookmarked) {
-      fetch('/api/bookmarks/post/' + sessionId, {
-        body: JSON.stringify({
-          userId: sessionId,
-          poemId: poemId,
-        }),
-        method: 'post',
-        headers: {
-          'content-type': 'application/json',
-        },
-      })
-        .then(() => setBookmarked(true))
-        .catch(() => setBookmarked(false));
-    }
+  const getBookmarked = (sessionId: string, poemId: string) => {
+    return fetch('api/bookmarks/get/bookmarked/' + sessionId, {
+      body: JSON.stringify({
+        poemId: poemId,
+      }),
+      method: 'post',
+      headers: {
+        'content-type': 'application/json',
+      },
+    });
   };
-
+  const bookmark = async () => {
+    if (!(sessionId && poemId && !bookmarked)) return;
+    setBookmarked(true);
+    await fetch('/api/bookmarks/post/' + sessionId, {
+      body: JSON.stringify({
+        poemId: poemId,
+      }),
+      method: 'post',
+      headers: {
+        'content-type': 'application/json',
+      },
+    }).then((e) => {
+      if (!e.ok) setBookmarked(false);
+      //toast
+    });
+  };
+  useEffect(() => {
+    getBookmarked(sessionId, poemId)
+      .then((r) => r.json())
+      .then((data) => {
+        setBookmarked(data.bookmarked);
+      });
+  }, [sessionId]);
   return (
     <Button size="sm" color="light" onClick={bookmark} disabled={bookmarked}>
       <Icon

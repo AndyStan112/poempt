@@ -57,23 +57,6 @@ const Generate: NextPage = () => {
 
   const { data: session, status } = useSession();
 
-  function bookmark() {
-    if (status === 'authenticated' && poemId && !bookmarked) {
-      console.log('bookmark poemId: ' + poemId);
-      console.log(session.id);
-      fetch('/api/bookmarks/post/' + session.id, {
-        body: JSON.stringify({
-          userId: session.id,
-          poemId: poemId,
-        }),
-        method: 'post',
-        headers: {
-          'content-type': 'application/json',
-        },
-      }).then(() => setBookmarked(true));
-    }
-  }
-
   return (
     <>
       <Waves hue={280} height="500px" animate={loadingPoem} />
@@ -197,7 +180,7 @@ const Generate: NextPage = () => {
                 Generate another poem
               </Button>
               <BookmarkButton
-                sessionId={session ? session.id : undefined}
+                sessionId={session}
                 bookmarked={bookmarked}
                 setBookmarked={setBookmarked}
                 poemId={poemId}

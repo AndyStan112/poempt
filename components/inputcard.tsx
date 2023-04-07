@@ -57,7 +57,7 @@ function InputCard() {
   const setLoadingPoem = useSetAtom(loadingPoemAtom);
   const setLoadingImage = useSetAtom(loadingImageAtom);
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const setGenerating = () => {
     setPoemShow(true);
     setLoadingPoem(true);
@@ -109,6 +109,7 @@ function InputCard() {
             setLoadingImage(false);
             setLoadingPoem(false);
             const postData = { title, poem, image: data.image };
+            if (!session) throw new Error('Session not found');
             fetch('/api/poems/post/' + session.id, {
               body: JSON.stringify(postData),
               method: 'post',
@@ -163,13 +164,7 @@ function InputCard() {
         setPoemText(data.poem.trim());
         setLoadingImage(true);
 
-        fetch('/api/image', {
-          body: JSON.stringify({ poem: data.poem }),
-          method: 'post',
-          headers: {
-            'content-type': 'application/json',
-          },
-        }).then((r) =>
+        getImage(data.poem).then((r) =>
           r.json().then((data) => {
             // console.log(data.image);
             setPoemImage(data.image);

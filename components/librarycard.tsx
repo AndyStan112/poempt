@@ -6,38 +6,39 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 /* eslint-disable @next/next/no-img-element */
 import BookmarkButton from './bookmarkbutton';
-
+import { Poem } from '../types';
 function LibraryCard(props: {
   title: string;
   text: string;
-  bookmark: boolean;
+  bookmark: boolean | undefined;
   userName?: string;
   userImage?: string;
   poemId?: string;
   sessionId?: string;
-  status?: string;
   poemImage: string;
+  bookmarkId?: string;
 }) {
-  // const [poemImage, setPoemImage] = useState('');
-  const [bookmarked, setBookmarked] = useState(false);
-  console.log(props.sessionId);
-  // useEffect(() => {
-  //   fetch('/api/image', {
-  //     body: JSON.stringify({ poem: props.text }),
-  //     method: 'post',
-  //     headers: {
-  //       'content-type': 'application/json',
-  //     },
-  //   })
-  //     .then((r) =>
-  //       r.json().then((data) => {
-  //         // console.log(data.image);
-  //         setPoemImage(data.image);
-  //       }),
-  //     )
-  //     .catch((e) => console.log(e));
-  // }, []);
+  const [bookmarked, setBookmarked] = useState(true);
+  const [removed, setRemoved] = useState(false);
+  console.log(removed);
+  const remove = async () => {
+    console.log(props);
+    if (!props.sessionId || !bookmarked) return;
+    setBookmarked(true);
+    await fetch('/api/bookmarks/delete/' + props.bookmarkId, {
+      method: 'delete',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then(() => setRemoved(true))
+      .catch((e) => {
+        setRemoved(false);
+        console.log(e);
+      });
+  };
 
+  console.log(props);
   return (
     <>
       <div className="flex h-full p-4 mb-4 flex-col gap-8 md:flex-row rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-fit">
@@ -62,17 +63,21 @@ function LibraryCard(props: {
             {!props.bookmark ? (
               <div className="flex justify-end mt-2">
                 <BookmarkButton
-                  poemId={props.poemId}
+                  poemId={props.poemId!}
                   bookmarked={bookmarked}
                   setBookmarked={setBookmarked}
-                  status={props.status}
-                  sessionId={props.sessionId}
+                  sessionId={props.sessionId!}
                 ></BookmarkButton>
               </div>
             ) : (
               <div className="flex justify-end mt-3 rounded-3xl">
-                <Button color="failure" pill={true} size="sm">
-                  X
+                <Button color="failure" onClick={remove} disabled={removed}>
+                  <Icon
+                    icon="fluent:bookmark-off-20-regular"
+                    fontSize="22px"
+                    className="mr-3"
+                  />
+                  {!removed ? 'Remove bookmark' : 'Removed bookmark'}
                 </Button>
               </div>
             )}

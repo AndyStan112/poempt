@@ -17,9 +17,10 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import Pagination from '../components/pagination';
 import LoginModal from '../components/loginmodal';
+import { Bookmark } from '../types';
 const Bookmarks = () => {
   const requestError = useAtomValue(requestErrorAtom);
-  const [bookmarks, setBookmarks] = useState([]);
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [total, setTotal] = useState(2);
   const loadingPoem = useAtomValue(loadingPoemAtom);
   const loadingImage = useAtomValue(loadingImageAtom);
@@ -54,12 +55,6 @@ const Bookmarks = () => {
       <Waves hue={280} height="500px" animate={loadingPoem} />
       <MainNavbar />
       <MainPage>
-        <Pagination
-          take={5}
-          skip={skip}
-          total={total}
-          router={router}
-        ></Pagination>
         <HeroBanner>
           <h1 className="text-white text-center text-4xl mb-4 drop-shadow-lg">
             AI Based Poem Generator
@@ -70,21 +65,30 @@ const Bookmarks = () => {
             visuals.
           </p>
         </HeroBanner>
+        <Pagination
+          take={5}
+          skip={skip}
+          total={total}
+          router={router}
+        ></Pagination>
         <div>
-          {bookmarks.map(({ poem }, i) => {
-            console.log(poem);
-            return (
-              <LibraryCard
-                title={poem.title}
-                text={poem.poem}
-                bookmark={true}
-                key={poem.id}
-                userName={poem.creator.name}
-                userImage={poem.creator.image}
-                poemImage={poem.image}
-              ></LibraryCard>
-            );
-          })}
+          {session !== null &&
+            bookmarks.map(({ poem, id }) => {
+              //console.log(poem);
+              return (
+                <LibraryCard
+                  title={poem.title}
+                  text={poem.poem}
+                  bookmark={true}
+                  key={poem.id}
+                  userName={poem.creator.name}
+                  userImage={poem.creator.image}
+                  poemImage={poem.image!}
+                  sessionId={session.id}
+                  bookmarkId={id}
+                ></LibraryCard>
+              );
+            })}
         </div>
         <Pagination
           take={5}

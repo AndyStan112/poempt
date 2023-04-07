@@ -13,8 +13,9 @@ import { useRouter } from 'next/router';
 import Pagination from '../components/pagination';
 import { Session } from 'inspector';
 import { useSession } from 'next-auth/react';
+import { Poem } from '../types/index';
 const PublicLibrary: NextPage = () => {
-  const [poems, setPoems] = useState([]);
+  const [poems, setPoems] = useState<Poem[]>([]);
   const loadingPoem = useAtomValue(loadingPoemAtom);
   const [total, setTotal] = useState(2);
   const { data: session } = useSession();
@@ -62,6 +63,7 @@ const PublicLibrary: NextPage = () => {
         ></Pagination>
         <div>
           {poems &&
+            session &&
             poems.map((poem, i) => {
               return (
                 <LibraryCard

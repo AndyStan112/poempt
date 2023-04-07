@@ -16,10 +16,11 @@ import { useEffect } from 'react';
 import LibraryCard from '../components/librarycard';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { Poem } from '../types';
 
 const PublicLibrary: NextPage = () => {
   const requestError = useAtomValue(requestErrorAtom);
-  const [poems, setPoems] = useState([]);
+  const [poems, setPoems] = useState<Poem[]>([]);
   const loadingPoem = useAtomValue(loadingPoemAtom);
   const loadingImage = useAtomValue(loadingImageAtom);
   const router = useRouter();
@@ -61,20 +62,24 @@ const PublicLibrary: NextPage = () => {
           </p>
         </HeroBanner>
         <div>
-          {poems.map((poem, i) => {
-            console.log(poem);
-            return (
-              <LibraryCard
-                title={poem.title}
-                text={poem.poem}
-                bookmark={false}
-                key={poem.id}
-                userName={poem.creator.name}
-                userImage={poem.creator.image}
-                poemImage={poem.image}
-              ></LibraryCard>
-            );
-          })}
+          {session &&
+            poems &&
+            poems.map((poem, i) => {
+              console.log(poem);
+              return (
+                <LibraryCard
+                  title={poem.title}
+                  text={poem.poem}
+                  bookmark={undefined}
+                  key={poem.id}
+                  userName={poem.creator.name}
+                  userImage={poem.creator.image}
+                  poemImage={poem.image}
+                  sessionId={session.id}
+                  poemId={poem.id}
+                ></LibraryCard>
+              );
+            })}
         </div>
       </MainPage>
       <MainFooter />

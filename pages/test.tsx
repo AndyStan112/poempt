@@ -1,71 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
-import { NextPage } from "next";
-import React, { useState } from "react";
+import { NextPage } from 'next';
+import React, { useState } from 'react';
 const Test: NextPage = () => {
-  const [text, setText] = useState<string>(" ");
-  const [poem, setPoem] = useState<string>(" ");
-  const [image, setImage] = useState<string>(" ");
-
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    e.preventDefault();
-    console.log(text);
-    fetch("/api/poem", {
-      body: JSON.stringify({ text: text }),
-      method: "post",
-      headers: {
-        "content-type": "application/json",
-      },
-    }).then(
-      (r) =>
-        r.json().then((data) => {
-          if (data.error) {
-            console.log(data.error);
-            return;
-          }
-          console.log(data.poem);
-          setPoem(data.poem);
-          fetch("/api/image", {
-            body: JSON.stringify({ poem: data.poem }),
-            method: "post",
-            headers: {
-              "content-type": "application/json",
-            },
-          }).then((r) =>
-            r.json().then((data) => {
-              console.log(data.image);
-              setImage(data.image);
-            })
-          );
-        })
-
-      //setResult(await result.json());
-    );
-  };
   return (
     <div>
-      testare
-      <form onSubmit={handleSubmit}>
-        <input
-          className="bg-slate-300 bg"
-          type="text"
-          name="bame"
-          id="id"
-          value={text}
-          onChange={(e) => {
-            setText(e.target.value);
-          }}
-        />
-      </form>
-      {poem}
-      <img
-        onClick={() => {
-          speechSynthesis.speak(new SpeechSynthesisUtterance(poem));
-        }}
-        src={image}
-        alt="TTS"
-      ></img>
+      <button className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
+        Remove Bookmark
+      </button>
+      <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+        Remove Bookmark
+      </button>
     </div>
   );
 };
