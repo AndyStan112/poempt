@@ -4,6 +4,7 @@ import { Storage } from '@google-cloud/storage';
 import fetch from 'node-fetch';
 import { v4 as uuidv4 } from 'uuid';
 import { GLOBAL_TAKE } from '../../../../lib/constants';
+
 const storage = new Storage({
   projectId: process.env.PROJECT_ID,
   credentials: {
@@ -79,7 +80,7 @@ export default async function handler(
       });
       console.log('deleted : ', deleteCount);
     } catch (e) {
-      console.log(e);
+      console.log('post poems', e);
     }
     console.log('poemPost.id: ' + poemPost.id);
     res.status(200).send({ result: 'successful', poemId: poemPost.id });

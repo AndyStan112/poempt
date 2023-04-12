@@ -79,7 +79,7 @@ function InputCard() {
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
-
+    console.log(session, 'handle submit 1');
     setGenerating();
 
     const userInput: UserInput = {
@@ -91,54 +91,61 @@ function InputCard() {
       mood: moods[selectedMood],
     };
 
-    getPoem(userInput).then((r) =>
-      r.json().then((data) => {
-        if (data.error) {
-          setRequestError(true);
-          return;
-        }
-        const { title, poem } = data;
+    await getPoem(userInput)
+      .then((r) =>
+        r.json().then(async (data) => {
+          if (data.error) {
+            setRequestError(true);
+            return;
+          }
+          const { title, poem } = data;
 
-        setPoemTitle(title);
-        setPoemText(poem.trim());
-        setLoadingImage(true);
+          setPoemTitle(title);
+          setPoemText(poem.trim());
+          setLoadingImage(true);
 
-        getImage(data.poem).then((r) =>
-          r
-            .json()
-            .then((data) => {
-              setPoemImage(data.image);
-              setLoadingImage(false);
-              setLoadingPoem(false);
-              const postData = { title, poem, image: data.image };
-              if (!session) {
-                console.log('this is the actual issue');
-                throw new Error('Session not found');
-              }
-              fetch('/api/poems/post/' + session.id, {
-                body: JSON.stringify(postData),
-                method: 'post',
-                headers: {
-                  'content-type': 'application/json',
-                },
-              }).then((r) =>
-                r.json().then((data) => {
-                  if (data.error) {
-                    // console.log(data.error);
-                    setRequestError(true);
-                    return;
+          await getImage(data.poem)
+            .then((r) =>
+              r
+                .json()
+                .then((data) => {
+                  setPoemImage(data.image);
+                  setLoadingImage(false);
+                  setLoadingPoem(false);
+                  const postData = { title, poem, image: data.image };
+                  if (!session) {
+                    console.log('this is the actual issue');
+                    throw new Error('Session not found');
                   }
-                  //console.log(data.poemId);
-                  setPoemId(data.poemId);
+                  fetch('/api/poems/post/' + session.id, {
+                    body: JSON.stringify(postData),
+                    method: 'post',
+                    headers: {
+                      'content-type': 'application/json',
+                    },
+                  }).then((r) =>
+                    r.json().then((data) => {
+                      if (data.error) {
+                        // console.log(data.error);
+                        setRequestError(true);
+                        return;
+                      }
+                      //console.log(data.poemId);
+                      setPoemId(data.poemId);
+                    }),
+                  );
+                })
+                .catch((e) => {
+                  console.log('sds');
+                  console.log(e);
                 }),
-              );
-            })
+            )
             .catch((e) => {
-              console.log(e);
-            }),
-        );
-      }),
-    );
+              console.log('imagine', e);
+            });
+        }),
+      )
+      .catch((e) => console.log('getPoem', e));
   };
 
   const handleSubmit2 = async (
@@ -186,7 +193,7 @@ function InputCard() {
 
   const style1 =
     'transition duration-700 ease-in-out flex flex-col p-5 mb-4 rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto sm:w-full md:w-2/3 lg:w-1/2';
-
+  console.log(session);
   return (
     <div
       className={
