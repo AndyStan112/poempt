@@ -8,6 +8,7 @@ export type UserInput = {
 };
 export type Bookmark = {
   id: string;
+  saverId: string;
   poem: Poem;
 };
 export type Poem = {

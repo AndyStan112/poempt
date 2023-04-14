@@ -45,7 +45,13 @@ const BookmarkButton: FC<{
       });
   }, [sessionId]);
   return (
-    <Button size="sm" color="light" onClick={bookmark} disabled={bookmarked}>
+    <Button
+      size="sm"
+      color="light"
+      onClick={bookmark}
+      disabled={bookmarked}
+      className="w-full"
+    >
       <Icon
         icon="fluent:bookmark-add-20-regular"
         fontSize="22px"

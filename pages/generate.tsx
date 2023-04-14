@@ -21,7 +21,7 @@ import MainFooter from '../components/footer';
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useSession } from 'next-auth/react';
-import BookmarkButton from '../components/bookmarkbutton';
+import BookmarkButton from '../components/buttons/bookmarkbutton';
 
 const Generate: NextPage = () => {
   const requestError = useAtomValue(requestErrorAtom);
@@ -142,48 +142,54 @@ const Generate: NextPage = () => {
                   : ''
               }
             />
-            <div className="flex h-full p-2 mb-4 flex-row gap-2 rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-fit">
-              <Select
-                value={selectedVoice}
-                disabled={isSpeaking}
-                onChange={(e) => setSelectedVoice(Number(e.target.value))}
-              >
-                {getTtsVoices() && ttsVoices.length
-                  ? ttsVoices.map((voice, index) => (
-                      <option key={index} value={index}>
-                        {voice.name}
-                      </option>
-                    ))
-                  : ''}
-              </Select>
-              <Button size="sm" color="light" onClick={speak}>
-                {isSpeaking ? (
-                  <Icon icon="fluent:stop-20-regular" fontSize="22px" />
-                ) : (
+            <div className="flex h-full p-2 mb-4 flex-col gap-2 rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-fit">
+              <div className="flex gap-1">
+                <Select
+                  value={selectedVoice}
+                  disabled={isSpeaking}
+                  onChange={(e) => setSelectedVoice(Number(e.target.value))}
+                >
+                  {getTtsVoices() && ttsVoices.length
+                    ? ttsVoices.map((voice, index) => (
+                        <option key={index} value={index}>
+                          {voice.name}
+                        </option>
+                      ))
+                    : ''}
+                </Select>
+                <Button size="sm" color="light" onClick={speak}>
+                  {isSpeaking ? (
+                    <Icon icon="fluent:stop-20-regular" fontSize="22px" />
+                  ) : (
+                    <Icon
+                      icon="fluent:immersive-reader-20-regular"
+                      fontSize="22px"
+                    />
+                  )}
+                </Button>
+              </div>
+              <div className="flex gap-1">
+                <Button
+                  size="sm"
+                  color="success"
+                  onClick={() => setPoemShow(false)}
+                >
                   <Icon
-                    icon="fluent:immersive-reader-20-regular"
+                    icon="fluent:code-text-edit-20-regular"
                     fontSize="22px"
+                    className="mr-1"
                   />
-                )}
-              </Button>
-              <Button
-                size="sm"
-                color="success"
-                onClick={() => setPoemShow(false)}
-              >
-                <Icon
-                  icon="fluent:code-text-edit-20-regular"
-                  fontSize="22px"
-                  className="mr-1"
-                />
-                Generate another poem
-              </Button>
-              <BookmarkButton
-                sessionId={session ? session.id : ''}
-                bookmarked={bookmarked}
-                setBookmarked={setBookmarked}
-                poemId={poemId}
-              ></BookmarkButton>
+                  Generate another poem
+                </Button>
+                <div className="flex grow">
+                  <BookmarkButton
+                    sessionId={session ? session.id : ''}
+                    bookmarked={bookmarked}
+                    setBookmarked={setBookmarked}
+                    poemId={poemId}
+                  ></BookmarkButton>
+                </div>
+              </div>
             </div>
           </div>
         )}

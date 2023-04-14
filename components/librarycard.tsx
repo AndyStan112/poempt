@@ -5,8 +5,11 @@ import { Icon } from '@iconify/react';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 /* eslint-disable @next/next/no-img-element */
-import BookmarkButton from './bookmarkbutton';
+import BookmarkButton from './buttons/bookmarkbutton';
 import { Poem } from '../types';
+import RegenerateButton from './buttons/regeneratebutton';
+import DownloadButton from './buttons/downloadbutton';
+import RemoveButton from './buttons/removebutton';
 function LibraryCard(props: {
   title: string;
   text: string;
@@ -17,6 +20,7 @@ function LibraryCard(props: {
   sessionId?: string;
   poemImage: string;
   bookmarkId?: string;
+  saverId?: string;
 }) {
   const [bookmarked, setBookmarked] = useState(true);
   const [removed, setRemoved] = useState(false);
@@ -59,28 +63,26 @@ function LibraryCard(props: {
                 className="rounded-md shadow-md"
               />
             </a>
-
-            {!props.bookmark ? (
-              <div className="flex justify-end mt-2">
-                <BookmarkButton
-                  poemId={props.poemId!}
-                  bookmarked={bookmarked}
-                  setBookmarked={setBookmarked}
-                  sessionId={props.sessionId!}
-                ></BookmarkButton>
-              </div>
-            ) : (
-              <div className="flex justify-end mt-3 rounded-3xl">
-                <Button color="failure" onClick={remove} disabled={removed}>
-                  <Icon
-                    icon="fluent:bookmark-off-20-regular"
-                    fontSize="22px"
-                    className="mr-3"
-                  />
-                  {!removed ? 'Remove bookmark' : 'Removed bookmark'}
-                </Button>
-              </div>
-            )}
+            <div className="flex flex-col gap-2 my-2">
+              {!props.bookmark ? (
+                <div className="flex justify-end mt-2">
+                  <BookmarkButton
+                    poemId={props.poemId!}
+                    bookmarked={bookmarked}
+                    setBookmarked={setBookmarked}
+                    sessionId={props.sessionId!}
+                  ></BookmarkButton>
+                </div>
+              ) : (
+                <RemoveButton removed={removed} remove={remove} />
+              )}
+              {props.saverId == props.sessionId && (
+                <RegenerateButton
+                  sessionId={props.sessionId}
+                ></RegenerateButton>
+              )}
+              <DownloadButton></DownloadButton>
+            </div>
           </div>
           <div>
             {props.userName && (

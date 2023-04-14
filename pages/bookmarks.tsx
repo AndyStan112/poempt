@@ -18,6 +18,7 @@ import { useSession } from 'next-auth/react';
 import Pagination from '../components/pagination';
 import LoginModal from '../components/loginmodal';
 import { Bookmark } from '../types';
+import { GLOBAL_TAKE } from '../lib/constants';
 const Bookmarks = () => {
   const requestError = useAtomValue(requestErrorAtom);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
@@ -66,14 +67,14 @@ const Bookmarks = () => {
           </p>
         </HeroBanner>
         <Pagination
-          take={5}
+          take={GLOBAL_TAKE}
           skip={skip}
           total={total}
           router={router}
         ></Pagination>
         <div>
           {session !== null &&
-            bookmarks.map(({ poem, id }) => {
+            bookmarks.map(({ poem, id, saverId }) => {
               //console.log(poem);
               return (
                 <LibraryCard
@@ -86,12 +87,13 @@ const Bookmarks = () => {
                   poemImage={poem.image!}
                   sessionId={session.id}
                   bookmarkId={id}
+                  saverId={saverId}
                 ></LibraryCard>
               );
             })}
         </div>
         <Pagination
-          take={5}
+          take={GLOBAL_TAKE}
           skip={skip}
           total={total}
           router={router}

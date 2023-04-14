@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
+import { GLOBAL_TAKE } from '../../../../lib/constants';
 
 const prisma = new PrismaClient();
 
@@ -17,7 +18,7 @@ export default async function handler(
       prisma.bookmark.findMany({
         where: { saverId: userId },
         include: { poem: { include: { creator: true } } },
-        take: 10,
+        take: GLOBAL_TAKE,
         skip,
       }),
     ]);
