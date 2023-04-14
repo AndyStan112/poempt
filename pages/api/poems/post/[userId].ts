@@ -4,7 +4,7 @@ import { Storage } from '@google-cloud/storage';
 import fetch from 'node-fetch';
 import { v4 as uuidv4 } from 'uuid';
 import { GLOBAL_TAKE } from '../../../../lib/constants';
-
+import { extractIdFromUrl } from '../../../../lib/util';
 const storage = new Storage({
   projectId: process.env.PROJECT_ID,
   credentials: {
@@ -45,6 +45,7 @@ export default async function handler(
       data: { creatorId: userId, title: title, poem: poem, image: imageUrl },
     });
     try {
+      //get Latest Poems
       const latestPoems = await prisma.poem.findMany({
         where: { creatorId: userId },
         orderBy: { createdAt: 'desc' },
@@ -52,12 +53,14 @@ export default async function handler(
         take: GLOBAL_TAKE,
       });
       console.log('latest: ', latestPoems);
+      //get Bookmarked Poems
       const bookmarkedPoemIds = await prisma.bookmark.findMany({
         where: { saverId: userId },
         select: { poemId: true },
       });
       console.log('bookmarked: ', bookmarkedPoemIds);
-      const deleteCount = await prisma.poem.deleteMany({
+      //get poems to be deleted
+      const deletables = await prisma.poem.findMany({
         where: {
           AND: [
             { creatorId: userId },
@@ -78,7 +81,27 @@ export default async function handler(
           ],
         },
       });
-      console.log('deleted : ', deleteCount);
+      if (!deletables.length) {
+        res.status(200).send({ result: 'successful', poemId: poemPost.id });
+        return;
+      }
+
+      console.log('Will delete : ', deletables);
+      const deleteCount = await prisma.poem.deleteMany({
+        where: {
+          AND: [
+            { creatorId: userId },
+            { id: { in: deletables.map((poem) => poem.id) } },
+          ],
+        },
+      });
+      console.log('count: ', deleteCount);
+
+      deletables
+        .map(({ image }) => extractIdFromUrl(image))
+        .forEach((id) => {
+          if (id) bucket.file(id).delete();
+        });
     } catch (e) {
       console.log('post poems', e);
     }
