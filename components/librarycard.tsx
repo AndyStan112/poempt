@@ -81,7 +81,7 @@ function LibraryCard(props: {
                   sessionId={props.sessionId}
                 ></RegenerateButton>
               )}
-              <DownloadButton></DownloadButton>
+              <DownloadButton imageUrl={props.poemImage}></DownloadButton>
             </div>
           </div>
           <div>
