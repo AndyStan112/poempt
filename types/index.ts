@@ -17,6 +17,7 @@ export type Poem = {
   poem: string;
   image: string;
   createdAt: Date;
+  creatorId: string;
   creator: {
     name: string;
     image: string;

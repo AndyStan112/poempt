@@ -20,10 +20,12 @@ function LibraryCard(props: {
   sessionId?: string;
   poemImage: string;
   bookmarkId?: string;
-  saverId?: string;
+  creatorId?: string;
 }) {
+  console.log(props.poemId);
   const [bookmarked, setBookmarked] = useState(true);
   const [removed, setRemoved] = useState(false);
+  const [image, setImage] = useState(props.poemImage);
   console.log(removed);
   const remove = async () => {
     console.log(props);
@@ -56,9 +58,9 @@ function LibraryCard(props: {
         </div>
         <div className="flex flex-1 flex-col gap-2 justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
           <div className="flex-1">
-            <a href={props.poemImage} download="test">
+            <a href={image} download="test">
               <img
-                src={props.poemImage ? props.poemImage : 'loader.gif'}
+                src={image ? image : 'loader.gif'}
                 alt={props.title}
                 className="rounded-md shadow-md"
               />
@@ -76,9 +78,12 @@ function LibraryCard(props: {
               ) : (
                 <RemoveButton removed={removed} remove={remove} />
               )}
-              {props.saverId == props.sessionId && (
+              {props.creatorId === props.sessionId && (
                 <RegenerateButton
                   sessionId={props.sessionId}
+                  poem={props.text}
+                  setImage={setImage}
+                  poemId={props.poemId!}
                 ></RegenerateButton>
               )}
               <DownloadButton imageUrl={props.poemImage}></DownloadButton>

@@ -74,7 +74,7 @@ const Bookmarks = () => {
         ></Pagination>
         <div>
           {session !== null &&
-            bookmarks.map(({ poem, id, saverId }) => {
+            bookmarks.map(({ poem, id }) => {
               //console.log(poem);
               return (
                 <LibraryCard
@@ -87,7 +87,8 @@ const Bookmarks = () => {
                   poemImage={poem.image!}
                   sessionId={session.id}
                   bookmarkId={id}
-                  saverId={saverId}
+                  creatorId={poem.creatorId}
+                  poemId={poem.id}
                 ></LibraryCard>
               );
             })}
