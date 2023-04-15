@@ -76,6 +76,7 @@ function LibraryCard(props: {
               ) : (
                 <RemoveButton removed={removed} remove={remove} />
               )}
+              <DownloadButton imageUrl={props.poemImage}></DownloadButton>
               {props.creatorId &&
                 props.sessionId &&
                 props.creatorId === props.sessionId && (
@@ -86,7 +87,6 @@ function LibraryCard(props: {
                     poemId={props.poemId!}
                   ></RegenerateButton>
                 )}
-              <DownloadButton imageUrl={props.poemImage}></DownloadButton>
             </div>
           </div>
           <div>
