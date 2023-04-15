@@ -78,14 +78,16 @@ function LibraryCard(props: {
               ) : (
                 <RemoveButton removed={removed} remove={remove} />
               )}
-              {props.creatorId === props.sessionId && (
-                <RegenerateButton
-                  sessionId={props.sessionId}
-                  poem={props.text}
-                  setImage={setImage}
-                  poemId={props.poemId!}
-                ></RegenerateButton>
-              )}
+              {props.creatorId &&
+                props.sessionId &&
+                props.creatorId === props.sessionId && (
+                  <RegenerateButton
+                    sessionId={props.sessionId}
+                    poem={props.text}
+                    setImage={setImage}
+                    poemId={props.poemId!}
+                  ></RegenerateButton>
+                )}
               <DownloadButton imageUrl={props.poemImage}></DownloadButton>
             </div>
           </div>
