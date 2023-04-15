@@ -76,7 +76,7 @@ function InputCard() {
   };
 
   const handleSubmit1 = async (
-    e: React.FormEvent<HTMLFormElement>,
+    e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
     console.log(session, 'handle submit 1');
@@ -132,24 +132,24 @@ function InputCard() {
                       }
                       //console.log(data.poemId);
                       setPoemId(data.poemId);
-                    }),
+                    })
                   );
                 })
                 .catch((e) => {
                   console.log('sds');
                   console.log(e);
-                }),
+                })
             )
             .catch((e) => {
               console.log('imagine', e);
             });
-        }),
+        })
       )
       .catch((e) => console.log('getPoem', e));
   };
 
   const handleSubmit2 = async (
-    e: React.FormEvent<HTMLFormElement>,
+    e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
 
@@ -185,9 +185,9 @@ function InputCard() {
             setPoemImage(data.image);
             setLoadingImage(false);
             setLoadingPoem(false);
-          }),
+          })
         );
-      }),
+      })
     );
   };
 
@@ -325,7 +325,7 @@ function InputCard() {
             </Accordion>
             <Button
               type="submit"
-              className="mt-4 bg-green-500 hover:bg-green-600 text-black w-full"
+              className="mt-4 bg-green-500 hover:bg-green-600 w-full"
             >
               Write me a poem
             </Button>
@@ -346,7 +346,7 @@ function InputCard() {
             />
             <Button
               type="submit"
-              className="mt-4 bg-green-500 hover:bg-green-600 text-black w-full"
+              className="mt-4 bg-green-500 hover:bg-green-600 w-full"
             >
               Write me a poem
             </Button>
