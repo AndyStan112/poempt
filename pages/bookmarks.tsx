@@ -1,14 +1,8 @@
-import type { NextPage } from 'next';
 import MainNavbar from '../components/navbar';
 import MainPage from '../components/page';
 import Waves from '../waves';
-import { useAtomValue, useAtom, useSetAtom } from 'jotai';
-import {
-  loadingPoemAtom,
-  loadingImageAtom,
-  requestErrorAtom,
-  showLoginModalAtom,
-} from '../lib/atoms';
+import { useAtom, useSetAtom } from 'jotai';
+import { loadingPoemAtom, showLoginModalAtom } from '../lib/atoms';
 import HeroBanner from '../components/herobanner';
 import MainFooter from '../components/footer';
 import { useState, useEffect, useMemo } from 'react';
@@ -16,7 +10,6 @@ import LibraryCard from '../components/librarycard';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import Pagination from '../components/pagination';
-import LoginModal from '../components/loginmodal';
 import { Bookmark } from '../types';
 import { GLOBAL_TAKE } from '../lib/constants';
 const Bookmarks = () => {

@@ -2,13 +2,8 @@ import type { NextPage } from 'next';
 import MainNavbar from '../components/navbar';
 import MainPage from '../components/page';
 import Waves from '../waves';
-import { useAtomValue, useAtom, useSetAtom } from 'jotai';
-import {
-  loadingPoemAtom,
-  loadingImageAtom,
-  requestErrorAtom,
-  showLoginModalAtom,
-} from '../lib/atoms';
+import { useAtom, useSetAtom } from 'jotai';
+import { loadingPoemAtom, showLoginModalAtom } from '../lib/atoms';
 import HeroBanner from '../components/herobanner';
 import MainFooter from '../components/footer';
 import { useState } from 'react';
@@ -19,10 +14,8 @@ import { useSession } from 'next-auth/react';
 import { Poem } from '../types';
 
 const PublicLibrary: NextPage = () => {
-  const requestError = useAtomValue(requestErrorAtom);
   const [poems, setPoems] = useState<Poem[]>([]);
   const [loadingPoem, setLoadingPoem] = useAtom(loadingPoemAtom);
-  const loadingImage = useAtomValue(loadingImageAtom);
   const router = useRouter();
   const { data: session, status } = useSession();
   const openLoginModal = useSetAtom(showLoginModalAtom);
