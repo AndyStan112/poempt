@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import { Navbar, Button } from "flowbite-react";
-import Link from "next/link";
-import { useSetAtom } from "jotai";
-import { poemShowAtom, showLoginModalAtom } from "../lib/atoms";
-import { useSession, signOut } from "next-auth/react";
-import { Icon } from "@iconify/react";
+import { Navbar, Button, Tooltip } from 'flowbite-react';
+import Link from 'next/link';
+import { useSetAtom } from 'jotai';
+import { poemShowAtom, showLoginModalAtom } from '../lib/atoms';
+import { useSession, signOut } from 'next-auth/react';
+import { Icon } from '@iconify/react';
 
 function MainNavbar() {
   const setShowLoginModal = useSetAtom(showLoginModalAtom);
@@ -17,12 +17,12 @@ function MainNavbar() {
       <Navbar className="sticky !bg-transparent !text-white drop-shadow-md">
         <Link
           href="/"
-          className="self-center whitespace-nowrap text-3xl font-semibold w-[20%]"
+          className="self-center whitespace-nowrap text-3xl font-semibold md:w-1/6"
         >
           PoemPT
         </Link>
-        <div className="flex md:order-2 gap-2">
-          {status === "authenticated" ? (
+        <div className="flex md:order-2 gap-2 items-center justify-end md:w-1/6">
+          {status === 'authenticated' ? (
             <>
               <div className="flex flex-row gap-2">
                 <span className="pt-2 pr-2">{session.user?.name}</span>
@@ -31,23 +31,34 @@ function MainNavbar() {
                   src={
                     session.user?.image
                       ? session.user?.image
-                      : "generic_user.png"
+                      : 'generic_user.png'
                   }
                   alt="PFP"
                 />
               </div>
-              <Button color="gray" size="sm" onClick={() => signOut()}>
-                <Icon icon="fluent:door-arrow-left-28-regular" width="24" />
-              </Button>
+
+              <Tooltip content="Sign out" style="light" placement="bottom">
+                <Button
+                  color="gray"
+                  size="xs"
+                  className="opacity-80 hover:opacity-100 transition-all"
+                  onClick={() => signOut()}
+                >
+                  <Icon icon="fluent:door-arrow-left-24-regular" width="24" />
+                </Button>
+              </Tooltip>
             </>
           ) : (
-            <Button
-              color="gray"
-              size="sm"
-              onClick={() => setShowLoginModal(true)}
-            >
-              <Icon icon="fluent:door-arrow-right-28-regular" width="24" />
-            </Button>
+            <Tooltip content="Sign in" style="light" placement="bottom">
+              <Button
+                color="gray"
+                size="xs"
+                className="opacity-80 hover:opacity-100 transition-all"
+                onClick={() => setShowLoginModal(true)}
+              >
+                <Icon icon="fluent:door-arrow-right-28-regular" width="24" />
+              </Button>
+            </Tooltip>
           )}
           <Navbar.Toggle />
         </div>
