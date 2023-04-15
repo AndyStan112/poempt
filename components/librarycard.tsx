@@ -58,14 +58,11 @@ function LibraryCard(props: {
         </div>
         <div className="flex flex-1 flex-col gap-2 justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
           <div className="flex-1">
-            <a href={image} download="test">
-              <img
-                src={image ? image : "loader.gif"}
-                alt={props.title}
-                className="rounded-md shadow-md"
-              />
-            </a>
-            <div className="flex flex-col gap-2 my-2">
+            <img
+              src={image ? image : 'loader.gif'}
+              alt={props.title}
+              className="rounded-md shadow-md"
+            />
               {!props.bookmark ? (
                 <div className="flex justify-end mt-2">
                   <BookmarkButton
