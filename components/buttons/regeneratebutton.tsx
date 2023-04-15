@@ -1,7 +1,7 @@
 import { Icon } from '@iconify/react';
 import { Dispatch, FC } from 'react';
-import autorenewIcon from '@iconify-icons/mdi/autorenew';
 import { SetStateAction } from 'react';
+import { Button } from 'flowbite-react';
 const RegenerateButton: FC<{
   sessionId?: string;
   poem: string;
@@ -26,13 +26,10 @@ const RegenerateButton: FC<{
       });
   };
   return (
-    <button
-      onClick={regenerate}
-      className="flex items-center justify-center space-x-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-    >
-      <Icon icon={autorenewIcon} className="w-5 h-5" />
-      <span>Regenerate photo</span>
-    </button>
+    <Button onClick={regenerate} size="undefined" className="p-2.5">
+      <Icon icon="fluent:arrow-sync-20-regular" width="20" className="mr-1" />
+      <span>Redraw picture</span>
+    </Button>
   );
 };
 export default RegenerateButton;
