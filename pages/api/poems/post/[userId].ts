@@ -1,22 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
-import { Storage } from '@google-cloud/storage';
+import { default as prisma } from '../../../../lib/prismadb';
 import fetch from 'node-fetch';
 import { v4 as uuidv4 } from 'uuid';
 import { GLOBAL_TAKE } from '../../../../lib/constants';
 import { extractIdFromUrl } from '../../../../lib/util';
-const storage = new Storage({
-  projectId: process.env.PROJECT_ID,
-  credentials: {
-    client_email: process.env.GOOGLE_CLIENT_EMAIL,
-    private_key: process.env.GOOGLE_PRIVATE_KEY,
-  },
-});
-
-// TODO: throw errors if env variables do not exist
-const bucket = storage.bucket(process.env.BUCKET_NAME!);
-
-const prisma = new PrismaClient();
+import bucket from '../../../../lib/bucket';
 
 export default async function handler(
   req: NextApiRequest,

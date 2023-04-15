@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 // import fetch from 'node-fetch';
+import { default as prisma } from '../../../lib/prismadb';
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -16,8 +17,8 @@ export default async function handler(
       body: JSON.stringify({ poem }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
+      .then(({ image }) => {
+        console.log(image);
       });
     res.status(200).send({ test: 'test' });
   } catch (error) {
