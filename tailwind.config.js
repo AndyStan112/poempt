@@ -11,6 +11,9 @@ module.exports = {
     minHeight: {
       fullpage: "calc(100vh - 210px)",
     },
+    minWidth: {
+      librarycard: "600px",
+    },
   },
   darkMode: "class",
   plugins: [],
