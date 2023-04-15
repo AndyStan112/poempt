@@ -21,7 +21,7 @@ const DownloadButton: FC<{ imageUrl: string }> = ({ imageUrl }) => {
   }, []);
   return (
     <a href={url} download>
-      <Button color="light" size="sm">
+      <Button color="light" size="undefined" className="p-2.5">
         <Icon icon="fluent:arrow-download-20-regular" width="20" />
       </Button>
     </a>

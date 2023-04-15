@@ -47,11 +47,11 @@ const BookmarkButton: FC<{
   }, [sessionId]);
   return (
     <Button
-      size="sm"
+      size="undefined"
       color="light"
       onClick={bookmark}
       disabled={bookmarked}
-      className={buttonType == 'full' ? 'w-full' : ''}
+      className={buttonType == 'full' ? 'p-2.5 w-full' : 'p-2.5'}
     >
       <Icon
         icon={
