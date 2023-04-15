@@ -1,20 +1,20 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./app/**/*.{js,ts,jsx,tsx}",
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
+    './app/**/*.{js,ts,jsx,tsx}',
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+    'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
     extend: {},
     minHeight: {
-      fullpage: "calc(100vh - 210px)",
+      fullpage: 'calc(100vh - 210px)',
     },
     minWidth: {
-      librarycard: "600px",
+      librarycard: '640px',
     },
   },
-  darkMode: "class",
+  darkMode: 'class',
   plugins: [],
 };
