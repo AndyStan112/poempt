@@ -1,9 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
 import { GLOBAL_TAKE } from '../../../../lib/constants';
-
-const prisma = new PrismaClient();
-
+import { default as prisma } from '../../../../lib/prismadb';
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,

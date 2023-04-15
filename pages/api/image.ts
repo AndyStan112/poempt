@@ -1,12 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Configuration, OpenAIApi } from 'openai';
-import { PrismaClient } from '@prisma/client';
 
 const configuration = new Configuration({
   apiKey: process.env.GPT,
 });
 const openai = new OpenAIApi(configuration);
-const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
