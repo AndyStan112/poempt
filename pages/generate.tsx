@@ -143,7 +143,7 @@ const Generate: NextPage = () => {
               }
             />
             <div className="flex h-full p-2 mb-4 flex-col gap-2 rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-fit">
-              <div className="flex gap-1">
+              <div className="flex gap-2">
                 <Select
                   value={selectedVoice}
                   disabled={isSpeaking}
@@ -157,18 +157,23 @@ const Generate: NextPage = () => {
                       ))
                     : ''}
                 </Select>
-                <Button size="sm" color="light" onClick={speak}>
+                <Button
+                  size="undefined"
+                  color="light"
+                  onClick={speak}
+                  className="px-2.5 pt-2.5 pb-[9px]"
+                >
                   {isSpeaking ? (
-                    <Icon icon="fluent:stop-20-regular" fontSize="22px" />
+                    <Icon icon="fluent:stop-20-regular" width="20" />
                   ) : (
                     <Icon
                       icon="fluent:immersive-reader-20-regular"
-                      fontSize="22px"
+                      width="20"
                     />
                   )}
                 </Button>
               </div>
-              <div className="flex gap-1">
+              <div className="flex gap-2">
                 <Button
                   size="sm"
                   color="success"
@@ -176,7 +181,7 @@ const Generate: NextPage = () => {
                 >
                   <Icon
                     icon="fluent:code-text-edit-20-regular"
-                    fontSize="22px"
+                    width="20"
                     className="mr-1"
                   />
                   Generate another poem
@@ -187,6 +192,7 @@ const Generate: NextPage = () => {
                     bookmarked={bookmarked}
                     setBookmarked={setBookmarked}
                     poemId={poemId}
+                    buttonType="full"
                   ></BookmarkButton>
                 </div>
               </div>
