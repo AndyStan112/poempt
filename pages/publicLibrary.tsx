@@ -1,9 +1,8 @@
 import type { NextPage } from 'next';
-import { Alert, Button, Select } from 'flowbite-react';
 import MainNavbar from '../components/navbar';
 import MainPage from '../components/page';
 import Waves from '../waves';
-import { useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import { loadingPoemAtom } from '../lib/atoms';
 import HeroBanner from '../components/herobanner';
 import MainFooter from '../components/footer';
@@ -11,12 +10,11 @@ import { useMemo, useState, useEffect } from 'react';
 import LibraryCard from '../components/librarycard';
 import { useRouter } from 'next/router';
 import Pagination from '../components/pagination';
-import { Session } from 'inspector';
 import { useSession } from 'next-auth/react';
 import { Poem } from '../types/index';
 const PublicLibrary: NextPage = () => {
   const [poems, setPoems] = useState<Poem[]>([]);
-  const loadingPoem = useAtomValue(loadingPoemAtom);
+  const [loadingPoem, setLoadingPoem] = useAtom(loadingPoemAtom);
   const [total, setTotal] = useState(2);
   const { data: session } = useSession();
 
@@ -27,6 +25,7 @@ const PublicLibrary: NextPage = () => {
     // if the function runs on the server, the router will be undefined
     if (skip == undefined) return;
     console.log(skip);
+    setLoadingPoem(true);
     fetch(`/api/poems/get/all?skip=${skip}`, {
       headers: {
         'content-type': 'application/json',
@@ -34,9 +33,10 @@ const PublicLibrary: NextPage = () => {
     })
       .then((r) => r.json())
       .then((data) => {
-        console.log(data.poems);
+        // console.log(data.poems);
         setPoems(data.poems);
         setTotal(data.total);
+        setLoadingPoem(false);
       })
       .catch((e) => console.log(e));
   }, [skip]);

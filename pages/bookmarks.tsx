@@ -20,11 +20,9 @@ import LoginModal from '../components/loginmodal';
 import { Bookmark } from '../types';
 import { GLOBAL_TAKE } from '../lib/constants';
 const Bookmarks = () => {
-  const requestError = useAtomValue(requestErrorAtom);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [total, setTotal] = useState(2);
-  const loadingPoem = useAtomValue(loadingPoemAtom);
-  const loadingImage = useAtomValue(loadingImageAtom);
+  const [loadingPoem, setLoadingPoem] = useAtom(loadingPoemAtom);
   const router = useRouter();
   const skip = useMemo(() => Number(router.query.skip) || 0, [router.query]);
   const { data: session } = useSession();
@@ -32,6 +30,7 @@ const Bookmarks = () => {
 
   useEffect(() => {
     if (!session) return;
+    setLoadingPoem(true);
     console.log(`/api/bookmarks/get/` + session.id + `?skip=${skip}`);
     fetch(`/api/bookmarks/get/` + session.id + `?skip=${skip}`, {
       headers: {
@@ -43,6 +42,7 @@ const Bookmarks = () => {
         //console.log(data.poems);
         setBookmarks(data.bookmarks);
         setTotal(data.total);
+        setLoadingPoem(false);
       })
       .catch((e) => console.log(e));
   }, [session, skip]);

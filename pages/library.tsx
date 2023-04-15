@@ -21,7 +21,7 @@ import { Poem } from '../types';
 const PublicLibrary: NextPage = () => {
   const requestError = useAtomValue(requestErrorAtom);
   const [poems, setPoems] = useState<Poem[]>([]);
-  const loadingPoem = useAtomValue(loadingPoemAtom);
+  const [loadingPoem, setLoadingPoem] = useAtom(loadingPoemAtom);
   const loadingImage = useAtomValue(loadingImageAtom);
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -29,6 +29,7 @@ const PublicLibrary: NextPage = () => {
   console.log(router);
   useEffect(() => {
     if (status !== 'authenticated') return;
+    setLoadingPoem(true);
     fetch('/api/poems/get/u/' + session.id, {
       headers: {
         'content-type': 'application/json',
@@ -38,6 +39,7 @@ const PublicLibrary: NextPage = () => {
       .then((data) => {
         //console.log(data.poems);
         setPoems(data.poems);
+        setLoadingPoem(false);
       })
       .catch((e) => console.log(e));
   }, [status]);
