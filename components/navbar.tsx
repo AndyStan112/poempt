@@ -51,7 +51,7 @@ function MainNavbar() {
           ) : (
             <Tooltip content="Sign in" style="light" placement="bottom">
               <Button
-                color="gray"
+                color="ga"
                 size="xs"
                 className="opacity-80 hover:opacity-100 transition-all"
                 onClick={() => setShowLoginModal(true)}
@@ -62,20 +62,24 @@ function MainNavbar() {
           )}
           <Navbar.Toggle />
         </div>
-        <Navbar.Collapse>
-          <Link href="/" className="!text-white">
+        <Navbar.Collapse className="gap-2">
+          <Link href="/" className="!text-white py-2">
             Home
           </Link>
-          <Link href="/generate" onClick={() => setPoemShow(false)}>
+          <Link
+            href="/generate"
+            className="py-2"
+            onClick={() => setPoemShow(false)}
+          >
             Generate a poem
           </Link>
-          <Link href="/publicLibrary" className="!text-white">
+          <Link href="/publicLibrary" className="!text-white py-2">
             Public library
           </Link>
-          <Link href="/library" className="!text-white">
+          <Link href="/library" className="!text-white py-2">
             My library
           </Link>
-          <Link href="/bookmarks" className="!text-white">
+          <Link href="/bookmarks" className="!text-white py-2">
             Bookmarks
           </Link>
         </Navbar.Collapse>
