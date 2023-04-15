@@ -1,15 +1,15 @@
 /* eslint-disable jsx-a11y/alt-text */
 
-import { Button, Select } from "flowbite-react";
-import { Icon } from "@iconify/react";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { Button, Select } from 'flowbite-react';
+import { Icon } from '@iconify/react';
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 /* eslint-disable @next/next/no-img-element */
-import BookmarkButton from "./buttons/bookmarkbutton";
-import { Poem } from "../types";
-import RegenerateButton from "./buttons/regeneratebutton";
-import DownloadButton from "./buttons/downloadbutton";
-import RemoveButton from "./buttons/removebutton";
+import BookmarkButton from './buttons/bookmarkbutton';
+import { Poem } from '../types';
+import RegenerateButton from './buttons/regeneratebutton';
+import DownloadButton from './buttons/downloadbutton';
+import RemoveButton from './buttons/removebutton';
 function LibraryCard(props: {
   title: string;
   text: string;
@@ -27,14 +27,15 @@ function LibraryCard(props: {
   const [removed, setRemoved] = useState(false);
   const [image, setImage] = useState(props.poemImage);
   console.log(removed);
+
   const remove = async () => {
     console.log(props);
     if (!props.sessionId || !bookmarked) return;
     setBookmarked(true);
-    await fetch("/api/bookmarks/delete/" + props.bookmarkId, {
-      method: "delete",
+    await fetch('/api/bookmarks/delete/' + props.bookmarkId, {
+      method: 'delete',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
       },
     })
       .then(() => setRemoved(true))
