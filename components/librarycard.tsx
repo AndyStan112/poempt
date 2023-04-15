@@ -104,7 +104,7 @@ function LibraryCard(props: {
                 />
               </div>
             )}
-            <p>
+            <p className="text-right">
               Made with <span className="text-lg text-gray-400">PoemPT</span>
             </p>
           </div>
