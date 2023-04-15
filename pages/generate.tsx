@@ -178,6 +178,7 @@ const Generate: NextPage = () => {
                   size="sm"
                   color="success"
                   onClick={() => setPoemShow(false)}
+                  className="flex-grow"
                 >
                   <Icon
                     icon="fluent:code-text-edit-20-regular"
