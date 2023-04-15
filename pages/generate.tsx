@@ -68,7 +68,8 @@ const Generate: NextPage = () => {
                 AI Based Poem Generator
               </h1>
               <p className="text-white text-center drop-shadow-lg">
-                Discover a new way to see the world: <br />
+                Discover a new way to see the world.
+                <br />
                 Let our AI poem generator bring your words to life with stunning
                 visuals.
               </p>
@@ -79,8 +80,8 @@ const Generate: NextPage = () => {
         {requestError && (
           <Alert color="failure" className="mb-4 mx-auto shadow-md">
             <span>
-              <span className="font-medium">Info alert!</span> Change a few
-              things up and try submitting again.
+              <span className="font-medium">Info alert!</span>
+              Change a few things up and try submitting again.
             </span>
           </Alert>
         )}
@@ -92,8 +93,9 @@ const Generate: NextPage = () => {
                   Almost there, we&apos;re making the finishing touches...
                 </h1>
                 <p className="text-white text-center drop-shadow-lg">
-                  See your poetry come to life: <br /> Watch as our AI artist
-                  paints a picture worth a thousand words.
+                  See your poetry come to life.
+                  <br /> Watch as our AI artist paints a picture worth a
+                  thousand words.
                 </p>
               </HeroBanner>
             ) : (
@@ -114,7 +116,8 @@ const Generate: NextPage = () => {
                 Your generated poem is here!
               </h1>
               <p className="text-white text-center drop-shadow-lg">
-                Words that stir the soul, crafted by AI: <br />
+                Words that stir the soul, crafted by AI.
+                <br />
                 Enjoy the fruits of technology&apos;s poetic algorithms.
               </p>
             </HeroBanner>

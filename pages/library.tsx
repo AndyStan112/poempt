@@ -56,9 +56,9 @@ const PublicLibrary: NextPage = () => {
             Your Library
           </h1>
           <p className="text-white text-center drop-shadow-lg">
-            Here are your last 5 generated poems: <br />
-            Make sure to bookmark the ones you like! <br />
-            Otherwise they will be lost forever
+            Here are your last 5 generated poems
+            <br />
+            Bookmark the ones you like, otherwise they&apos;ll be gone soon
           </p>
         </HeroBanner>
         <div>

@@ -58,12 +58,10 @@ const Bookmarks = () => {
       <MainPage>
         <HeroBanner>
           <h1 className="text-white text-center text-4xl mb-4 drop-shadow-lg">
-            AI Based Poem Generator
+            Your Bookmarks
           </h1>
           <p className="text-white text-center drop-shadow-lg">
-            Discover a new way to see the world: <br />
-            Let our AI poem generator bring your words to life with stunning
-            visuals.
+            Your bookmarked poems go here
           </p>
         </HeroBanner>
         <Pagination
