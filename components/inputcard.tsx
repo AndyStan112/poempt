@@ -323,10 +323,7 @@ function InputCard() {
                 </Accordion.Content>
               </Accordion.Panel>
             </Accordion>
-            <Button
-              type="submit"
-              className="mt-4 bg-green-500 hover:bg-green-600 w-full"
-            >
+            <Button color="success" type="submit" className="mt-4 w-full">
               Write me a poem
             </Button>
           </form>
@@ -344,10 +341,7 @@ function InputCard() {
                 setPoemPromptText(e.target.value);
               }}
             />
-            <Button
-              type="submit"
-              className="mt-4 bg-green-500 hover:bg-green-600 w-full"
-            >
+            <Button color="success" type="submit" className="mt-4 w-full">
               Write me a poem
             </Button>
           </form>
