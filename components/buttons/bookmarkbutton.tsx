@@ -8,7 +8,8 @@ const BookmarkButton: FC<{
   sessionId: string;
   poemId: string;
   bookmarked: boolean | undefined;
-}> = ({ setBookmarked, sessionId, poemId, bookmarked }) => {
+  buttonType: string | undefined;
+}> = ({ setBookmarked, sessionId, poemId, bookmarked, buttonType }) => {
   const getBookmarked = (sessionId: string, poemId: string) => {
     return fetch('api/bookmarks/get/bookmarked/' + sessionId, {
       body: JSON.stringify({
@@ -23,7 +24,7 @@ const BookmarkButton: FC<{
   const bookmark = async () => {
     if (!(sessionId && poemId && !bookmarked)) return;
     setBookmarked(true);
-    console.log(sessionId, 'ksdfhksdalj;kak');
+    // console.log(sessionId, 'ksdfhksdalj;kak');
     await fetch('/api/bookmarks/post/' + sessionId, {
       body: JSON.stringify({
         poemId: poemId,
@@ -34,7 +35,7 @@ const BookmarkButton: FC<{
       },
     }).then((e) => {
       if (!e.ok) setBookmarked(false);
-      //toast
+      // TODO: toast
     });
   };
   useEffect(() => {
@@ -50,14 +51,18 @@ const BookmarkButton: FC<{
       color="light"
       onClick={bookmark}
       disabled={bookmarked}
-      className="w-full"
+      className={buttonType == 'full' ? 'w-full' : ''}
     >
       <Icon
-        icon="fluent:bookmark-add-20-regular"
-        fontSize="22px"
-        className="mr-1"
+        icon={
+          bookmarked
+            ? 'fluent:bookmark-20-filled'
+            : 'fluent:bookmark-add-20-regular'
+        }
+        width="20"
+        className={buttonType == 'full' ? 'mr-1' : ''}
       />
-      {bookmarked ? 'Bookmarked' : 'Bookmark'}
+      {buttonType == 'full' && (bookmarked ? 'Bookmarked' : 'Bookmark')}
     </Button>
   );
 };
