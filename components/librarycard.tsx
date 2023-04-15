@@ -47,7 +47,7 @@ function LibraryCard(props: {
   console.log(props);
   return (
     <>
-      <div className="flex h-full p-4 mb-4 flex-col gap-8 md:flex-row rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-full md:min-w-librarycard">
+      <div className="flex h-full p-4 mb-4 flex-col gap-8 md:flex-row rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-full md:w-0 md:min-w-librarycard">
         <div className="flex-2 text-center md:text-left">
           <h5 className="text-2xl font-bold tracking-tight text-gray-900 mb-3">
             {props.title}
