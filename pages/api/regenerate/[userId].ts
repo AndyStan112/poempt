@@ -1,6 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-// import fetch from 'node-fetch';
 import { default as prisma } from '../../../lib/prismadb';
+import { extractIdFromUrl } from '../../../lib/util';
+import bucket from '../../../lib/bucket';
+import { generateUrlFromId } from '../../../lib/util';
+import { v4 as uuidv4 } from 'uuid';
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -17,8 +20,32 @@ export default async function handler(
       body: JSON.stringify({ poem }),
     })
       .then((res) => res.json())
-      .then(({ image }) => {
-        console.log(image);
+      .then(async ({ image }) => {
+        const oldImage = await prisma.poem.findUnique({
+          where: { id: poemId },
+          select: { image: true },
+        });
+        const oldUrl = oldImage?.image;
+        console.log(oldUrl);
+        const oldFileId = extractIdFromUrl(oldUrl);
+        try {
+          if (oldFileId) bucket.file(oldFileId).delete();
+        } catch (error) {
+          console.log('delete renew', error);
+        }
+
+        const newFileId = uuidv4() + '.png';
+        const newUrl = generateUrlFromId(newFileId);
+        await prisma.poem.update({
+          where: { id: poemId },
+          data: { image: newUrl },
+        });
+        const file = bucket.file(newFileId);
+        const writeStream = file.createWriteStream();
+        await fetch(image).then((res: any) => {
+          res.body.pipe(writeStream);
+        });
+        console.log(newUrl);
       });
     res.status(200).send({ test: 'test' });
   } catch (error) {
