@@ -27,6 +27,7 @@ import {
 } from '../lib/atoms';
 import { useSession } from 'next-auth/react';
 import { UserInput } from '../types';
+import { Icon } from '@iconify/react';
 
 const getImage = async (poem: string) => {
   return fetch('/api/image', {
@@ -324,6 +325,7 @@ function InputCard() {
               </Accordion.Panel>
             </Accordion>
             <Button color="success" type="submit" className="mt-4 w-full">
+              <Icon icon="fluent:pen-20-regular" width="20" className="mr-1" />
               Write me a poem
             </Button>
           </form>
@@ -342,6 +344,7 @@ function InputCard() {
               }}
             />
             <Button color="success" type="submit" className="mt-4 w-full">
+              <Icon icon="fluent:pen-20-regular" width="20" className="mr-1" />
               Write me a poem
             </Button>
           </form>
