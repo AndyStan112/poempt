@@ -65,6 +65,16 @@ function LibraryCard(props: {
               className="rounded-md shadow-md"
             />
             <div className="flex flex-row justify-end gap-2 my-2 w-full">
+              {props.creatorId &&
+                props.sessionId &&
+                props.creatorId === props.sessionId && (
+                  <RegenerateButton
+                    sessionId={props.sessionId}
+                    poem={props.text}
+                    setImage={setImage}
+                    poemId={props.poemId!}
+                  ></RegenerateButton>
+                )}
               {!props.bookmark ? (
                 <BookmarkButton
                   poemId={props.poemId!}
@@ -77,16 +87,6 @@ function LibraryCard(props: {
                 <RemoveButton removed={removed} remove={remove} />
               )}
               <DownloadButton imageUrl={props.poemImage}></DownloadButton>
-              {props.creatorId &&
-                props.sessionId &&
-                props.creatorId === props.sessionId && (
-                  <RegenerateButton
-                    sessionId={props.sessionId}
-                    poem={props.text}
-                    setImage={setImage}
-                    poemId={props.poemId!}
-                  ></RegenerateButton>
-                )}
             </div>
           </div>
           <div>
