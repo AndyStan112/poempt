@@ -64,15 +64,15 @@ function LibraryCard(props: {
               alt={props.title}
               className="rounded-md shadow-md"
             />
+            <div className="flex flex-row justify-end gap-2 my-2 w-full">
               {!props.bookmark ? (
-                <div className="flex justify-end mt-2">
-                  <BookmarkButton
-                    poemId={props.poemId!}
-                    bookmarked={bookmarked}
-                    setBookmarked={setBookmarked}
-                    sessionId={props.sessionId!}
-                  ></BookmarkButton>
-                </div>
+                <BookmarkButton
+                  poemId={props.poemId!}
+                  bookmarked={bookmarked}
+                  setBookmarked={setBookmarked}
+                  sessionId={props.sessionId!}
+                  buttonType="normal"
+                ></BookmarkButton>
               ) : (
                 <RemoveButton removed={removed} remove={remove} />
               )}
@@ -98,7 +98,7 @@ function LibraryCard(props: {
                 </div>
                 <img
                   className="w-10 h-10 rounded-full border-gray-100 border-2"
-                  src={props.userImage ? props.userImage : "generic_user.png"}
+                  src={props.userImage ? props.userImage : 'generic_user.png'}
                 />
               </div>
             )}
