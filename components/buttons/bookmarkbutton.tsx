@@ -1,4 +1,4 @@
-import { Button } from 'flowbite-react';
+import { Button, Tooltip } from 'flowbite-react';
 import { Icon } from '@iconify/react';
 import { SetStateAction, FC, Dispatch, useCallback, useEffect } from 'react';
 import { json } from 'stream/consumers';
@@ -46,24 +46,30 @@ const BookmarkButton: FC<{
       });
   }, [sessionId]);
   return (
-    <Button
-      size={buttonType == 'full' ? 'sm' : 'undefined'}
-      color="light"
-      onClick={bookmark}
-      disabled={bookmarked}
-      className={buttonType == 'full' ? 'w-full' : 'p-2.5'}
+    <Tooltip
+      content={bookmarked ? 'Bookmarked' : 'Bookmark this poem'}
+      style="light"
+      placement="bottom"
     >
-      <Icon
-        icon={
-          bookmarked
-            ? 'fluent:bookmark-20-filled'
-            : 'fluent:bookmark-add-20-regular'
-        }
-        width="20"
-        className={buttonType == 'full' ? 'mr-1' : ''}
-      />
-      {buttonType == 'full' && (bookmarked ? 'Bookmarked' : 'Bookmark')}
-    </Button>
+      <Button
+        size={buttonType == 'full' ? 'sm' : 'undefined'}
+        color="light"
+        onClick={bookmark}
+        disabled={bookmarked}
+        className={buttonType == 'full' ? 'w-full' : 'p-2.5'}
+      >
+        <Icon
+          icon={
+            bookmarked
+              ? 'fluent:bookmark-20-filled'
+              : 'fluent:bookmark-add-20-regular'
+          }
+          width="20"
+          className={buttonType == 'full' ? 'mr-1' : ''}
+        />
+        {buttonType == 'full' && (bookmarked ? 'Bookmarked' : 'Bookmark')}
+      </Button>
+    </Tooltip>
   );
 };
 
