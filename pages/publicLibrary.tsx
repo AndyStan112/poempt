@@ -63,7 +63,6 @@ const PublicLibrary: NextPage = () => {
         ></Pagination>
         <div>
           {poems &&
-            session &&
             poems.map((poem, i) => {
               return (
                 <LibraryCard

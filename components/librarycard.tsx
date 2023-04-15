@@ -1,15 +1,15 @@
 /* eslint-disable jsx-a11y/alt-text */
 
-import { Button, Select } from 'flowbite-react';
-import { Icon } from '@iconify/react';
-import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { Button, Select } from "flowbite-react";
+import { Icon } from "@iconify/react";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 /* eslint-disable @next/next/no-img-element */
-import BookmarkButton from './buttons/bookmarkbutton';
-import { Poem } from '../types';
-import RegenerateButton from './buttons/regeneratebutton';
-import DownloadButton from './buttons/downloadbutton';
-import RemoveButton from './buttons/removebutton';
+import BookmarkButton from "./buttons/bookmarkbutton";
+import { Poem } from "../types";
+import RegenerateButton from "./buttons/regeneratebutton";
+import DownloadButton from "./buttons/downloadbutton";
+import RemoveButton from "./buttons/removebutton";
 function LibraryCard(props: {
   title: string;
   text: string;
@@ -31,10 +31,10 @@ function LibraryCard(props: {
     console.log(props);
     if (!props.sessionId || !bookmarked) return;
     setBookmarked(true);
-    await fetch('/api/bookmarks/delete/' + props.bookmarkId, {
-      method: 'delete',
+    await fetch("/api/bookmarks/delete/" + props.bookmarkId, {
+      method: "delete",
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
       },
     })
       .then(() => setRemoved(true))
@@ -47,7 +47,7 @@ function LibraryCard(props: {
   console.log(props);
   return (
     <>
-      <div className="flex h-full p-4 mb-4 flex-col gap-8 md:flex-row rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-fit">
+      <div className="flex h-full p-4 mb-4 flex-col gap-8 md:flex-row rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-full md:min-w-librarycard">
         <div className="flex-2 text-center md:text-left">
           <h5 className="text-2xl font-bold tracking-tight text-gray-900 mb-3">
             {props.title}
@@ -60,7 +60,7 @@ function LibraryCard(props: {
           <div className="flex-1">
             <a href={image} download="test">
               <img
-                src={image ? image : 'loader.gif'}
+                src={image ? image : "loader.gif"}
                 alt={props.title}
                 className="rounded-md shadow-md"
               />
@@ -98,7 +98,7 @@ function LibraryCard(props: {
                 </div>
                 <img
                   className="w-10 h-10 rounded-full border-gray-100 border-2"
-                  src={props.userImage ? props.userImage : 'generic_user.png'}
+                  src={props.userImage ? props.userImage : "generic_user.png"}
                 />
               </div>
             )}
