@@ -46,8 +46,8 @@ export default async function handler(
           res.body.pipe(writeStream);
         });
         console.log(newUrl);
+        res.status(200).send({ image: newUrl });
       });
-    res.status(200).send({ test: 'test' });
   } catch (error) {
     console.log('regenerate', error);
     res.status(500).send({ result: { error } });
