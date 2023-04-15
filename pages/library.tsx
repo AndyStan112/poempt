@@ -12,6 +12,7 @@ import LibraryCard from '../components/librarycard';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { Poem } from '../types';
+import { Spinner } from 'flowbite-react';
 
 const PublicLibrary: NextPage = () => {
   const [poems, setPoems] = useState<Poem[]>([]);
@@ -56,6 +57,12 @@ const PublicLibrary: NextPage = () => {
             Bookmark the ones you like, otherwise they&apos;ll be gone soon
           </p>
         </HeroBanner>
+        {session && loadingPoem && (
+          <div className="bg-white shadow-md p-3 flex flex-col gap-4 rounded-lg w-[200px] text-center mx-auto mb-6">
+            <p>Loading poems...</p>
+            <Spinner aria-label="Loading poems" color="success" size="xl" />
+          </div>
+        )}
         <div>
           {session &&
             poems &&

@@ -12,6 +12,7 @@ import { useSession } from 'next-auth/react';
 import Pagination from '../components/pagination';
 import { Bookmark } from '../types';
 import { GLOBAL_TAKE } from '../lib/constants';
+import { Spinner } from 'flowbite-react';
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [total, setTotal] = useState(2);
@@ -57,12 +58,19 @@ const Bookmarks = () => {
             Your bookmarked poems go here
           </p>
         </HeroBanner>
-        <Pagination
-          take={GLOBAL_TAKE}
-          skip={skip}
-          total={total}
-          router={router}
-        ></Pagination>
+        {loadingPoem ? (
+          <div className="bg-white shadow-md p-3 flex flex-col gap-4 rounded-lg w-[200px] text-center mx-auto mb-6">
+            <p>Loading poems...</p>
+            <Spinner aria-label="Loading poems" color="success" size="xl" />
+          </div>
+        ) : (
+          <Pagination
+            take={GLOBAL_TAKE}
+            skip={skip}
+            total={total}
+            router={router}
+          ></Pagination>
+        )}
         <div>
           {session !== null &&
             bookmarks.map(({ poem, id }) => {
@@ -84,12 +92,14 @@ const Bookmarks = () => {
               );
             })}
         </div>
-        <Pagination
-          take={GLOBAL_TAKE}
-          skip={skip}
-          total={total}
-          router={router}
-        ></Pagination>
+        {!loadingPoem && (
+          <Pagination
+            take={GLOBAL_TAKE}
+            skip={skip}
+            total={total}
+            router={router}
+          ></Pagination>
+        )}
       </MainPage>
       <MainFooter />
     </>
