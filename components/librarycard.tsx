@@ -1,15 +1,11 @@
 /* eslint-disable jsx-a11y/alt-text */
-
-import { Button, Select } from 'flowbite-react';
-import { Icon } from '@iconify/react';
-import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
 /* eslint-disable @next/next/no-img-element */
+import { useState } from 'react';
 import BookmarkButton from './buttons/bookmarkbutton';
-import { Poem } from '../types';
 import RegenerateButton from './buttons/regeneratebutton';
 import DownloadButton from './buttons/downloadbutton';
 import RemoveButton from './buttons/removebutton';
+
 function LibraryCard(props: {
   title: string;
   text: string;
@@ -48,8 +44,8 @@ function LibraryCard(props: {
   // console.log(props);
   return (
     <>
-      <div className="flex h-full p-4 mb-4 flex-col gap-8 md:flex-row rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-full md:w-0 md:min-w-librarycard">
-        <div className="flex-2 text-center md:text-left">
+      <div className="flex h-full p-4 mb-4 flex-col gap-4 md:flex-row rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-full md:w-0 md:min-w-librarycard">
+        <div className="flex-1 text-center md:text-left">
           <h5 className="text-2xl font-bold tracking-tight text-gray-900 mb-3">
             {props.title}
           </h5>
@@ -57,14 +53,14 @@ function LibraryCard(props: {
             {props.text}
           </p>
         </div>
-        <div className="flex flex-1 flex-col gap-2 justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
-          <div className="flex-1">
-            <img
-              src={image ? image : 'loader.gif'}
-              alt={props.title}
-              className="rounded-md shadow-md"
-            />
-            <div className="flex flex-row justify-center gap-2 my-2 w-full">
+        <div className="flex flex-0 flex-col w-[256px] gap-3 justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
+          <img
+            src={image ? image : 'loader.gif'}
+            alt={props.title}
+            className="w-[256px] h-[256px] rounded-md shadow-md"
+          />
+          <div className="flex-1 w-full flex-col items-center">
+            <div className="flex flex-row justify-center gap-2 w-full">
               {props.creatorId &&
                 props.sessionId &&
                 props.creatorId === props.sessionId && (
