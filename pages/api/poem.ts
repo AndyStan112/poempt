@@ -47,23 +47,23 @@ export default async function handler(
         data.stanzaStyle +
         ' poem in the ' +
         data.writingStyle +
-        ' style, based on the following subject: ' +
-        data.subject +
+        ' style, based on the following keywords: ' +
+        data.keywords +
         '.';
     }
 
     console.log('Prompt: "' + prompt + '"');
 
-    const poemCompletion = await openai.createCompletion({
-      model: 'text-davinci-003',
-      prompt: prompt,
+    const poemCompletion = await openai.createChatCompletion({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: prompt }],
       temperature: 0.5,
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0,
       max_tokens: 256,
     });
-    const response = poemCompletion.data.choices[0].text || '';
+    const response = poemCompletion.data.choices[0].message?.content || '';
 
     console.log('Response: "' + response + '"');
 
