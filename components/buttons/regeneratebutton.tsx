@@ -28,7 +28,7 @@ const RegenerateButton: FC<{
   return (
     <Button onClick={regenerate} size="undefined" className="p-2.5">
       <Icon icon="fluent:arrow-sync-20-regular" width="20" className="mr-1" />
-      <span>Redraw picture</span>
+      <span>Redraw</span>
     </Button>
   );
 };
