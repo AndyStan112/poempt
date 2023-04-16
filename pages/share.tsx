@@ -15,7 +15,6 @@ import { Spinner } from "flowbite-react";
 const SharedPoem: NextPage = () => {
   const [poem, setPoem] = useState<Poem>();
   const [loading, setLoading] = useState(false);
-  const [total, setTotal] = useState(2);
   const { data: session } = useSession();
 
   const router = useRouter();
@@ -38,7 +37,6 @@ const SharedPoem: NextPage = () => {
       .then((data) => {
         console.log(data.poem);
         setPoem(data.poem);
-        setTotal(data.total);
         setLoading(false);
       })
       .catch((e) => console.log(e));
