@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import { Button, Card } from "flowbite-react";
 import MainNavbar from "../components/navbar";
 import MainPage from "../components/page";
-import Waves from "../waves";
+import Waves from "../components/waves";
 import HeroBanner from "../components/herobanner";
 import MainFooter from "../components/footer";
 import Link from "next/link";

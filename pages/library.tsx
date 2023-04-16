@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import MainNavbar from "../components/navbar";
 import MainPage from "../components/page";
-import Waves from "../waves";
+import Waves from "../components/waves";
 import { useSetAtom } from "jotai";
 import { showLoginModalAtom } from "../lib/atoms";
 import HeroBanner from "../components/herobanner";

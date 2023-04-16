@@ -11,7 +11,7 @@ import {
 import MainNavbar from "../components/navbar";
 import MainPage from "../components/page";
 import PoemCard from "../components/poemcard";
-import Waves from "../waves";
+import Waves from "../components/waves";
 import HeroBanner from "../components/herobanner";
 import MainFooter from "../components/footer";
 import { useState } from "react";
