@@ -10,8 +10,7 @@
     rgba(84, 58, 183, 1) 0%,
     rgba(0, 172, 193, 1) 100%
   );
-  filter: hue-rotate(var(--waves-hue-val));
-  transition: filter 5s;
+  filter: hue-rotate(280deg);
 }
 
 .waves {

@@ -1,6 +1,5 @@
-function Waves(props: { hue: number; animate?: boolean; height: string }) {
+function Waves(props: { animate?: boolean; height: string }) {
   const style = {
-    "--waves-hue-val": props.hue + "deg",
     "--waves-anim-state": props.animate ? "running" : "paused",
     "--waves-height": props.height,
   } as React.CSSProperties;
