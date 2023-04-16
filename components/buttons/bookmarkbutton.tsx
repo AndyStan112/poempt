@@ -8,7 +8,7 @@ const BookmarkButton: FC<{
   sessionId: string;
   poemId: string;
   bookmarked: boolean | undefined;
-  buttonType: string | undefined;
+  buttonType: string;
 }> = ({ setBookmarked, sessionId, poemId, bookmarked, buttonType }) => {
   const getBookmarked = (sessionId: string, poemId: string) => {
     return fetch('api/bookmarks/get/bookmarked/' + sessionId, {
@@ -46,30 +46,51 @@ const BookmarkButton: FC<{
       });
   }, [sessionId]);
   return (
-    <Tooltip
-      content={bookmarked ? 'Bookmarked' : 'Bookmark this poem'}
-      style="light"
-      placement="bottom"
-    >
-      <Button
-        size={buttonType == 'full' ? 'sm' : 'undefined'}
-        color="light"
-        onClick={bookmark}
-        disabled={bookmarked}
-        className={buttonType == 'full' ? 'w-full' : 'p-2.5'}
-      >
-        <Icon
-          icon={
-            bookmarked
-              ? 'fluent:bookmark-20-filled'
-              : 'fluent:bookmark-add-20-regular'
-          }
-          width="20"
-          className={buttonType == 'full' ? 'mr-1' : ''}
-        />
-        {buttonType == 'full' && (bookmarked ? 'Bookmarked' : 'Bookmark')}
-      </Button>
-    </Tooltip>
+    <>
+      {buttonType == 'full' ? (
+        <Button
+          size="sm"
+          color="light"
+          onClick={bookmark}
+          disabled={bookmarked}
+          className="w-full"
+        >
+          <Icon
+            icon={
+              bookmarked
+                ? 'fluent:bookmark-20-filled'
+                : 'fluent:bookmark-add-20-regular'
+            }
+            width="20"
+            className="mr-1"
+          />
+          {bookmarked ? 'Bookmarked' : 'Bookmark'}
+        </Button>
+      ) : (
+        <Tooltip
+          content={bookmarked ? 'Bookmarked' : 'Bookmark this poem'}
+          style="light"
+          placement="bottom"
+        >
+          <Button
+            size="undefined"
+            color="light"
+            onClick={bookmark}
+            disabled={bookmarked}
+            className="p-2.5"
+          >
+            <Icon
+              icon={
+                bookmarked
+                  ? 'fluent:bookmark-20-filled'
+                  : 'fluent:bookmark-add-20-regular'
+              }
+              width="20"
+            />
+          </Button>
+        </Tooltip>
+      )}
+    </>
   );
 };
 
