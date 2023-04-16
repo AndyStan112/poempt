@@ -8,17 +8,17 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    let prompt = "make a poem";
+    let prompt = "";
     const data = req.body;
     console.log(data);
-    const keywords = keyword_extractor
-      .extract(data.subject, {
-        language: "english",
-        remove_digits: true,
-        return_changed_case: false,
-        remove_duplicates: true,
-      })
-      .join(",");
+    // const keywords = keyword_extractor
+    //   .extract(data.subject, {
+    //     language: "english",
+    //     remove_digits: true,
+    //     return_changed_case: false,
+    //     remove_duplicates: true,
+    //   })
+    //   .join(",");
 
     if (data.stanzaStyle == stanzaStyles[0]) {
       prompt =
@@ -32,9 +32,8 @@ export default async function handler(
         data.rhyme +
         " and " +
         data.verses +
-        " lines per stanza, based on the following keywords: " +
-        keywords +
-        " .";
+        " lines per stanza, based on the following subject: " +
+        data.subject;
     } else {
       prompt =
         "Write a title and verses for a " +
@@ -44,18 +43,17 @@ export default async function handler(
         " poem in the " +
         data.writingStyle +
         " style, based on the following keywords: " +
-        data.keywords +
-        ".";
+        data.subject;
     }
 
-    console.log('Prompt: "' + prompt + '"');
+    // console.log('Prompt: "' + prompt + '"');
 
     const poemCompletion = await getPoemCompletion(
       data.model || "gpt-3.5-turbo",
       prompt
     );
 
-    console.log('Response: "' + poemCompletion + '"');
+    // console.log('Response: "' + poemCompletion + '"');
 
     const title = poemCompletion
       .replace(/(\btitle\b|\btitlu\b|:|")/gi, "")
@@ -67,9 +65,9 @@ export default async function handler(
       .split("\n")
       .filter((e) => !e.toLowerCase().startsWith("verse"));
     verseArray.splice(0, 1);
-    const poem = verseArray.join("\n");
+    const poem = verseArray.join("\n").replace(/^[\n\r]+/, "");
 
-    console.log(title, poem);
+    // console.log(title, poem);
     res.status(200).send({ title: title, poem: poem });
   } catch (error) {
     console.log(error);
