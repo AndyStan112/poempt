@@ -1,46 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Configuration, OpenAIApi } from "openai";
 import keyword_extractor from "keyword-extractor";
 import { stanzaStyles } from "../../../lib/constants";
-type PoemCompletionResponse = {
-  model: "text-davinci-003" | "gpt-3.5-turbo";
-  poem: string;
-};
-const configuration = new Configuration({
-  apiKey: process.env.GPT,
-});
-const openai = new OpenAIApi(configuration);
-const getPoemCompletion = async (
-  model: string,
-  prompt: string
-): Promise<string> => {
-  if (model === "gpt-3.5-turbo") {
-    const poemCompletion = await openai.createChatCompletion({
-      model,
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.5,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      max_tokens: 256,
-    });
-
-    return poemCompletion.data.choices[0].message?.content || "";
-  } else {
-    const poemCompletion = await openai.createCompletion({
-      model: model,
-      prompt: prompt,
-      temperature: 0.5,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      max_tokens: 256,
-    });
-
-    return poemCompletion.data.choices[0].text || "";
-  }
-};
+import { getPoemCompletion } from "../../../lib/util";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
