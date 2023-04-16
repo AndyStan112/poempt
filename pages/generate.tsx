@@ -228,9 +228,10 @@ const Generate: NextPage = () => {
   };
   // #endregion
 
-  const style1 =
+  // console.log(session);
+
+  const inputBoxStyle =
     "transition duration-700 ease-in-out flex flex-col p-5 mb-4 rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto sm:w-full md:w-2/3 lg:w-1/2";
-  console.log(session);
 
   return (
     <>
@@ -253,8 +254,8 @@ const Generate: NextPage = () => {
             <div
               className={
                 poemShow
-                  ? style1 + " scale-y-0 opacity-0 -translate-y-1/2 h-0"
-                  : style1
+                  ? inputBoxStyle + " scale-y-0 opacity-0 -translate-y-1/2 h-0"
+                  : inputBoxStyle
               }
             >
               <h1 className="text-center text-2xl mb-2">
