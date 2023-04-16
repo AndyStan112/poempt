@@ -104,7 +104,7 @@ const Generate: NextPage = () => {
 
   // #region Generate form submit
   const handleSubmit1 = async (
-    e: React.FormEvent<HTMLFormElement>,
+    e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
     console.log(session, 'handle submit 1');
@@ -160,24 +160,24 @@ const Generate: NextPage = () => {
                       }
                       //console.log(data.poemId);
                       setPoemId(data.poemId);
-                    }),
+                    })
                   );
                 })
                 .catch((e) => {
                   console.log('sds');
                   console.log(e);
-                }),
+                })
             )
             .catch((e) => {
               console.log('imagine', e);
             });
-        }),
+        })
       )
       .catch((e) => console.log('getPoem', e));
   };
 
   const handleSubmit2 = async (
-    e: React.FormEvent<HTMLFormElement>,
+    e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
 
@@ -217,7 +217,7 @@ const Generate: NextPage = () => {
             setPoemImage(data.image);
             setLoadingImage(false);
             setLoadingPoem(false);
-          }),
+          })
         );
       });
   };
