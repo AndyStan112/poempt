@@ -1,9 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { GLOBAL_TAKE } from '../../../../lib/constants';
-import { default as prisma } from '../../../../lib/prismadb';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { GLOBAL_TAKE } from "../../../../lib/constants";
+import { default as prisma } from "../../../../lib/prismadb";
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) {
   try {
     const userId = req.query.userId as string;
@@ -17,6 +17,7 @@ export default async function handler(
         include: { poem: { include: { creator: true } } },
         take: GLOBAL_TAKE,
         skip,
+        orderBy: { poem: { createdAt: "desc" } },
       }),
     ]);
     const total = transaction[0];
@@ -24,6 +25,6 @@ export default async function handler(
     res.status(200).send({ bookmarks: bookmarks, total: total });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ result: 'error' });
+    res.status(500).send({ result: "error" });
   }
 }
