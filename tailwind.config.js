@@ -12,7 +12,7 @@ module.exports = {
       fullpage: 'calc(100vh - 210px)',
     },
     minWidth: {
-      librarycard: '640px',
+      librarycard: '680px',
     },
   },
   darkMode: 'class',
