@@ -10,8 +10,6 @@ import Link from "next/link";
 import { useSetAtom } from "jotai";
 
 const Home: NextPage = () => {
-  const setPoemShow = useSetAtom(poemShowAtom);
-
   return (
     <>
       <Waves hue={280} height="700px" />
