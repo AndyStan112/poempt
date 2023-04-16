@@ -1,8 +1,8 @@
 import MainNavbar from '../components/navbar';
 import MainPage from '../components/page';
 import Waves from '../waves';
-import { useAtom, useSetAtom } from 'jotai';
-import { loadingPoemAtom, showLoginModalAtom } from '../lib/atoms';
+import { useSetAtom } from 'jotai';
+import { showLoginModalAtom } from '../lib/atoms';
 import HeroBanner from '../components/herobanner';
 import MainFooter from '../components/footer';
 import { useState, useEffect, useMemo } from 'react';
@@ -16,7 +16,7 @@ import { Spinner } from 'flowbite-react';
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [total, setTotal] = useState(2);
-  const [loadingPoem, setLoadingPoem] = useAtom(loadingPoemAtom);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const skip = useMemo(() => Number(router.query.skip) || 0, [router.query]);
   const { data: session } = useSession();
@@ -24,7 +24,7 @@ const Bookmarks = () => {
 
   useEffect(() => {
     if (!session) return;
-    setLoadingPoem(true);
+    setLoading(true);
     console.log(`/api/bookmarks/get/` + session.id + `?skip=${skip}`);
     fetch(`/api/bookmarks/get/` + session.id + `?skip=${skip}`, {
       headers: {
@@ -36,7 +36,7 @@ const Bookmarks = () => {
         //console.log(data.poems);
         setBookmarks(data.bookmarks);
         setTotal(data.total);
-        setLoadingPoem(false);
+        setLoading(false);
       })
       .catch((e) => console.log(e));
   }, [session, skip]);
@@ -47,7 +47,7 @@ const Bookmarks = () => {
 
   return (
     <>
-      <Waves hue={280} height="500px" animate={loadingPoem} />
+      <Waves hue={280} height="500px" animate={loading} />
       <MainNavbar />
       <MainPage>
         <HeroBanner>
@@ -58,7 +58,7 @@ const Bookmarks = () => {
             Your bookmarked poems go here
           </p>
         </HeroBanner>
-        {loadingPoem ? (
+        {loading ? (
           <div className="bg-white shadow-md p-3 flex flex-col gap-4 rounded-lg w-[200px] text-center mx-auto mb-6">
             <p>Loading poems...</p>
             <Spinner aria-label="Loading poems" color="success" size="xl" />
@@ -73,7 +73,7 @@ const Bookmarks = () => {
         )}
         <div>
           {session !== null &&
-            !loadingPoem &&
+            !loading &&
             bookmarks.map(({ poem, id }) => {
               //console.log(poem);
               return (
@@ -93,7 +93,7 @@ const Bookmarks = () => {
               );
             })}
         </div>
-        {!loadingPoem && (
+        {!loading && (
           <Pagination
             take={GLOBAL_TAKE}
             skip={skip}
