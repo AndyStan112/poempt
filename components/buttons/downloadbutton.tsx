@@ -1,15 +1,14 @@
-import { Icon } from '@iconify/react';
-import { FC, useEffect, useState } from 'react';
-import { Button, Tooltip } from 'flowbite-react';
+import { Icon } from "@iconify/react";
+import { FC, useEffect, useState } from "react";
+import { Button, Tooltip } from "flowbite-react";
 const DownloadButton: FC<{ imageUrl: string }> = ({ imageUrl }) => {
-  const download = () => {};
   const [url, setUrl] = useState();
   useEffect(() => {
-    fetch('/api/download', {
+    fetch("/api/download", {
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
       },
-      method: 'post',
+      method: "post",
       body: JSON.stringify({
         imageUrl,
       }),
@@ -18,7 +17,7 @@ const DownloadButton: FC<{ imageUrl: string }> = ({ imageUrl }) => {
       .then((data) => {
         setUrl(data.downloadUrl);
       });
-  }, []);
+  }, [imageUrl]);
   return (
     <Tooltip content="Download the image" style="light" placement="bottom">
       <a href={url} download>
