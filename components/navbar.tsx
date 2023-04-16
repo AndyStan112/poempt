@@ -38,14 +38,14 @@ function MainNavbar() {
               </div>
 
               <Tooltip content="Sign out" style="light" placement="bottom">
-                <Button
-                  color="gray"
-                  size="xs"
-                  className="opacity-80 hover:opacity-100 transition-all"
-                  onClick={() => signOut()}
+                <button
+                  onClick={() => {
+                    signOut();
+                  }}
+                  className="p-2 rounded-full  transition-colors"
                 >
-                  <Icon icon="fluent:door-arrow-left-24-regular" width="24" />
-                </Button>
+                  <Icon icon="fluent:sign-out-20-regular" width="36" />
+                </button>
               </Tooltip>
             </>
           ) : (
