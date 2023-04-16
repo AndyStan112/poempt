@@ -2,13 +2,12 @@
 import { Navbar, Button, Tooltip } from 'flowbite-react';
 import Link from 'next/link';
 import { useSetAtom } from 'jotai';
-import { poemShowAtom, showLoginModalAtom } from '../lib/atoms';
+import { showLoginModalAtom } from '../lib/atoms';
 import { useSession, signOut } from 'next-auth/react';
 import { Icon } from '@iconify/react';
 
 function MainNavbar() {
   const setShowLoginModal = useSetAtom(showLoginModalAtom);
-  const setPoemShow = useSetAtom(poemShowAtom);
 
   const { data: session, status } = useSession();
 
@@ -22,10 +21,10 @@ function MainNavbar() {
           PoemPT
         </Link>
         <div className="flex md:order-2 gap-2 items-center justify-end md:w-1/6">
-          {status === 'authenticated' ? (
-            <>
-              <div className="flex flex-row gap-2">
-                <span className="pt-2 pr-2">{session.user?.name}</span>
+          <div className="flex flex-row gap-2 items-center">
+            {status === 'authenticated' ? (
+              <>
+                <span>{session.user?.name}</span>
                 <img
                   className="w-10 h-10 rounded-full border-gray-100 border-2"
                   src={
@@ -35,42 +34,37 @@ function MainNavbar() {
                   }
                   alt="PFP"
                 />
-              </div>
-
-              <Tooltip content="Sign out" style="light" placement="bottom">
+                <Tooltip content="Sign out" style="light" placement="bottom">
+                  <Button
+                    color="undefined"
+                    size="undefined"
+                    onClick={() => {
+                      signOut();
+                    }}
+                  >
+                    <Icon icon="fluent:sign-out-20-regular" width="36" />
+                  </Button>
+                </Tooltip>
+              </>
+            ) : (
+              <Tooltip content="Sign in" style="light" placement="bottom">
                 <Button
                   color="undefined"
-                  size="xs"
-                  onClick={() => {
-                    signOut();
-                  }}
+                  size="undefined"
+                  onClick={() => setShowLoginModal(true)}
                 >
-                  <Icon icon="fluent:sign-out-20-regular" width="36" />
+                  <Icon icon="fluent:door-arrow-right-20-regular" width="36" />
                 </Button>
               </Tooltip>
-            </>
-          ) : (
-            <Tooltip content="Sign in" style="light" placement="bottom">
-              <Button
-                color="undefined"
-                size="xs"
-                onClick={() => setShowLoginModal(true)}
-              >
-                <Icon icon="fluent:door-arrow-right-20-regular" width="36" />
-              </Button>
-            </Tooltip>
-          )}
+            )}
+          </div>
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse className="gap-2">
           <Link href="/" className="!text-white py-2">
             Home
           </Link>
-          <Link
-            href="/generate"
-            className="py-2"
-            onClick={() => setPoemShow(false)}
-          >
+          <Link href="/generate" className="py-2">
             Generate a poem
           </Link>
           <Link href="/publicLibrary" className="!text-white py-2">
