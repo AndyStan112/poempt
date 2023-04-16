@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { NextPage } from "next";
 import {
   Accordion,
   Alert,
@@ -7,45 +7,45 @@ import {
   Tabs,
   TextInput,
   Textarea,
-} from 'flowbite-react';
-import MainNavbar from '../components/navbar';
-import MainPage from '../components/page';
-import PoemCard from '../components/poemcard';
-import Waves from '../waves';
-import HeroBanner from '../components/herobanner';
-import MainFooter from '../components/footer';
-import { useState } from 'react';
-import { Icon } from '@iconify/react';
-import { useSession } from 'next-auth/react';
-import BookmarkButton from '../components/buttons/bookmarkbutton';
-import { UserInput } from '../types';
+} from "flowbite-react";
+import MainNavbar from "../components/navbar";
+import MainPage from "../components/page";
+import PoemCard from "../components/poemcard";
+import Waves from "../waves";
+import HeroBanner from "../components/herobanner";
+import MainFooter from "../components/footer";
+import { useState } from "react";
+import { Icon } from "@iconify/react";
+import { useSession } from "next-auth/react";
+import BookmarkButton from "../components/buttons/bookmarkbutton";
+import { UserInput } from "../types";
 import {
   moods,
   stanzaCounts,
   stanzaRhymes,
   stanzaStyles,
   writingStyle,
-} from '../lib/constants';
+} from "../lib/constants";
 
 const Generate: NextPage = () => {
   const { data: session, status } = useSession();
 
   // Form value states
-  const [selectedWritingStyle, setSelectedWritingStyle] = useState('Modernist');
+  const [selectedWritingStyle, setSelectedWritingStyle] = useState("Modernist");
   const [selectedStanzaStyle, setSelectedStanzaStyle] = useState(0);
   const [selectedVerseCount, setSelectedVerseCount] = useState(3);
   const [selectedRhyme, setSelectedRhyme] = useState(0);
   const [selectedMood, setSelectedMood] = useState(3);
-  const [promptText, setPromptText] = useState<string>('');
-  const [poemPromptText, setPoemPromptText] = useState<string>('');
+  const [promptText, setPromptText] = useState<string>("");
+  const [poemPromptText, setPoemPromptText] = useState<string>("");
 
   // Poem request states
   const [requestError, setRequestError] = useState(false);
   const [poemShow, setPoemShow] = useState(false);
-  const [poemId, setPoemId] = useState('');
-  const [poemTitle, setPoemTitle] = useState('');
-  const [poemText, setPoemText] = useState('');
-  const [poemImage, setPoemImage] = useState('');
+  const [poemId, setPoemId] = useState("");
+  const [poemTitle, setPoemTitle] = useState("");
+  const [poemText, setPoemText] = useState("");
+  const [poemImage, setPoemImage] = useState("");
   const [loadingPoem, setLoadingPoem] = useState(false);
   const [loadingImage, setLoadingImage] = useState(false);
 
@@ -76,27 +76,27 @@ const Generate: NextPage = () => {
   const setGenerating = () => {
     setPoemShow(true);
     setLoadingPoem(true);
-    setPoemImage('loader.gif');
-    setPoemTitle('');
-    setPoemText('');
+    setPoemImage("loader.gif");
+    setPoemTitle("");
+    setPoemText("");
   };
 
   const getPoem = async (userInput: UserInput) => {
-    return fetch('/api/generate/poem', {
+    return fetch("/api/generate/poem", {
       body: JSON.stringify(userInput),
-      method: 'post',
+      method: "post",
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
       },
     });
   };
 
   const getImage = async (poem: string) => {
-    return fetch('/api/generate/image', {
+    return fetch("/api/generate/image", {
       body: JSON.stringify({ poem: poem }),
-      method: 'post',
+      method: "post",
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
       },
     });
   };
@@ -104,10 +104,10 @@ const Generate: NextPage = () => {
 
   // #region Generate form submit
   const handleSubmit1 = async (
-    e: React.FormEvent<HTMLFormElement>,
+    e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
-    console.log(session, 'handle submit 1');
+    console.log(session, "handle submit 1");
     setGenerating();
 
     const userInput: UserInput = {
@@ -142,14 +142,14 @@ const Generate: NextPage = () => {
                   setLoadingPoem(false);
                   const postData = { title, poem, image: data.image };
                   if (!session) {
-                    console.log('this is the actual issue');
-                    throw new Error('Session not found');
+                    console.log("this is the actual issue");
+                    throw new Error("Session not found");
                   }
-                  fetch('/api/poems/post/' + session.id, {
+                  fetch("/api/poems/post/" + session.id, {
                     body: JSON.stringify(postData),
-                    method: 'post',
+                    method: "post",
                     headers: {
-                      'content-type': 'application/json',
+                      "content-type": "application/json",
                     },
                   }).then((r) =>
                     r.json().then((data) => {
@@ -160,40 +160,40 @@ const Generate: NextPage = () => {
                       }
                       //console.log(data.poemId);
                       setPoemId(data.poemId);
-                    }),
+                    })
                   );
                 })
                 .catch((e) => {
-                  console.log('sds');
+                  console.log("sds");
                   console.log(e);
-                }),
+                })
             )
             .catch((e) => {
-              console.log('imagine', e);
+              console.log("imagine", e);
             });
-        }),
+        })
       )
-      .catch((e) => console.log('getPoem', e));
+      .catch((e) => console.log("getPoem", e));
   };
 
   const handleSubmit2 = async (
-    e: React.FormEvent<HTMLFormElement>,
+    e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
 
     setPoemShow(true);
     setLoadingPoem(true);
-    setPoemImage('loader.gif');
-    setPoemTitle('');
-    setPoemText('');
+    setPoemImage("loader.gif");
+    setPoemTitle("");
+    setPoemText("");
 
-    fetch('/api/generate/continuation', {
+    fetch("/api/generate/continuation", {
       body: JSON.stringify({
         poem: poemPromptText,
       }),
-      method: 'post',
+      method: "post",
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
       },
     })
       .then((r) => {
@@ -217,14 +217,14 @@ const Generate: NextPage = () => {
             setPoemImage(data.image);
             setLoadingImage(false);
             setLoadingPoem(false);
-          }),
+          })
         );
       });
   };
   // #endregion
 
   const style1 =
-    'transition duration-700 ease-in-out flex flex-col p-5 mb-4 rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto sm:w-full md:w-2/3 lg:w-1/2';
+    "transition duration-700 ease-in-out flex flex-col p-5 mb-4 rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto sm:w-full md:w-2/3 lg:w-1/2";
   console.log(session);
 
   return (
@@ -248,7 +248,7 @@ const Generate: NextPage = () => {
             <div
               className={
                 poemShow
-                  ? style1 + ' scale-y-0 opacity-0 -translate-y-1/2 h-0'
+                  ? style1 + " scale-y-0 opacity-0 -translate-y-1/2 h-0"
                   : style1
               }
             >
@@ -278,8 +278,8 @@ const Generate: NextPage = () => {
                               <Button
                                 color={
                                   selectedWritingStyle == name
-                                    ? 'success'
-                                    : 'light'
+                                    ? "success"
+                                    : "light"
                                 }
                                 className="w-full"
                                 key={name}
@@ -473,8 +473,8 @@ const Generate: NextPage = () => {
           <div
             className={
               !poemShow
-                ? 'transition duration-700 scale-y-0 opacity-0 -translate-y-1/2 h-0'
-                : 'transition duration-700'
+                ? "transition duration-700 scale-y-0 opacity-0 -translate-y-1/2 h-0"
+                : "transition duration-700"
             }
           >
             <PoemCard
@@ -482,14 +482,14 @@ const Generate: NextPage = () => {
               image={poemImage}
               text={poemText}
               userName={
-                status === 'authenticated' && session.user?.name
+                status === "authenticated" && session.user?.name
                   ? session.user?.name
-                  : 'Anonymous'
+                  : "Anonymous"
               }
               userImage={
-                status === 'authenticated' && session.user?.image
+                status === "authenticated" && session.user?.image
                   ? session.user?.image
-                  : ''
+                  : ""
               }
             />
             <div className="flex h-full p-2 mb-4 flex-col gap-2 rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-fit">
@@ -505,7 +505,7 @@ const Generate: NextPage = () => {
                           {voice.name}
                         </option>
                       ))
-                    : ''}
+                    : ""}
                 </Select>
                 <Button
                   size="undefined"
@@ -539,7 +539,7 @@ const Generate: NextPage = () => {
                 </Button>
                 <div className="flex grow">
                   <BookmarkButton
-                    sessionId={session ? session.id : ''}
+                    sessionId={session ? session.id : ""}
                     bookmarked={bookmarked}
                     setBookmarked={setBookmarked}
                     poemId={poemId}
