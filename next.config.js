@@ -9,6 +9,10 @@ const nextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  publicRuntimeConfig: {
+    // These variables are available on both server and client-side
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+  },
   experimental: {
     workerThreads: false,
     cpus: 1,
