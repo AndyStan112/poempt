@@ -9,3 +9,8 @@ export const extractIdFromUrl = (url: string | undefined): string | null => {
 };
 export const generateUrlFromId = (fileName: string): string =>
   'https://storage.googleapis.com/' + process.env.BUCKET_NAME! + '/' + fileName;
+
+export const sleep = (ms: number = 1000) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
