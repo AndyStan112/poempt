@@ -1,5 +1,6 @@
+import getConfig from "next/config";
 import { Icon } from "@iconify/react";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { Button, Tooltip } from "flowbite-react";
 
 const ShareButton: FC<{ poemId: string; poemTitle: string }> = ({
@@ -7,8 +8,10 @@ const ShareButton: FC<{ poemId: string; poemTitle: string }> = ({
   poemTitle,
 }) => {
   const [shareStatus, setShareStatus] = useState("Share this poem");
+  const { publicRuntimeConfig } = getConfig();
+
   const share = async () => {
-    const shareUrl = process.env.NEXTAUTH_URL + "/share?id=" + poemId;
+    const shareUrl = publicRuntimeConfig.NEXTAUTH_URL + "/share?id=" + poemId;
     console.log(shareUrl);
     if (navigator.share) {
       const shareData = {
