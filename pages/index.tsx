@@ -11,7 +11,7 @@ import Link from "next/link";
 const Home: NextPage = () => {
   return (
     <>
-      <Waves hue={280} height="700px" />
+      <Waves height="700px" />
       <MainNavbar />
       <MainPage>
         <HeroBanner>

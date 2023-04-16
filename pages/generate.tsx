@@ -134,7 +134,7 @@ const Generate: NextPage = () => {
           const { title, poem } = data;
 
           setPoemTitle(title);
-          setPoemText(poem.trim());
+          setPoemText(poem);
           setLoadingImage(true);
 
           await getImage(data.poem)
@@ -235,7 +235,7 @@ const Generate: NextPage = () => {
 
   return (
     <>
-      <Waves hue={280} height="500px" animate={loadingPoem} />
+      <Waves height="500px" animate={loadingPoem} />
       <MainNavbar />
       <MainPage>
         {!poemShow && (

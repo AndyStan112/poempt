@@ -44,7 +44,7 @@ const SharedPoem: NextPage = () => {
 
   return (
     <>
-      <Waves hue={280} height="500px" animate={loading} />
+      <Waves height="500px" animate={loading} />
       <MainNavbar />
       <MainPage>
         <HeroBanner>

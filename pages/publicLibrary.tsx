@@ -1,16 +1,16 @@
-import type { NextPage } from 'next';
-import MainNavbar from '../components/navbar';
-import MainPage from '../components/page';
-import Waves from '../waves';
-import HeroBanner from '../components/herobanner';
-import MainFooter from '../components/footer';
-import { useMemo, useState, useEffect } from 'react';
-import LibraryCard from '../components/librarycard';
-import { useRouter } from 'next/router';
-import Pagination from '../components/pagination';
-import { useSession } from 'next-auth/react';
-import { Poem } from '../types/index';
-import { Spinner } from 'flowbite-react';
+import type { NextPage } from "next";
+import MainNavbar from "../components/navbar";
+import MainPage from "../components/page";
+import Waves from "../waves";
+import HeroBanner from "../components/herobanner";
+import MainFooter from "../components/footer";
+import { useMemo, useState, useEffect } from "react";
+import LibraryCard from "../components/librarycard";
+import { useRouter } from "next/router";
+import Pagination from "../components/pagination";
+import { useSession } from "next-auth/react";
+import { Poem } from "../types/index";
+import { Spinner } from "flowbite-react";
 const PublicLibrary: NextPage = () => {
   const [poems, setPoems] = useState<Poem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -27,7 +27,7 @@ const PublicLibrary: NextPage = () => {
     setLoading(true);
     fetch(`/api/poems/get/all?skip=${skip}`, {
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
       },
     })
       .then((r) => r.json())
@@ -42,7 +42,7 @@ const PublicLibrary: NextPage = () => {
 
   return (
     <>
-      <Waves hue={280} height="500px" animate={loading} />
+      <Waves height="500px" animate={loading} />
       <MainNavbar />
       <MainPage>
         <HeroBanner>
