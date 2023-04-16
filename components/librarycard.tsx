@@ -22,11 +22,11 @@ function LibraryCard(props: {
   bookmarkId?: string;
   creatorId?: string;
 }) {
-  console.log(props.poemId);
+  // console.log(props.poemId);
   const [bookmarked, setBookmarked] = useState(true);
   const [removed, setRemoved] = useState(false);
   const [image, setImage] = useState(props.poemImage);
-  console.log(removed);
+  // console.log(removed);
 
   const remove = async () => {
     console.log(props);
@@ -45,7 +45,7 @@ function LibraryCard(props: {
       });
   };
 
-  console.log(props);
+  // console.log(props);
   return (
     <>
       <div className="flex h-full p-4 mb-4 flex-col gap-8 md:flex-row rounded-xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 mx-auto w-full md:w-0 md:min-w-librarycard">
