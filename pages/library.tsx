@@ -2,8 +2,8 @@ import type { NextPage } from 'next';
 import MainNavbar from '../components/navbar';
 import MainPage from '../components/page';
 import Waves from '../waves';
-import { useAtom, useSetAtom } from 'jotai';
-import { loadingPoemAtom, showLoginModalAtom } from '../lib/atoms';
+import { useSetAtom } from 'jotai';
+import { showLoginModalAtom } from '../lib/atoms';
 import HeroBanner from '../components/herobanner';
 import MainFooter from '../components/footer';
 import { useState } from 'react';
@@ -16,14 +16,14 @@ import { Spinner } from 'flowbite-react';
 
 const PublicLibrary: NextPage = () => {
   const [poems, setPoems] = useState<Poem[]>([]);
-  const [loadingPoem, setLoadingPoem] = useAtom(loadingPoemAtom);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { data: session, status } = useSession();
   const openLoginModal = useSetAtom(showLoginModalAtom);
   console.log(router);
   useEffect(() => {
     if (status !== 'authenticated') return;
-    setLoadingPoem(true);
+    setLoading(true);
     fetch('/api/poems/get/u/' + session.id, {
       headers: {
         'content-type': 'application/json',
@@ -33,7 +33,7 @@ const PublicLibrary: NextPage = () => {
       .then((data) => {
         //console.log(data.poems);
         setPoems(data.poems);
-        setLoadingPoem(false);
+        setLoading(false);
       })
       .catch((e) => console.log(e));
   }, [status]);
@@ -44,7 +44,7 @@ const PublicLibrary: NextPage = () => {
 
   return (
     <>
-      <Waves hue={280} height="500px" animate={loadingPoem} />
+      <Waves hue={280} height="500px" animate={loading} />
       <MainNavbar />
       <MainPage>
         <HeroBanner>
@@ -57,7 +57,7 @@ const PublicLibrary: NextPage = () => {
             Bookmark the ones you like, otherwise they&apos;ll be gone soon
           </p>
         </HeroBanner>
-        {session && loadingPoem && (
+        {session && loading && (
           <div className="bg-white shadow-md p-3 flex flex-col gap-4 rounded-lg w-[200px] text-center mx-auto mb-6">
             <p>Loading poems...</p>
             <Spinner aria-label="Loading poems" color="success" size="xl" />
@@ -65,7 +65,7 @@ const PublicLibrary: NextPage = () => {
         )}
         <div>
           {session &&
-            !loadingPoem &&
+            !loading &&
             poems &&
             poems.map((poem, i) => {
               console.log(poem);
