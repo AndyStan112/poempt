@@ -38,25 +38,25 @@ function MainNavbar() {
               </div>
 
               <Tooltip content="Sign out" style="light" placement="bottom">
-                <button
+                <Button
+                  color="undefined"
+                  size="xs"
                   onClick={() => {
                     signOut();
                   }}
-                  className="p-2 rounded-full  transition-colors"
                 >
                   <Icon icon="fluent:sign-out-20-regular" width="36" />
-                </button>
+                </Button>
               </Tooltip>
             </>
           ) : (
             <Tooltip content="Sign in" style="light" placement="bottom">
               <Button
-                color="ga"
+                color="undefined"
                 size="xs"
-                className="opacity-80 hover:opacity-100 transition-all"
                 onClick={() => setShowLoginModal(true)}
               >
-                <Icon icon="fluent:door-arrow-right-28-regular" width="24" />
+                <Icon icon="fluent:door-arrow-right-20-regular" width="36" />
               </Button>
             </Tooltip>
           )}
