@@ -15,14 +15,22 @@ import { Poem } from "../types";
 import { Spinner } from "flowbite-react";
 
 const PublicLibrary: NextPage = () => {
+  const openLoginModal = useSetAtom(showLoginModalAtom);
+
   const [poems, setPoems] = useState<Poem[]>([]);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+
   const { data: session, status } = useSession();
-  const openLoginModal = useSetAtom(showLoginModalAtom);
+
+  const router = useRouter();
   console.log(router);
+
   useEffect(() => {
-    if (status !== "authenticated") return;
+    if (session === null) openLoginModal(true);
+  });
+
+  useEffect(() => {
+    if (status !== "authenticated" || !session) return;
     setLoading(true);
     fetch("/api/poems/get/u/" + session.id, {
       headers: {
@@ -36,11 +44,7 @@ const PublicLibrary: NextPage = () => {
         setLoading(false);
       })
       .catch((e) => console.log(e));
-  }, [status]);
-
-  useEffect(() => {
-    if (session === null) openLoginModal(true);
-  });
+  }, [session, status]);
 
   return (
     <>
