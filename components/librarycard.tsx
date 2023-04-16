@@ -54,7 +54,7 @@ function LibraryCard(props: {
             {props.text}
           </p>
         </div>
-        <div className="flex flex-0 flex-col w-[256px] gap-3 justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
+        <div className="flex flex-0 flex-col md:w-[256px] gap-3 justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
           <img
             src={image ? image : "loader.gif"}
             alt={props.title}
@@ -103,7 +103,7 @@ function LibraryCard(props: {
                 />
               </div>
             )}
-            <p className="text-right">
+            <p className="text-center md:text-right">
               Made with <span className="text-lg text-gray-400">PoemPT</span>
             </p>
           </div>
