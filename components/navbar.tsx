@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import { Navbar, Button, Tooltip } from 'flowbite-react';
-import Link from 'next/link';
-import { useSetAtom } from 'jotai';
-import { showLoginModalAtom } from '../lib/atoms';
-import { useSession, signOut } from 'next-auth/react';
-import { Icon } from '@iconify/react';
+import { Navbar, Button, Tooltip } from "flowbite-react";
+import Link from "next/link";
+import { useSetAtom } from "jotai";
+import { showLoginModalAtom } from "../lib/atoms";
+import { useSession, signOut } from "next-auth/react";
+import { Icon } from "@iconify/react";
 
 function MainNavbar() {
   const setShowLoginModal = useSetAtom(showLoginModalAtom);
@@ -16,21 +16,21 @@ function MainNavbar() {
       <Navbar className="sticky !bg-transparent !text-white drop-shadow-md">
         <Link
           href="/"
-          className="self-center whitespace-nowrap text-3xl font-semibold md:w-1/6"
+          className="self-center whitespace-nowrap text-3xl font-semibold md:w-1/5 lg:w-1/4"
         >
           PoemPT
         </Link>
-        <div className="flex md:order-2 gap-2 items-center justify-end md:w-1/6">
+        <div className="flex md:order-2 gap-2 items-center justify-end md:w-1/5 lg:w-1/4">
           <div className="flex flex-row gap-2 items-center">
-            {status === 'authenticated' ? (
+            {status === "authenticated" ? (
               <>
-                <span>{session.user?.name}</span>
+                <span className="text-right">{session.user?.name}</span>
                 <img
                   className="w-10 h-10 rounded-full border-gray-100 border-2"
                   src={
                     session.user?.image
                       ? session.user?.image
-                      : 'generic_user.png'
+                      : "generic_user.png"
                   }
                   alt="PFP"
                 />
