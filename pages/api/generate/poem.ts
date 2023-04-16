@@ -65,7 +65,10 @@ export default async function handler(
       .split("\n")
       .filter((e) => !e.toLowerCase().startsWith("verse"));
     verseArray.splice(0, 1);
-    const poem = verseArray.join("\n").replace(/^[\n\r]+/, "");
+    const poem = verseArray
+      .join("\n")
+      .replace(/^[\n\r]+/, "")
+      .trim();
 
     // console.log(title, poem);
     res.status(200).send({ title: title, poem: poem });
