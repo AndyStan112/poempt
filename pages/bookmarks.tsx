@@ -73,6 +73,7 @@ const Bookmarks = () => {
         )}
         <div>
           {session !== null &&
+            !loadingPoem &&
             bookmarks.map(({ poem, id }) => {
               //console.log(poem);
               return (

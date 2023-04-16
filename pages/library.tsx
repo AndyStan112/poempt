@@ -65,6 +65,7 @@ const PublicLibrary: NextPage = () => {
         )}
         <div>
           {session &&
+            !loadingPoem &&
             poems &&
             poems.map((poem, i) => {
               console.log(poem);
