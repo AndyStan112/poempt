@@ -1,4 +1,5 @@
 export type UserInput = {
+  model: string;
   subject: string;
   writingStyle: string;
   stanzaStyle: string;
@@ -23,4 +24,4 @@ export type Poem = {
     image: string;
   };
 };
-export type status = 'loading' | 'authenticated' | 'unauthenticated';
+export type status = "loading" | "authenticated" | "unauthenticated";
