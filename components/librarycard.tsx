@@ -64,7 +64,7 @@ function LibraryCard(props: {
               alt={props.title}
               className="rounded-md shadow-md"
             />
-            <div className="flex flex-row justify-end gap-2 my-2 w-full">
+            <div className="flex flex-row justify-center gap-2 my-2 w-full">
               {props.creatorId &&
                 props.sessionId &&
                 props.creatorId === props.sessionId && (
