@@ -14,3 +14,5 @@ export const sleep = (ms: number = 1000) =>
   new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
+export const isEmpty = (obj: Record<string, any>): boolean =>
+  Object.keys(obj).length === 0 && obj.constructor === Object;
