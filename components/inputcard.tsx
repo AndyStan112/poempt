@@ -30,7 +30,7 @@ import { UserInput } from '../types';
 import { Icon } from '@iconify/react';
 
 const getImage = async (poem: string) => {
-  return fetch('/api/image', {
+  return fetch('/api/generate/image', {
     body: JSON.stringify({ poem: poem }),
     method: 'post',
     headers: {
@@ -67,7 +67,7 @@ function InputCard() {
     setPoemText('');
   };
   const getPoem = async (userInput: UserInput) => {
-    return fetch('/api/poem', {
+    return fetch('/api/generate/poem', {
       body: JSON.stringify(userInput),
       method: 'post',
       headers: {
@@ -77,7 +77,7 @@ function InputCard() {
   };
 
   const handleSubmit1 = async (
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
     console.log(session, 'handle submit 1');
@@ -133,24 +133,24 @@ function InputCard() {
                       }
                       //console.log(data.poemId);
                       setPoemId(data.poemId);
-                    })
+                    }),
                   );
                 })
                 .catch((e) => {
                   console.log('sds');
                   console.log(e);
-                })
+                }),
             )
             .catch((e) => {
               console.log('imagine', e);
             });
-        })
+        }),
       )
       .catch((e) => console.log('getPoem', e));
   };
 
   const handleSubmit2 = async (
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
 
@@ -160,7 +160,7 @@ function InputCard() {
     setPoemTitle('');
     setPoemText('');
 
-    fetch('/api/continuation', {
+    fetch('/api/generate/continuation', {
       body: JSON.stringify({
         poem: poemPromptText,
       }),
@@ -186,9 +186,9 @@ function InputCard() {
             setPoemImage(data.image);
             setLoadingImage(false);
             setLoadingPoem(false);
-          })
+          }),
         );
-      })
+      }),
     );
   };
 

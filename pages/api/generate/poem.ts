@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Configuration, OpenAIApi } from 'openai';
 import keyword_extractor from 'keyword-extractor';
-import { stanzaStyles } from '../../lib/constants';
+import { stanzaStyles } from '../../../lib/constants';
 const configuration = new Configuration({
   apiKey: process.env.GPT,
 });
