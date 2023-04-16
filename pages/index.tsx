@@ -7,7 +7,6 @@ import Waves from "../waves";
 import HeroBanner from "../components/herobanner";
 import MainFooter from "../components/footer";
 import Link from "next/link";
-import { useSetAtom } from "jotai";
 
 const Home: NextPage = () => {
   return (
