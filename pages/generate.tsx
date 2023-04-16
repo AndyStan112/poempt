@@ -25,6 +25,7 @@ import {
   stanzaRhymes,
   stanzaStyles,
   writingStyle,
+  generativeModels,
 } from "../lib/constants";
 
 const Generate: NextPage = () => {
@@ -38,6 +39,9 @@ const Generate: NextPage = () => {
   const [selectedMood, setSelectedMood] = useState(3);
   const [promptText, setPromptText] = useState<string>("");
   const [poemPromptText, setPoemPromptText] = useState<string>("");
+  const [selectedModel, setSelectedModel] = useState<string>(
+    generativeModels[0][0]
+  );
 
   // Poem request states
   const [requestError, setRequestError] = useState(false);
@@ -111,6 +115,7 @@ const Generate: NextPage = () => {
     setGenerating();
 
     const userInput: UserInput = {
+      model: selectedModel,
       subject: promptText,
       writingStyle: selectedWritingStyle,
       stanzaStyle: stanzaStyles[selectedStanzaStyle],
@@ -273,41 +278,45 @@ const Generate: NextPage = () => {
                       <Accordion.Panel>
                         <Accordion.Title>Writing style</Accordion.Title>
                         <Accordion.Content>
-                          <div className="grid grid-cols-3 gap-2 mb-4">
-                            {writingStyle.map((name) => (
-                              <Button
-                                color={
-                                  selectedWritingStyle == name
-                                    ? "success"
-                                    : "light"
-                                }
-                                className="w-full"
-                                key={name}
-                                onClick={() => {
-                                  setSelectedWritingStyle(name);
+                          <div className="flex flex-col gap-4">
+                            <div className="grid grid-cols-3 gap-2">
+                              {writingStyle.map((name) => (
+                                <Button
+                                  color={
+                                    selectedWritingStyle == name
+                                      ? "success"
+                                      : "light"
+                                  }
+                                  className="w-full"
+                                  key={name}
+                                  onClick={() => {
+                                    setSelectedWritingStyle(name);
+                                  }}
+                                >
+                                  {name}
+                                </Button>
+                              ))}
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <label>Poem style</label>
+                              <Select
+                                id="stanzaStyle"
+                                name="stanzaStyle"
+                                className="w-full mb-2"
+                                value={selectedStanzaStyle}
+                                onChange={(e) => {
+                                  setSelectedStanzaStyle(
+                                    Number(e.target.value)
+                                  );
                                 }}
                               >
-                                {name}
-                              </Button>
-                            ))}
-                          </div>
-                          <div className="flex flex-col gap-1">
-                            <label>Poem style</label>
-                            <Select
-                              id="stanzaStyle"
-                              name="stanzaStyle"
-                              className="w-full mb-2"
-                              value={selectedStanzaStyle}
-                              onChange={(e) => {
-                                setSelectedStanzaStyle(Number(e.target.value));
-                              }}
-                            >
-                              {stanzaStyles.map((name, index) => (
-                                <option key={index} value={index}>
-                                  {name}
-                                </option>
-                              ))}
-                            </Select>
+                                {stanzaStyles.map((name, index) => (
+                                  <option key={index} value={index}>
+                                    {name}
+                                  </option>
+                                ))}
+                              </Select>
+                            </div>
                           </div>
                         </Accordion.Content>
                       </Accordion.Panel>
@@ -315,42 +324,46 @@ const Generate: NextPage = () => {
                       <Accordion.Panel>
                         <Accordion.Title>Structure and rhyme</Accordion.Title>
                         <Accordion.Content>
-                          <div className="flex gap-4 mb-2 flex-col md:flex-row">
-                            <div className="flex-1 flex flex-col gap-1">
-                              <label>Verse count</label>
-                              <Select
-                                id="stanzaCount"
-                                name="stanzaCount"
-                                className="w-full"
-                                value={selectedVerseCount}
-                                onChange={(e) => {
-                                  setSelectedVerseCount(Number(e.target.value));
-                                }}
-                              >
-                                {stanzaCounts.map((name, index) => (
-                                  <option key={index} value={index}>
-                                    {name} ({index + 1})
-                                  </option>
-                                ))}
-                              </Select>
-                            </div>
-                            <div className="flex-1 flex flex-col gap-1">
-                              <label>Rhyme type</label>
-                              <Select
-                                id="rhyme"
-                                name="rhyme"
-                                className="w-full"
-                                value={selectedRhyme}
-                                onChange={(e) => {
-                                  setSelectedRhyme(Number(e.target.value));
-                                }}
-                              >
-                                {stanzaRhymes.map((name, index) => (
-                                  <option key={index} value={index}>
-                                    {name}
-                                  </option>
-                                ))}
-                              </Select>
+                          <div className="flex flex-col gap-4">
+                            <div className="flex gap-4 mb-2 flex-col md:flex-row">
+                              <div className="flex-1 flex flex-col gap-1">
+                                <label>Verse count</label>
+                                <Select
+                                  id="stanzaCount"
+                                  name="stanzaCount"
+                                  className="w-full"
+                                  value={selectedVerseCount}
+                                  onChange={(e) => {
+                                    setSelectedVerseCount(
+                                      Number(e.target.value)
+                                    );
+                                  }}
+                                >
+                                  {stanzaCounts.map((name, index) => (
+                                    <option key={index} value={index}>
+                                      {name} ({index + 1})
+                                    </option>
+                                  ))}
+                                </Select>
+                              </div>
+                              <div className="flex-1 flex flex-col gap-1">
+                                <label>Rhyme type</label>
+                                <Select
+                                  id="rhyme"
+                                  name="rhyme"
+                                  className="w-full"
+                                  value={selectedRhyme}
+                                  onChange={(e) => {
+                                    setSelectedRhyme(Number(e.target.value));
+                                  }}
+                                >
+                                  {stanzaRhymes.map((name, index) => (
+                                    <option key={index} value={index}>
+                                      {name}
+                                    </option>
+                                  ))}
+                                </Select>
+                              </div>
                             </div>
                           </div>
                         </Accordion.Content>
@@ -376,6 +389,37 @@ const Generate: NextPage = () => {
                             }}
                             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mb-2"
                           />
+                        </Accordion.Content>
+                      </Accordion.Panel>
+
+                      <Accordion.Panel>
+                        <Accordion.Title>Generation options</Accordion.Title>
+                        <Accordion.Content>
+                          <div className="flex flex-col gap-4">
+                            <div className="flex gap-2">
+                              <div className="p-2 pl-0 text-left w-fit">
+                                Generative model:
+                              </div>
+                              <div className="flex-1 grid grid-cols-2 gap-2">
+                                {generativeModels.map((model) => (
+                                  <Button
+                                    color={
+                                      selectedModel == model[0]
+                                        ? "success"
+                                        : "light"
+                                    }
+                                    className="w-full"
+                                    key={model[0]}
+                                    onClick={() => {
+                                      setSelectedModel(model[0]);
+                                    }}
+                                  >
+                                    {model[1]}
+                                  </Button>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
                         </Accordion.Content>
                       </Accordion.Panel>
                     </Accordion>
