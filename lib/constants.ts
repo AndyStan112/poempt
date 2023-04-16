@@ -1,93 +1,99 @@
 import {
   ChatCompletionRequestMessage,
   ChatCompletionResponseMessage,
-} from 'openai';
+} from "openai";
 export const writingStyle = [
-  'Modernist',
-  'Traditionalist',
-  'Classicism',
-  'Romantic',
-  'Symbolism',
-  'Contemporary',
+  "Modernist",
+  "Traditionalist",
+  "Classicism",
+  "Romantic",
+  "Symbolism",
+  "Contemporary",
 ];
 
 export const stanzaStyles = [
-  'Free verse',
-  'Haiku',
-  'Sonnet',
-  'Acrostic',
-  'Villanelle',
-  'Ode',
-  'Elegy',
-  'Ballad',
+  "Free verse",
+  "Haiku",
+  "Sonnet",
+  "Acrostic",
+  "Villanelle",
+  "Ode",
+  "Elegy",
+  "Ballad",
 ];
 
 export const stanzaCounts = [
-  'Monostitch',
-  'Couplet',
-  'Tercet',
-  'Quatrain',
-  'Quintain',
-  'Sestet',
+  "Monostitch",
+  "Couplet",
+  "Tercet",
+  "Quatrain",
+  "Quintain",
+  "Sestet",
 ];
 
 export const stanzaRhymes = [
-  'Monorhyme',
-  'Coupled rhyme',
-  'Ballad rhyme',
-  'Enclosed rhyme',
-  'Triplet rhyme',
+  "Monorhyme",
+  "Coupled rhyme",
+  "Ballad rhyme",
+  "Enclosed rhyme",
+  "Triplet rhyme",
 ];
 
 export const moods = [
-  'Depressing',
-  'Melancolic',
-  'Sad',
-  'Neutral',
-  'Happy',
-  'Joyful',
-  'Exhilarating',
+  "Depressing",
+  "Melancolic",
+  "Sad",
+  "Neutral",
+  "Happy",
+  "Joyful",
+  "Exhilarating",
 ];
 
 export const languages = [
-  'english',
-  'spanish',
-  'polish',
-  'german',
-  'french',
-  'italian',
-  'dutch',
-  'romanian',
-  'russian',
-  'portuguese',
-  'swedish',
-  'arabic',
-  'persian',
-  'turkish',
+  "english",
+  "spanish",
+  "polish",
+  "german",
+  "french",
+  "italian",
+  "dutch",
+  "romanian",
+  "russian",
+  "portuguese",
+  "swedish",
+  "arabic",
+  "persian",
+  "turkish",
 ];
 export const trainingMessages: ChatCompletionRequestMessage[] = [
   {
-    role: 'system',
+    role: "system",
     content:
-      'You are a poem generator. The user will give you a literary movement, a stanza style, stanza structure,rhyme and comma-separated keywords. You will generate a title, a poem and a prompt for dall-e to generate an image based on the poem . If the stanza style is not free verse you will ignore the structure and rhyme. You should output the information in json format with the following keys :  {title, poem,prompt}. Make the json respect the json standard. Escape apostrophes and quotes',
+      "You are a poem generator. The user will give you a literary movement, a stanza style, stanza structure,rhyme and comma-separated keywords. You will generate a title, a poem and a prompt for dall-e to generate an image based on the poem . If the stanza style is not free verse you will ignore the structure and rhyme. You should output the information in json format with the following keys :  {title, poem,prompt}. Make the json respect the json standard. Escape apostrophes and quotes",
   },
   {
-    role: 'user',
+    role: "user",
     content:
-      'Make me a poem based on the following parameters: literary movement : traditionalism ; Stanza style: free verse;Stanza structure: Quatrain;Rhyme: Monorhyme;Keywords: sun,light,shadow ',
+      "Make me a poem based on the following parameters: literary movement : traditionalism ; Stanza style: free verse;Stanza structure: Quatrain;Rhyme: Monorhyme;Keywords: sun,light,shadow ",
   },
   {
-    role: 'assistant',
+    role: "assistant",
     content:
       '{"title":"The Dance of Light and Shadow","poem":"Amidst the bright and golden rays,\r\nThat light the world in countless ways,\r\nA play of light and shadow\'s born,\r\nA dance of dusk and break of dawn.\r\n\r\nThe sun casts down its warming light,\r\nA gift of life and love so bright,\r\nAnd yet it\'s in the shadows deep,\r\nThat secrets and treasures we keep.\r\n\r\nThe shadows hold a mystery,\r\nA cloak of darkness, history,\r\nA respite from the blazing sun,\r\nA place of rest when day is done.\r\n\r\nBut shadows do not simply hide,\r\nThey dance and sway, they slip and slide,\r\nA ballet in the earth and air,\r\nA dance of grace, without a care.\r\n\r\nSo let us join the shadow\'s dance,\r\nAnd let ourselves be lost in trance,\r\nFor in their depths we\'ll find our light,\r\nThe dance of dark and bright unite.","prompt":"Create an image of a person in a forest clearing, surrounded by trees with sunlight shining through the leaves, casting dappled shadows on the ground. The person is standing still, watching the dance of light and shadow."}',
   },
   {
-    role: 'user',
+    role: "user",
     content:
-      'Make me a poem based on the following parameters: literary movement : modernism ; Stanza style: Ballad;Stanza structure: Couplet;Rhyme: Coupled Rhyme;Keywords: king,eat,dog ',
+      "Make me a poem based on the following parameters: literary movement : modernism ; Stanza style: Ballad;Stanza structure: Couplet;Rhyme: Coupled Rhyme;Keywords: king,eat,dog ",
   },
 ];
 export const GLOBAL_TAKE = 5;
+
+export const generativeModels = [
+  ["text-davinci-003", "GPT 3 DaVinci"],
+  ["gpt-3.5-turbo", "GPT 3.5 Turbo"],
+];
+
 /* 
 const LanguageDetect = require('languagedetect');
 const lngDetector = new LanguageDetect();
