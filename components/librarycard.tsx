@@ -53,14 +53,14 @@ function LibraryCard(props: {
             {props.text}
           </p>
         </div>
-        <div className="flex flex-0 flex-col w-[256px] gap-2 justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
-          <div className="flex-1">
-            <img
-              src={image ? image : 'loader.gif'}
-              alt={props.title}
-              className="w-[256px] h-[256px] rounded-md shadow-md"
-            />
-            <div className="flex flex-row justify-center gap-2 my-2 w-full">
+        <div className="flex flex-0 flex-col w-[256px] gap-3 justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
+          <img
+            src={image ? image : 'loader.gif'}
+            alt={props.title}
+            className="w-[256px] h-[256px] rounded-md shadow-md"
+          />
+          <div className="flex-1 w-full flex-col items-center">
+            <div className="flex flex-row justify-center gap-2 w-full">
               {props.creatorId &&
                 props.sessionId &&
                 props.creatorId === props.sessionId && (
