@@ -1,14 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import type { NextPage } from 'next';
-import { Button, Card } from 'flowbite-react';
-import MainNavbar from '../components/navbar';
-import MainPage from '../components/page';
-import Waves from '../waves';
-import HeroBanner from '../components/herobanner';
-import MainFooter from '../components/footer';
-import Link from 'next/link';
-import { useSetAtom } from 'jotai';
-import { poemShowAtom } from '../lib/atoms';
+import type { NextPage } from "next";
+import { Button, Card } from "flowbite-react";
+import MainNavbar from "../components/navbar";
+import MainPage from "../components/page";
+import Waves from "../waves";
+import HeroBanner from "../components/herobanner";
+import MainFooter from "../components/footer";
+import Link from "next/link";
+import { useSetAtom } from "jotai";
 
 const Home: NextPage = () => {
   const setPoemShow = useSetAtom(poemShowAtom);
@@ -22,7 +21,7 @@ const Home: NextPage = () => {
           <div className="flex flex-col md:flex-row gap-8 mb-[150px] h-[500px]">
             <div
               className="flex-1 flex items-center justify-center bg-contain bg-no-repeat bg-center"
-              style={{ backgroundImage: 'url(hero_bg.png)' }}
+              style={{ backgroundImage: "url(hero_bg.png)" }}
             >
               <img
                 src="hero_image.png"
@@ -40,11 +39,7 @@ const Home: NextPage = () => {
               </p>
               <div className="flex flex-row justify-center md:justify-start">
                 <Link href="/generate">
-                  <Button
-                    color="gray"
-                    size="lg"
-                    onClick={() => setPoemShow(false)}
-                  >
+                  <Button color="gray" size="lg">
                     Generate a poem now
                   </Button>
                 </Link>
