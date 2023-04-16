@@ -1,18 +1,18 @@
-import type { NextPage } from 'next';
-import MainNavbar from '../components/navbar';
-import MainPage from '../components/page';
-import Waves from '../waves';
-import { useSetAtom } from 'jotai';
-import { showLoginModalAtom } from '../lib/atoms';
-import HeroBanner from '../components/herobanner';
-import MainFooter from '../components/footer';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import LibraryCard from '../components/librarycard';
-import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
-import { Poem } from '../types';
-import { Spinner } from 'flowbite-react';
+import type { NextPage } from "next";
+import MainNavbar from "../components/navbar";
+import MainPage from "../components/page";
+import Waves from "../waves";
+import { useSetAtom } from "jotai";
+import { showLoginModalAtom } from "../lib/atoms";
+import HeroBanner from "../components/herobanner";
+import MainFooter from "../components/footer";
+import { useState } from "react";
+import { useEffect } from "react";
+import LibraryCard from "../components/librarycard";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import { Poem } from "../types";
+import { Spinner } from "flowbite-react";
 
 const PublicLibrary: NextPage = () => {
   const [poems, setPoems] = useState<Poem[]>([]);
@@ -22,11 +22,11 @@ const PublicLibrary: NextPage = () => {
   const openLoginModal = useSetAtom(showLoginModalAtom);
   console.log(router);
   useEffect(() => {
-    if (status !== 'authenticated') return;
+    if (status !== "authenticated") return;
     setLoading(true);
-    fetch('/api/poems/get/u/' + session.id, {
+    fetch("/api/poems/get/u/" + session.id, {
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
       },
     })
       .then((r) => r.json())
@@ -44,7 +44,7 @@ const PublicLibrary: NextPage = () => {
 
   return (
     <>
-      <Waves hue={280} height="500px" animate={loading} />
+      <Waves height="500px" animate={loading} />
       <MainNavbar />
       <MainPage>
         <HeroBanner>
