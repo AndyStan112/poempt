@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Configuration, OpenAIApi } from "openai";
 import keyword_extractor from "keyword-extractor";
+import { getPoemCompletion } from "../../../lib/util";
 const configuration = new Configuration({
   apiKey: process.env.GPT,
 });
@@ -15,29 +16,24 @@ export default async function handler(
     const data = req.body;
     prompt =
       // "Write the continuation of a poem. Before the continuation, write a sugestive title separated by spaces. Base your creation on the following poem : /n" +
-      "Suggest a title for and write a continuation for the following poem: /n" +
+      "Suggest a title for and write a continuation for the following poem without including the original: /n" +
       data.poem;
     (".");
 
     console.log(prompt);
-    const poemCompletion = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: prompt,
-      temperature: 0.5,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      max_tokens: 256,
-    });
-    const response = poemCompletion.data.choices[0].text || "";
-    const title = response
+    const poemCompletion = await getPoemCompletion(
+      data.model || "gpt-3.5-turbo",
+      prompt
+    );
+    console.log(poemCompletion);
+    const title = poemCompletion
       .trim()
       .split("\n")[0]
       .replace("title", "")
       .replace("Title", "")
       .replace(":", "")
       .replace('"', "");
-    const verseArray = response
+    const verseArray = poemCompletion
       .trim()
       .split("\n")
       .filter((e) => !e.toLowerCase().startsWith("verse"));
@@ -45,10 +41,7 @@ export default async function handler(
 
     const gen_poem = verseArray.join("\n");
 
-    const poem = data.poem + "\n\n" + gen_poem;
-
-    console.log(title, poem);
-    res.status(200).send({ title: title, poem: poem });
+    res.status(200).send({ title: title, poem: gen_poem });
   } catch (error) {
     console.log(error);
     res.status(500).send({ result: "error" });
