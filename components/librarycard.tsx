@@ -53,7 +53,7 @@ function LibraryCard(props: {
             {props.text}
           </p>
         </div>
-        <div className="flex flex-1 flex-col gap-2 justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
+        <div className="flex flex-0 flex-col w-[256px] gap-2 justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
           <div className="flex-1">
             <img
               src={image ? image : 'loader.gif'}
