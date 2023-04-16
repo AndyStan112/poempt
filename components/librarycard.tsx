@@ -1,10 +1,11 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-import { useState } from 'react';
-import BookmarkButton from './buttons/bookmarkbutton';
-import RegenerateButton from './buttons/regeneratebutton';
-import DownloadButton from './buttons/downloadbutton';
-import RemoveButton from './buttons/removebutton';
+import { useState } from "react";
+import BookmarkButton from "./buttons/bookmarkbutton";
+import RegenerateButton from "./buttons/regeneratebutton";
+import DownloadButton from "./buttons/downloadbutton";
+import RemoveButton from "./buttons/removebutton";
+import ShareButton from "./buttons/sharebutton";
 
 function LibraryCard(props: {
   title: string;
@@ -28,10 +29,10 @@ function LibraryCard(props: {
     console.log(props);
     if (!props.sessionId || !bookmarked) return;
     setBookmarked(true);
-    await fetch('/api/bookmarks/delete/' + props.bookmarkId, {
-      method: 'delete',
+    await fetch("/api/bookmarks/delete/" + props.bookmarkId, {
+      method: "delete",
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
       },
     })
       .then(() => setRemoved(true))
@@ -55,7 +56,7 @@ function LibraryCard(props: {
         </div>
         <div className="flex flex-0 flex-col w-[256px] gap-3 justify-center md:justify-start items-center md:items-end text-gray-300 text-sm">
           <img
-            src={image ? image : 'loader.gif'}
+            src={image ? image : "loader.gif"}
             alt={props.title}
             className="w-[256px] h-[256px] rounded-md shadow-md"
           />
@@ -83,6 +84,10 @@ function LibraryCard(props: {
                 <RemoveButton removed={removed} remove={remove} />
               )}
               <DownloadButton imageUrl={props.poemImage}></DownloadButton>
+              <ShareButton
+                poemId={props.poemId || "A poem"}
+                poemTitle={props.title}
+              ></ShareButton>
             </div>
           </div>
           <div>
@@ -94,7 +99,7 @@ function LibraryCard(props: {
                 </div>
                 <img
                   className="w-10 h-10 rounded-full border-gray-100 border-2"
-                  src={props.userImage ? props.userImage : 'generic_user.png'}
+                  src={props.userImage ? props.userImage : "generic_user.png"}
                 />
               </div>
             )}
