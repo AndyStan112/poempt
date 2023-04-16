@@ -5,6 +5,7 @@ import { useSetAtom } from "jotai";
 import { showLoginModalAtom } from "../lib/atoms";
 import { useSession, signOut } from "next-auth/react";
 import { Icon } from "@iconify/react";
+import ScrollToTop from "./scrolltotop";
 
 function MainNavbar() {
   const setShowLoginModal = useSetAtom(showLoginModalAtom);
@@ -78,6 +79,7 @@ function MainNavbar() {
           </Link>
         </Navbar.Collapse>
       </Navbar>
+      <ScrollToTop />
     </>
   );
 }
