@@ -1,7 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Configuration, OpenAIApi } from "openai";
-import keyword_extractor from "keyword-extractor";
 import { getPoemCompletion } from "../../../lib/util";
 const configuration = new Configuration({
   apiKey: process.env.GPT,
