@@ -11,14 +11,15 @@ export default async function handler(
     let prompt = "make a poem";
     const data = req.body;
     console.log(data);
-    const keywords = keyword_extractor
-      .extract(data.subject, {
-        language: "english",
-        remove_digits: true,
-        return_changed_case: false,
-        remove_duplicates: true,
-      })
-      .join(",");
+    //
+    // const keywords = keyword_extractor
+    //   .extract(data.subject, {
+    //     language: "english",
+    //     remove_digits: true,
+    //     return_changed_case: false,
+    //     remove_duplicates: true,
+    //   })
+    //   .join(",");
 
     if (data.stanzaStyle == stanzaStyles[0]) {
       prompt =
@@ -32,8 +33,8 @@ export default async function handler(
         data.rhyme +
         " and " +
         data.verses +
-        " lines per stanza, based on the following keywords: " +
-        keywords +
+        " lines per stanza, based on the following description: " +
+        data.subject +
         " .";
     } else {
       prompt =
@@ -43,8 +44,8 @@ export default async function handler(
         data.stanzaStyle +
         " poem in the " +
         data.writingStyle +
-        " style, based on the following keywords: " +
-        data.keywords +
+        " style, based on the following description: " +
+        data.subject +
         ".";
     }
 
