@@ -1,26 +1,27 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { default as prisma } from '../../../lib/prismadb';
-import { extractIdFromUrl } from '../../../lib/util';
-import bucket from '../../../lib/bucket';
-import { generateUrlFromId } from '../../../lib/util';
-import { v4 as uuidv4 } from 'uuid';
+import { NextApiRequest, NextApiResponse } from "next";
+import { default as prisma } from "../../../lib/prismadb";
+import { extractIdFromUrl } from "../../../lib/util";
+import bucket from "../../../lib/bucket";
+import { generateUrlFromId } from "../../../lib/util";
+import { v4 as uuidv4 } from "uuid";
+import fetch from "node-fetch";
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) {
   try {
     const userId = req.query.userId;
     const { poem, poemId } = req.body;
     console.log(userId, poem, poemId);
-    await fetch(process.env.NEXTAUTH_URL + '/api/generate/image', {
-      method: 'POST',
+    await fetch(process.env.NEXTAUTH_URL + "/api/generate/image", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ poem }),
     })
       .then((res) => res.json())
-      .then(async ({ image }) => {
+      .then(async ({ image }: any) => {
         const oldImage = await prisma.poem.findUnique({
           where: { id: poemId },
           select: { image: true },
@@ -31,10 +32,10 @@ export default async function handler(
         try {
           if (oldFileId) bucket.file(oldFileId).delete();
         } catch (error) {
-          console.log('delete renew', error);
+          console.log("delete renew", error);
         }
 
-        const newFileId = uuidv4() + '.png';
+        const newFileId = uuidv4() + ".png";
         const newUrl = generateUrlFromId(newFileId);
         await prisma.poem.update({
           where: { id: poemId },
@@ -42,17 +43,17 @@ export default async function handler(
         });
         const file = bucket.file(newFileId);
         const writeStream = file.createWriteStream({
-          metadata: { cacheControl: 'private' },
+          metadata: { cacheControl: "private" },
         });
         await fetch(image).then((res: any) => {
           res.body.pipe(writeStream);
         });
         console.log(newUrl);
-        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader("Cache-Control", "no-cache");
         res.status(200).send({ image: newUrl });
       });
   } catch (error) {
-    console.log('regenerate', error);
+    console.log("regenerate", error);
     res.status(500).send({ result: { error } });
   }
 }
