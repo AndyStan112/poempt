@@ -30,7 +30,11 @@ export default async function handler(
         console.log(oldUrl);
         const oldFileId = extractIdFromUrl(oldUrl);
         try {
-          if (oldFileId) await bucket.file(oldFileId).delete();
+          if (oldFileId)
+            await bucket
+              .file(oldFileId)
+              .delete()
+              .catch((e) => console.log("aici: ", e));
         } catch (error) {
           console.log("delete renew", error);
         }
