@@ -1,5 +1,11 @@
 # PoemPT
 
+<center>
+
+![Screenshot 1](etc/screenshot1.png)
+
+</center>
+
 Welcome to PoemPT, a powerful tool for generating beautiful poems using the GPT-3 language model and enhancing them with stunning images created by DALL-E. This project is developed with Next.js, a React framework known for its performance, scalability, and ease of use.
 
 ## Introduction

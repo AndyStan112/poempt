@@ -1,8 +1,8 @@
-import { Icon } from '@iconify/react';
-import { Dispatch, FC } from 'react';
-import { SetStateAction } from 'react';
-import { Button } from 'flowbite-react';
-import { sleep } from '../../lib/util';
+import { Icon } from "@iconify/react";
+import { Dispatch, FC } from "react";
+import { SetStateAction } from "react";
+import { Button } from "flowbite-react";
+import { sleep } from "../../lib/util";
 const RegenerateButton: FC<{
   sessionId?: string;
   poem: string;
@@ -10,24 +10,25 @@ const RegenerateButton: FC<{
   poemId: string;
 }> = ({ sessionId, poem, setImage, poemId }) => {
   const regenerate = async () => {
+    setImage("");
     console.log(poemId);
     await fetch(
-      '/api/regenerate/' + sessionId + '?cache=' + new Date().getTime(),
+      "/api/regenerate/" + sessionId + "?cache=" + new Date().getTime(),
       {
-        method: 'post',
+        method: "post",
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
         },
         body: JSON.stringify({
           poem,
           poemId,
         }),
-      },
+      }
     )
       .then((r) => r.json())
       .then(async (data) => {
         console.log(data.image);
-        await sleep();
+        await sleep(2000);
         setImage(data.image);
       });
   };
