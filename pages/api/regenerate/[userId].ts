@@ -48,9 +48,13 @@ export default async function handler(
       const writeStream = file.createWriteStream({
         metadata: { cacheControl: "private" },
       });
-      await fetch(image).then((res: any) => {
-        res.body.pipe(writeStream);
-      });
+      await fetch(image)
+        .then((res: any) => {
+          res.body.pipe(writeStream);
+        })
+        .catch(() => {
+          console.log("aici e buba");
+        });
       console.log(newUrl);
       res.setHeader("Cache-Control", "no-cache");
       res.status(200).send({ image: newUrl });
