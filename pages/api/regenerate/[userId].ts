@@ -52,7 +52,7 @@ export default async function handler(
         await fetch(image)
           .then((resp: any) => {
             console.log(res);
-            resp.pipe(writeStream);
+            resp.body.pipe(writeStream);
           })
           .catch(() => {
             console.log("aici e buba");
