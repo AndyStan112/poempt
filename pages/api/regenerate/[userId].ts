@@ -47,6 +47,7 @@ export default async function handler(
         data: { image: newUrl },
       });
       res.status(200).send({ image });
+      return;
       const file = bucket.file(newFileId);
       const writeStream = file.createWriteStream({
         metadata: { cacheControl: "private" },
