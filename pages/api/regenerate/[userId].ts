@@ -21,6 +21,7 @@ export default async function handler(
   })
     .then((res) => res.json())
     .then(async ({ image }: any) => {
+      console.error(image);
       const oldImage = await prisma.poem.findUnique({
         where: { id: poemId },
         select: { image: true },
@@ -44,16 +45,21 @@ export default async function handler(
         where: { id: poemId },
         data: { image: newUrl },
       });
+
       const file = bucket.file(newFileId);
       const writeStream = file.createWriteStream({
         metadata: { cacheControl: "private" },
       });
-      await fetch(image).then((res: any) => {
-        res.body.pipe(writeStream);
-      });
+      await fetch(image)
+        .then((res: any) => {
+          res.body.pipe(writeStream);
+        })
+        .catch(() => {
+          console.log("aici e buba");
+        });
       console.log(newUrl);
       res.setHeader("Cache-Control", "no-cache");
-      res.status(200).send({ image: newUrl });
+      res.status(200).send({ image: "" });
     });
   // } catch (error) {
   //   console.log("regenerate", error);
