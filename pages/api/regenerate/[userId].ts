@@ -12,7 +12,7 @@ export default async function handler(
   const userId = req.query.userId;
   const { poem, poemId } = req.body;
   console.log(userId, poem, poemId);
-  await fetch(process.env.NEXTAUTH_URL + "/api/generate/image", {
+  await fetch(process.env.NEXTAUTH_URL + "api/generate/image", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
