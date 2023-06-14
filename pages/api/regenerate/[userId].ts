@@ -11,7 +11,7 @@ export default async function handler(
 ) {
   const userId = req.query.userId;
   const { poem, poemId } = req.body;
-  console.log(userId, poem, poemId);
+  console.log(userId, poemId, "user and poemid ");
   await fetch(process.env.NEXTAUTH_URL + "api/generate/image", {
     method: "POST",
     headers: {
@@ -46,13 +46,17 @@ export default async function handler(
         where: { id: poemId },
         data: { image: newUrl },
       });
+      try {
+        const file = bucket.file(newFileId);
+        const writeStream = file.createWriteStream({
+          metadata: { cacheControl: "private" },
+        });
+      } catch (e) {
+        console.log("file or createwrite error");
+      }
+
       res.status(200).send({ image });
       return;
-      const file = bucket.file(newFileId);
-      const writeStream = file.createWriteStream({
-        metadata: { cacheControl: "private" },
-      });
-
       await fetch(image)
         .then((res: any) => {
           res.body.pipe(writeStream);
