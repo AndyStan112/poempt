@@ -18,11 +18,11 @@ export default async function handler(
 
     const fileName = uuidv4() + ".png";
     const file = bucket.file(fileName);
-    // const writeStream = file.createWriteStream();
+    const writeStream = file.createWriteStream();
 
-    // await fetch(image).then((res: any) => {
-    //   res.body.pipe(writeStream);
-    // });
+    await fetch(image).then((res: any) => {
+      res.body.pipe(writeStream);
+    });
 
     const imageUrl =
       "https://storage.googleapis.com/" +
