@@ -1,18 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { default as prisma } from "../../../lib/prismadb";
 import { extractIdFromUrl } from "../../../lib/util";
-import { Storage } from "@google-cloud/storage";
-const storage = new Storage({
-  projectId: process.env.PROJECT_ID,
-  credentials: {
-    client_email: process.env.GOOGLE_CLIENT_EMAIL,
-    private_key: process.env.GOOGLE_PRIVATE_KEY,
-  },
-});
-
-// TODO: throw errors if env variables do not exist
-const bucket = storage.bucket(process.env.BUCKET_NAME!);
-
+import bucket from "../../../lib/bucket";
 import { generateUrlFromId } from "../../../lib/util";
 import { v4 as uuidv4 } from "uuid";
 import fetch from "node-fetch";
@@ -23,7 +12,7 @@ export default async function handler(
   const userId = req.query.userId;
   const { poem, poemId } = req.body;
   console.log(userId, poemId, "user and poemid ");
-  await fetch(process.env.NEXTAUTH_URL + "api/generate/image", {
+  await fetch(process.env.NEXTAUTH_URL + "/api/generate/image", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -74,7 +63,7 @@ export default async function handler(
       }
 
       //res.setHeader("Cache-Control", "no-cache");
-      res.status(200).send({ image });
+      res.status(200).send({ image: newUrl });
     });
   // } catch (error) {
   //   console.log("regenerate", error);
