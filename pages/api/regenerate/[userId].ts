@@ -35,9 +35,9 @@ export default async function handler(
           await bucket
             .file(oldFileId)
             .delete()
-            .catch((e) => console.log("aici: ", e));
+            .catch((e) => console.log("aici: "));
       } catch (error) {
-        console.log("delete renew", error);
+        console.log("delete renew");
       }
 
       const newFileId = uuidv4() + ".png";
