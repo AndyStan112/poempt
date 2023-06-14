@@ -22,7 +22,7 @@ export default async function handler(
     .then((res) => res.json())
     .then(async ({ image }: any) => {
       console.error(image);
-      res.status(200).send({ image });
+
       const oldImage = await prisma.poem.findUnique({
         where: { id: poemId },
         select: { image: true },
@@ -51,6 +51,7 @@ export default async function handler(
       const writeStream = file.createWriteStream({
         metadata: { cacheControl: "private" },
       });
+      res.status(200).send({ image });
       await fetch(image)
         .then((res: any) => {
           res.body.pipe(writeStream);
