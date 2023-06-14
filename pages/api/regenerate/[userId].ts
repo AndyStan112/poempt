@@ -50,9 +50,9 @@ export default async function handler(
         const file = bucket.file(newFileId);
         const writeStream = file.createWriteStream();
         await fetch(image)
-          .then((res: any) => {
+          .then((resp: any) => {
             console.log(res);
-            res.body.pipe(writeStream);
+            resp.pipe(writeStream);
           })
           .catch(() => {
             console.log("aici e buba");
