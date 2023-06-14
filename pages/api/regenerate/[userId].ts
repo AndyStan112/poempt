@@ -46,12 +46,12 @@ export default async function handler(
         where: { id: poemId },
         data: { image: newUrl },
       });
-
+      res.status(200).send({ image });
       const file = bucket.file(newFileId);
       const writeStream = file.createWriteStream({
         metadata: { cacheControl: "private" },
       });
-      res.status(200).send({ image });
+
       await fetch(image)
         .then((res: any) => {
           res.body.pipe(writeStream);
