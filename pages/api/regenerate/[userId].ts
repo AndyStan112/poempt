@@ -49,8 +49,9 @@ export default async function handler(
       try {
         const file = bucket.file(newFileId);
         const writeStream = file.createWriteStream();
-        fetch(image)
+        await fetch(image)
           .then((res: any) => {
+            console.log(res);
             res.body.pipe(writeStream);
           })
           .catch(() => {
