@@ -1,7 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { default as prisma } from "../../../lib/prismadb";
 import { extractIdFromUrl } from "../../../lib/util";
-import bucket from "../../../lib/bucket";
+import { Storage } from "@google-cloud/storage";
+const storage = new Storage({
+  projectId: process.env.PROJECT_ID,
+  credentials: {
+    client_email: process.env.GOOGLE_CLIENT_EMAIL,
+    private_key: process.env.GOOGLE_PRIVATE_KEY,
+  },
+});
+
+// TODO: throw errors if env variables do not exist
+const bucket = storage.bucket(process.env.BUCKET_NAME!);
+
 import { generateUrlFromId } from "../../../lib/util";
 import { v4 as uuidv4 } from "uuid";
 import fetch from "node-fetch";
