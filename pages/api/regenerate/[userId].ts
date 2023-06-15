@@ -11,7 +11,7 @@ export default async function handler(
 ) {
   const userId = req.query.userId;
   const { poem, poemId } = req.body;
-  console.log(userId, poemId, "user and poemid ");
+  // console.log(userId, poemId, "user and poemid ");
   await fetch(process.env.NEXTAUTH_URL + "/api/generate/image", {
     method: "POST",
     headers: {
@@ -21,14 +21,14 @@ export default async function handler(
   })
     .then((res) => res.json())
     .then(async ({ image }: any) => {
-      console.error(image);
+      // console.error(image);
 
       const oldImage = await prisma.poem.findUnique({
         where: { id: poemId },
         select: { image: true },
       });
       const oldUrl = oldImage?.image;
-      console.log(oldUrl);
+      //console.log(oldUrl);
       const oldFileId = extractIdFromUrl(oldUrl);
       try {
         if (oldFileId)
@@ -51,7 +51,7 @@ export default async function handler(
         const writeStream = file.createWriteStream();
         await fetch(image)
           .then((resp: any) => {
-            console.log(res);
+            //console.log("ici nsakbdkjahkdfhswhfjiasuk", resp);
             resp.body.pipe(writeStream);
           })
           .catch(() => {
