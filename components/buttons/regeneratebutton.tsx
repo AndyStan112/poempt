@@ -28,7 +28,7 @@ const RegenerateButton: FC<{
       .then((r) => r.json())
       .then(async (data) => {
         //console.log(data);
-        await sleep(20000);
+        await sleep(30000);
         setImage(data.image);
       });
   };
