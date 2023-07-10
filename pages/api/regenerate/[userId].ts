@@ -23,22 +23,22 @@ export default async function handler(
     .then(async ({ image }: any) => {
       // console.error(image);
 
-      const oldImage = await prisma.poem.findUnique({
-        where: { id: poemId },
-        select: { image: true },
-      });
-      const oldUrl = oldImage?.image;
-      //console.log(oldUrl);
-      const oldFileId = extractIdFromUrl(oldUrl);
-      try {
-        if (oldFileId)
-          await bucket
-            .file(oldFileId)
-            .delete()
-            .catch((e) => console.log("aici: "));
-      } catch (error) {
-        console.log("delete renew");
-      }
+      // const oldImage = await prisma.poem.findUnique({
+      //   where: { id: poemId },
+      //   select: { image: true },
+      // });
+      // const oldUrl = oldImage?.image;
+      // //console.log(oldUrl);
+      // const oldFileId = extractIdFromUrl(oldUrl);
+      // try {
+      //   if (oldFileId)
+      //     await bucket
+      //       .file(oldFileId)
+      //       .delete()
+      //       .catch((e) => console.log("aici: "));
+      // } catch (error) {
+      //   console.log("delete renew");
+      // }
 
       const newFileId = uuidv4() + ".png";
       const newUrl = generateUrlFromId(newFileId);
