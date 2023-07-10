@@ -3,7 +3,7 @@ import { default as prisma } from "../../../../lib/prismadb";
 import fetch from "node-fetch";
 import { v4 as uuidv4 } from "uuid";
 import { GLOBAL_TAKE } from "../../../../lib/constants";
-import { extractIdFromUrl } from "../../../../lib/util";
+import { extractIdFromUrl, generateUrlFromId } from "../../../../lib/util";
 import bucket from "../../../../lib/bucket";
 
 export default async function handler(
@@ -24,11 +24,7 @@ export default async function handler(
       res.body.pipe(writeStream);
     });
 
-    const imageUrl =
-      "https://storage.googleapis.com/" +
-      process.env.BUCKET_NAME! +
-      "/" +
-      fileName;
+    const imageUrl =generateUrlFromId(fileName)
     const poemPost = await prisma.poem.create({
       data: { creatorId: userId, title: title, poem: poem, image: imageUrl },
     });
