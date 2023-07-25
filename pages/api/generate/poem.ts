@@ -10,7 +10,7 @@ export default async function handler(
   try {
     let prompt = "make a poem";
     const data = req.body;
-    console.log(data);
+    // console.log(data);
     //
     // const keywords = keyword_extractor
     //   .extract(data.subject, {
@@ -49,14 +49,14 @@ export default async function handler(
         ".";
     }
 
-    console.log('Prompt: "' + prompt + '"');
+    // console.log('Prompt: "' + prompt + '"');
 
     const poemCompletion = await getPoemCompletion(
       data.model || "gpt-3.5-turbo",
       prompt
     );
 
-    console.log('Response: "' + poemCompletion + '"');
+    // console.log('Response: "' + poemCompletion + '"');
 
     const title = poemCompletion
       .replace(/(\btitle\b|\btitlu\b|:|")/gi, "")
@@ -70,7 +70,7 @@ export default async function handler(
     verseArray.splice(0, 1);
     const poem = verseArray.join("\n");
 
-    console.log(title, poem);
+    // console.log(title, poem);
     res.status(200).send({ title: title, poem: poem });
   } catch (error) {
     console.log(error);

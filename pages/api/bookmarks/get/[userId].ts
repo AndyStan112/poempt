@@ -8,7 +8,7 @@ export default async function handler(
   try {
     const userId = req.query.userId as string;
     const skip = Number(req.query.skip) || 0;
-    console.log(skip);
+    // console.log(skip);
 
     const transaction = await prisma.$transaction([
       prisma.bookmark.count({ where: { saverId: userId } }),

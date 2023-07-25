@@ -1,18 +1,18 @@
-import MainNavbar from '../components/navbar';
-import MainPage from '../components/page';
-import Waves from '../waves';
-import { useSetAtom } from 'jotai';
-import { showLoginModalAtom } from '../lib/atoms';
-import HeroBanner from '../components/herobanner';
-import MainFooter from '../components/footer';
-import { useState, useEffect, useMemo } from 'react';
-import LibraryCard from '../components/librarycard';
-import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
-import Pagination from '../components/pagination';
-import { Bookmark } from '../types';
-import { GLOBAL_TAKE } from '../lib/constants';
-import { Spinner } from 'flowbite-react';
+import MainNavbar from "../components/navbar";
+import MainPage from "../components/page";
+import Waves from "../waves";
+import { useSetAtom } from "jotai";
+import { showLoginModalAtom } from "../lib/atoms";
+import HeroBanner from "../components/herobanner";
+import MainFooter from "../components/footer";
+import { useState, useEffect, useMemo } from "react";
+import LibraryCard from "../components/librarycard";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import Pagination from "../components/pagination";
+import { Bookmark } from "../types";
+import { GLOBAL_TAKE } from "../lib/constants";
+import { Spinner } from "flowbite-react";
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [total, setTotal] = useState(2);
@@ -25,10 +25,10 @@ const Bookmarks = () => {
   useEffect(() => {
     if (!session) return;
     setLoading(true);
-    console.log(`/api/bookmarks/get/` + session.id + `?skip=${skip}`);
+    // console.log(`/api/bookmarks/get/` + session.id + `?skip=${skip}`);
     fetch(`/api/bookmarks/get/` + session.id + `?skip=${skip}`, {
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
       },
     })
       .then((r) => r.json())

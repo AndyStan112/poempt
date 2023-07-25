@@ -23,7 +23,7 @@ const PublicLibrary: NextPage = () => {
   useEffect(() => {
     // if the function runs on the server, the router will be undefined
     if (skip == undefined) return;
-    console.log(skip);
+    // console.log(skip);
     setLoading(true);
     fetch(`/api/poems/get/all?skip=${skip}`, {
       headers: {

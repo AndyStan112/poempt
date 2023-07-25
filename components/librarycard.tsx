@@ -26,7 +26,7 @@ function LibraryCard(props: {
   // console.log(removed);
 
   const remove = async () => {
-    console.log(props);
+    // console.log(props);
     if (!props.sessionId || !bookmarked) return;
     setBookmarked(true);
     await fetch("/api/bookmarks/delete/" + props.bookmarkId, {

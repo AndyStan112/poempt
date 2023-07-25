@@ -15,21 +15,23 @@ export default async function handler(
     const data = req.body;
     prompt =
       // "Write the continuation of a poem. Before the continuation, write a sugestive title separated by spaces. Base your creation on the following poem : /n" +
-      "Suggest a title for and write a continuation for the following poem without including the original: /n" +
+      "Suggest a title for and write a continuation for the following poem without including the original, in the same language as the original: /n" +
       data.poem;
     (".");
 
-    console.log(prompt);
+    // console.log(prompt);
     const poemCompletion = await getPoemCompletion(
       data.model || "gpt-3.5-turbo",
       prompt
     );
-    console.log(poemCompletion);
+    // console.log(poemCompletion);
     const title = poemCompletion
       .trim()
       .split("\n")[0]
       .replace("title", "")
       .replace("Title", "")
+      .replace("titlu", "")
+      .replace("Titlu", "")
       .replace(":", "")
       .replace('"', "");
     const verseArray = poemCompletion

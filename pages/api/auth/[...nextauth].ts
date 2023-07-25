@@ -1,14 +1,14 @@
-import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-import GithubProvider from 'next-auth/providers/github';
-import FacebookProvider from 'next-auth/providers/facebook';
-import EmailProvider from 'next-auth/providers/email';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import prisma from '../../../lib/prismadb';
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import GithubProvider from "next-auth/providers/github";
+import FacebookProvider from "next-auth/providers/facebook";
+import EmailProvider from "next-auth/providers/email";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import prisma from "../../../lib/prismadb";
 
 const handleLink = async (user, profile, prop) => {
-  console.log(prop);
-  console.log(profile[prop]);
+  // console.log(prop);
+  // console.log(profile[prop]);
   if (!user[prop] && profile[prop]) {
     await prisma.user.update({
       where: { id: user.id },
@@ -30,8 +30,8 @@ export default NextAuth({
   },
   events: {
     async linkAccount({ user, profile }) {
-      await handleLink(user, profile, 'image');
-      await handleLink(user, profile, 'name');
+      await handleLink(user, profile, "image");
+      await handleLink(user, profile, "name");
     },
   },
   providers: [

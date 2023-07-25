@@ -26,7 +26,7 @@ const SharedPoem: NextPage = () => {
   useEffect(() => {
     // if the function runs on the server, the router will be undefined
     if (poemId == undefined || poemId == "unknown") return;
-    console.log(poemId);
+    // console.log(poemId);
     setLoading(true);
     fetch(`/api/share/${poemId}`, {
       headers: {
@@ -35,7 +35,7 @@ const SharedPoem: NextPage = () => {
     })
       .then((r) => r.json())
       .then((data) => {
-        console.log(data.poem);
+        // console.log(data.poem);
         setPoem(data.poem);
         setLoading(false);
       })

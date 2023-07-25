@@ -57,7 +57,7 @@ export default async function handler(
           .catch(() => {
             console.log("aici e buba");
           });
-        console.log(newUrl);
+        // console.log(newUrl);
       } catch (e) {
         console.log("file or createwrite error");
       }
