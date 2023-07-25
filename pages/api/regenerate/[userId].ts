@@ -28,7 +28,7 @@ export default async function handler(
         select: { image: true },
       });
       const oldUrl = oldImage?.image;
-      //console.log(oldUrl);
+      console.log(oldUrl);
       const oldFileId = extractIdFromUrl(oldUrl);
       try {
         if (oldFileId)
