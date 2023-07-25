@@ -20,7 +20,7 @@ const PublicLibrary: NextPage = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const openLoginModal = useSetAtom(showLoginModalAtom);
-  console.log(router);
+  // console.log(router);
   useEffect(() => {
     if (status !== "authenticated") return;
     setLoading(true);
@@ -68,7 +68,7 @@ const PublicLibrary: NextPage = () => {
             !loading &&
             poems &&
             poems.map((poem, i) => {
-              console.log(poem);
+              // console.log(poem);
               return (
                 <LibraryCard
                   title={poem.title}

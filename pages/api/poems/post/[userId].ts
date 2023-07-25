@@ -24,7 +24,7 @@ export default async function handler(
       res.body.pipe(writeStream);
     });
 
-    const imageUrl =generateUrlFromId(fileName)
+    const imageUrl = generateUrlFromId(fileName);
     const poemPost = await prisma.poem.create({
       data: { creatorId: userId, title: title, poem: poem, image: imageUrl },
     });
@@ -36,13 +36,13 @@ export default async function handler(
         select: { id: true },
         take: GLOBAL_TAKE,
       });
-      console.log("latest: ", latestPoems);
+      // console.log("latest: ", latestPoems);
       //get Bookmarked Poems
       const bookmarkedPoemIds = await prisma.bookmark.findMany({
         where: { saverId: userId },
         select: { poemId: true },
       });
-      console.log("bookmarked: ", bookmarkedPoemIds);
+      // console.log("bookmarked: ", bookmarkedPoemIds);
       //get poems to be deleted
       const deletables = await prisma.poem.findMany({
         where: {
@@ -70,7 +70,7 @@ export default async function handler(
         return;
       }
 
-      console.log("Will delete : ", deletables);
+      // console.log("Will delete : ", deletables);
       const deleteCount = await prisma.poem.deleteMany({
         where: {
           AND: [
@@ -79,7 +79,7 @@ export default async function handler(
           ],
         },
       });
-      console.log("count: ", deleteCount);
+      // console.log("count: ", deleteCount);
 
       deletables
         .map(({ image }) => extractIdFromUrl(image))
@@ -89,7 +89,7 @@ export default async function handler(
     } catch (e) {
       console.log("post poems", e);
     }
-    console.log("poemPost.id: " + poemPost.id);
+    // console.log("poemPost.id: " + poemPost.id);
     res.status(200).send({ result: "successful", poemId: poemPost.id });
   } catch (error) {
     console.log(error);

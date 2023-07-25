@@ -12,7 +12,7 @@ const ShareButton: FC<{ poemId: string; poemTitle: string }> = ({
 
   const share = async () => {
     const shareUrl = publicRuntimeConfig.NEXTAUTH_URL + "/share?id=" + poemId;
-    console.log(shareUrl);
+    // console.log(shareUrl);
     if (navigator.share) {
       const shareData = {
         title: poemTitle + " - PoemPT",

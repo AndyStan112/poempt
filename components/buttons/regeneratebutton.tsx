@@ -11,7 +11,7 @@ const RegenerateButton: FC<{
 }> = ({ sessionId, poem, setImage, poemId }) => {
   const regenerate = async () => {
     setImage("");
-    console.log(poemId);
+    // console.log(poemId);
     await fetch(
       "/api/regenerate/" + sessionId + "?cache=" + new Date().getTime(),
       {
